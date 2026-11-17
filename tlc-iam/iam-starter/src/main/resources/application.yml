@@ -1,0 +1,160 @@
+spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-source-enabled: ${SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCE_ENABLED:true}
+          credential:
+            managed-identity-enabled: true
+          property-sources:
+            - name: iam-config
+              endpoint: ${SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_ENDPOINT}
+              secret-keys:
+                - TLC-CONFIG-DATABASE-PASSWORD
+                - TLC-CONFIG-IAM-SERVER-CRM-AUTHENTICATION-SUCCESSREDIRECTION
+                - TLC-CONFIG-IAM-SERVER-CRM-AUTHENTICATION-FAILUREREDIRECTION
+                - TLC-CONFIG-DATABASE-NAME
+                - TLC-CONFIG-STORAGE-AWS-SECRETKEY
+                - TLC-CONFIG-STORAGE-AZURE-ACCOUNTNAME
+                - TLC-CONFIG-STORAGE-AZURE-ACCOUNTKEY
+                - TLC-CONFIG-STORAGE-AZURE-ENDPOINT
+                - TLC-CONFIG-CACHE-PASSWORD
+                - TLC-CONFIG-WEB-ALLOWEDORIGINS
+                - TLC-CONFIG-DATABASE-USERNAME
+                - TLC-CONFIG-STORAGE-AWS-SERVER
+                - TLC-CONFIG-WEB-DEFAULT-DOMAIN
+                - TLC-CONFIG-DATABASE-SERVER
+                - TLC-CONFIG-CACHE-SERVER
+                - TLC-CONFIG-ZOOKEEPER-SERVER
+                - TLC-CONFIG-IAM-SERVER-CRM-SECURITY-TOKEN-ISSUERS-0
+                - TLC-CONFIG-IAM-SERVER-CRM-SYMMETRICKEY
+                - TLC-CONFIG-IAM-SERVER-CRM-AUTHENTICATION-DOMAIN
+                - TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-0
+                - TLC-CONFIG-STORAGE-AZURE-AZURITE-ENDPOINT
+                - TLC-CONFIG-STORAGE-AWS-BUCKET
+                - TLC-CONFIG-STORAGE-AWS-REGION
+                - TLC-CONFIG-WEB-CLIENT-VERTX-CLUSTER-HAZELCAST-HOST
+                - TLC-CONFIG-STORAGE-AWS-ACCESSKEY
+                - TLC-CONFIG-STORAGE-AZURE-AUTHTYPE
+
+  application.name: twozo-iam
+  profiles.active: ${SPRING_PROFILES_ACTIVE}
+
+logging:
+  level:
+    root: INFO
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger{35} - %msg%n"
+  file:
+    name: logs/twozo-iam.log
+
+tlc.config:
+  storage:
+    client: ${TLC_CONFIG_STORAGE_CLIENT}
+    azure:
+      accountName: ${TLC-CONFIG-STORAGE-AZURE-ACCOUNTNAME}
+      accountKey: ${TLC-CONFIG-STORAGE-AZURE-ACCOUNTKEY}
+      authType: ${TLC-CONFIG-STORAGE-AZURE-AUTHTYPE}
+      endpoint: ${TLC-CONFIG-STORAGE-AZURE-ENDPOINT}
+      containers:
+        - ${TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-0}
+      azurite:
+        enabled: ${TLC_CONFIG_STORAGE_AZURE_AZURITE_ENABLED}
+        endpoint: ${TLC-CONFIG-STORAGE-AZURE-AZURITE-ENDPOINT}
+    aws:
+      server: ${TLC-CONFIG-STORAGE-AWS-SERVER}
+      accessKey: ${TLC-CONFIG-STORAGE-AWS-ACCESSKEY}
+      secretKey: ${TLC-CONFIG-STORAGE-AWS-SECRETKEY}
+      bucket: ${TLC-CONFIG-STORAGE-AWS-BUCKET}
+      region: ${TLC-CONFIG-STORAGE-AWS-REGION}
+      authMethod: ${TLC_CONFIG_STORAGE_AWS_AUTHMETHOD}
+
+  cache:
+    type: ${TLC_CONFIG_CACHE_TYPE}
+    scheme: ${TLC_CONFIG_CACHE_SCHEME}
+    server: ${TLC-CONFIG-CACHE-SERVER}
+    password: ${TLC-CONFIG-CACHE-PASSWORD}
+    test-enabled: ${TLC_CONFIG_CACHE_TEST_ENABLED}
+
+  database:
+    oltp:
+      name: ${TLC-CONFIG-DATABASE-NAME}
+      server: ${TLC-CONFIG-DATABASE-SERVER}
+      username: ${TLC-CONFIG-DATABASE-USERNAME}
+      password: ${TLC-CONFIG-DATABASE-PASSWORD}
+      developmentModeEnabled: ${TLC_CONFIG_DATABASE_DEVELOPMENTMODEENABLED}
+      connectionPool:
+        max: 5
+        idle: 2
+        idle.timeout: 300000
+        maxLifetime: 1800000
+        connectionTimeout: 30000
+        leakDetectionThreshold: 60000
+        name: iam-oltp-pool
+
+  database-resource:
+    home: ${TLC_CONFIG_DATABASE_RESOURCE_HOME:twozo}
+    storeType: ${TLC_CONFIG_DATABASE_RESOURCE_STORETYPE:remote}
+    snapshotPath: sql/snapshot
+    serverMode: ${TLC_CONFIG_DATABASE_RESOURCE_SERVERMODE}
+
+  scheduler:
+    pool: session-cleaner-pool:1,zk-health-checker:1,vertx-cluster-reboot:1
+
+  web:
+    http.port: ${TLC_CONFIG_WEB_HTTP_PORT}
+    path.prefix: /api/iam
+    app.name: IAM
+    default.domain: ${TLC-CONFIG-WEB-DEFAULT-DOMAIN}
+    allowedOrigins: ${TLC-CONFIG-WEB-ALLOWEDORIGINS}
+
+  web-client:
+    vertx:
+      cluster:
+        manager: ${TLC_CONFIG_WEB_CLIENT_VERTX_CLUSTER_MANAGER}
+        hazelcast:
+          host: ${TLC-CONFIG-WEB-CLIENT-VERTX-CLUSTER-HAZELCAST-HOST}
+          port: ${TLC_CONFIG_WEB_CLIENT_VERTX_CLUSTER_HAZELCAST_PORT}
+        zookeeper:
+          host: ${TLC-CONFIG-ZOOKEEPER-SERVER}
+          rootPath: io.vertx
+          initialSleepTime: 1000
+          maxTimes: 5
+
+  iam-server:
+    crm:
+      symmetricKey: ${TLC-CONFIG-IAM-SERVER-CRM-SYMMETRICKEY}
+      authentication:
+        cookie:
+          isSecure: true
+          sameSiteMode: NONE
+          domain: ${TLC-CONFIG-IAM-SERVER-CRM-AUTHENTICATION-DOMAIN}
+        successRedirection: ${TLC-CONFIG-IAM-SERVER-CRM-AUTHENTICATION-SUCCESSREDIRECTION}
+        failureRedirection: ${TLC-CONFIG-IAM-SERVER-CRM-AUTHENTICATION-FAILUREREDIRECTION}
+        cookie.isSecure: ${TLC_CONFIG_IAM_SERVER_CRM_AUTHENTICATION_COOKIE_ISSECURE}
+      security:
+        token.issuers:
+          - ${TLC-CONFIG-IAM-SERVER-CRM-SECURITY-TOKEN-ISSUERS-0}
+        keyGroups:
+          - CRM
+          - DEFAULT
+    sessionCount : ${TLC_CONFIG_IAM_SERVER_SESSIONCOUNT}
+
+  zookeeper:
+    server: ${TLC-CONFIG-ZOOKEEPER-SERVER}
+    maxRetry: 3
+    retryWait: 1000
+    connectionTimeout: 5000
+    sessionTimeout: 500000
+
+  services:
+    enabled:
+      - storage
+      - cache
+      - zookeeper
+      - database
+      - database-resource
+      - scheduler
+      - web
+      - iam-client
+      - iam-server

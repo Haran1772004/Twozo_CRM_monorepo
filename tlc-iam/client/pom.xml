@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>iam-core</artifactId>
+        <groupId>com.tlc.iam</groupId>
+        <version>2.30.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>client</artifactId>
+    <version>2.19.0-SNAPSHOT</version>
+    <packaging>bundle</packaging>
+    <name>IAM Client</name>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>commons</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>i18n</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>validator</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>cache</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>cluster</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>web</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>webclient</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc.iam</groupId>
+            <artifactId>iam-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>attachment</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <private-package>com.tlc.iam.client.internal.*</private-package>
+                        <Bundle-Activator>com.tlc.iam.client.IamClientAccess</Bundle-Activator>
+                        <Prerequisite-Bundles>com.tlc.iam.common;</Prerequisite-Bundles>
+                    </instructions>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.karaf.tooling</groupId>
+                <artifactId>karaf-maven-plugin</artifactId>
+                <configuration>
+                    <enableGeneration>true</enableGeneration>
+                    <primaryFeatureName>iam-client</primaryFeatureName>
+                    <includeProjectArtifact>true</includeProjectArtifact>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

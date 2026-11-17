@@ -1,0 +1,65 @@
+def territoryIds = params.territoryIds;
+def ownerId = params.ownerId;
+Map results = new HashMap();
+def sourceContact = params._source.contact;
+def sourceCompany = params._source.company;
+def territory = "territory";
+def isContactFollower = params.isContactFollower;
+def isCompanyFollower = params.isCompanyFollower;
+def isCompanyTerritorial = territory.equals(params.companyPermission);
+
+if (null != sourceContact) {
+  def contactFollowers = sourceContact.followerIds;
+
+  if ((territory.equals(params.contactPermission) && territoryIds.contains(sourceContact.territoryId)) || ownerId == sourceContact.ownerId ||
+      (isContactFollower && null != contactFollowers && contactFollowers.contains(ownerId))) {
+    Map contactFields = new HashMap();
+    def contactCompany = sourceContact.company;
+
+    contactFields.put("name", sourceContact.name);
+    contactFields.put("emails", sourceContact.emails);
+    contactFields.put("phones", sourceContact.phones);
+    contactFields.put("linkedin", sourceContact.linkedin);
+    contactFields.put("facebook", sourceContact.facebook);
+    contactFields.put("id", sourceContact.id);
+
+    if (null != contactCompany) {
+      def companyFollowers = contactCompany.followerIds;
+
+      if ((isCompanyTerritorial &&
+           territoryIds.contains(contactCompany.territoryId)) ||
+          ownerId == contactCompany.ownerId ||
+          (isCompanyFollower && null != companyFollowers &&
+           companyFollowers.contains(ownerId))) {
+        Map contactCompanyMap = new HashMap();
+
+        contactCompanyMap.put("name", contactCompany.name);
+        contactCompanyMap.put("id", contactCompany.id);
+        contactFields.put("company", contactCompanyMap);
+      }
+    }
+    results.put("contact", contactFields);
+  }
+}
+
+if (null != sourceCompany) {
+  def companyFollowers = sourceCompany.followerIds;
+
+  if ((isCompanyTerritorial && territoryIds.contains(sourceCompany.territoryId)) ||
+      ownerId == sourceCompany.ownerId || (isCompanyFollower && null != companyFollowers && companyFollowers.contains(ownerId))) {
+    Map companyFields = new HashMap();
+
+    companyFields.put("name", sourceCompany.name);
+    companyFields.put("website", sourceCompany.website);
+    companyFields.put("address", sourceCompany.address);
+    companyFields.put("id", sourceCompany.id);
+    results.put("company", companyFields);
+  }
+}
+
+if (results.isEmpty()) {
+  return null;
+} else {
+  return results;
+}
+

@@ -1,0 +1,9 @@
+twozo:
+  client:
+    location: /app/build
+    crm.domain: https://crm-dev.twozo.live
+  csp:
+    directive:
+      connect-src: "'self' *.twozo.live *.telecmi.com *.twilio.com wss://voice-js.roaming.twilio.com;"
+      img-src: "'self' blob: data: https:;"
+      media-src: "'self' *.twilio.com;"

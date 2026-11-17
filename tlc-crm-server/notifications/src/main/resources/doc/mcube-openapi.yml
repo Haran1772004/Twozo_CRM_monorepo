@@ -1,0 +1,559 @@
+openapi: 3.0.3
+info:
+  title: MCube Telephony Marketplace API
+  description: |
+    API documentation for MCube telephony integration in the CRM Marketplace.
+    
+    MCube is a telephony provider that enables voice calling capabilities within the CRM.
+    This API handles authentication, user synchronization, and management of MCube agents.
+  version: 1.0.0
+  contact:
+    name: CRM Development Team
+
+servers:
+  - url: /api/marketplace/mcube
+    description: MCube Marketplace API endpoint
+
+tags:
+  - name: Authentication
+    description: MCube authentication and credential management
+  - name: User Management
+    description: MCube user synchronization and management
+  - name: App Lifecycle
+    description: Install and uninstall operations
+
+paths:
+  /execute:
+    post:
+      summary: Execute MCube Action
+      description: |
+        Main endpoint for all MCube marketplace actions.
+        The `action` field in the request determines which operation to perform.
+      tags:
+        - Authentication
+        - User Management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteActionRequest'
+            examples:
+              authenticate:
+                summary: Authenticate with MCube
+                value:
+                  type: executeAction
+                  data:
+                    id: 3001
+                    action: authenticate
+                    actionData:
+                      authToken: "mcube-auth-token-xyz"
+              getAuthData:
+                summary: Get authentication data
+                value:
+                  type: executeAction
+                  data:
+                    id: 3001
+                    action: getAuthData
+                    actionData: {}
+              syncUsers:
+                summary: Sync multiple users
+                value:
+                  type: executeAction
+                  data:
+                    id: 3001
+                    action: syncUsers
+                    actionData:
+                      requestedBy: "admin-123"
+                      list:
+                        - userId: 101
+                        - userId: 102
+              syncUser:
+                summary: Sync single user
+                value:
+                  type: executeAction
+                  data:
+                    id: 3001
+                    action: syncUser
+                    actionData:
+                      userId: 101
+                      requestedBy: "admin-123"
+              updateUser:
+                summary: Update user
+                value:
+                  type: executeAction
+                  data:
+                    id: 3001
+                    action: updateUser
+                    actionData:
+                      userId: 101
+                      requestedBy: "admin-123"
+              getUser:
+                summary: Get single user
+                value:
+                  type: executeAction
+                  data:
+                    id: 3001
+                    action: getUser
+                    actionData:
+                      userId: 101
+              removeUser:
+                summary: Remove user
+                value:
+                  type: executeAction
+                  data:
+                    id: 3001
+                    action: removeUser
+                    actionData:
+                      userId: 101
+              userList:
+                summary: Get linked users list
+                value:
+                  type: executeAction
+                  data:
+                    id: 3001
+                    action: userList
+                    actionData:
+                      start: 1
+                      limit: 20
+                      sort:
+                        field: user
+                        type: asc
+              getUsers:
+                summary: Get eligible users for sync
+                value:
+                  type: executeAction
+                  data:
+                    id: 3001
+                    action: getUsers
+                    actionData:
+                      start: 1
+                      limit: 20
+                      criteria:
+                        type: name
+                        value: alex
+              removeAuthData:
+                summary: Remove authentication data
+                value:
+                  type: executeAction
+                  data:
+                    id: 3001
+                    action: removeAuthData
+                    actionData: {}
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/MessageResponse'
+                  - $ref: '#/components/schemas/AuthDataResponse'
+                  - $ref: '#/components/schemas/SyncUsersResponse'
+                  - $ref: '#/components/schemas/UserResponse'
+                  - $ref: '#/components/schemas/UserListResponse'
+                  - $ref: '#/components/schemas/EligibleUsersResponse'
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+
+  /install:
+    post:
+      summary: Install MCube App
+      description: Installs the MCube marketplace app for the organization.
+      tags:
+        - App Lifecycle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstallRequest'
+      responses:
+        '200':
+          description: App installed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstallResponse'
+        '400':
+          description: Installation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /uninstall:
+    post:
+      summary: Uninstall MCube App
+      description: Uninstalls the MCube marketplace app and removes all linked users.
+      tags:
+        - App Lifecycle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UninstallRequest'
+      responses:
+        '200':
+          description: App uninstalled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          description: Uninstallation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ExecuteActionRequest:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum: [executeAction]
+          description: Request type
+        data:
+          type: object
+          required:
+            - id
+            - action
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: Marketplace app installation ID
+            action:
+              type: string
+              enum:
+                - authenticate
+                - getAuthData
+                - syncUsers
+                - updateUser
+                - syncUser
+                - getUser
+                - removeUser
+                - userList
+                - removeAuthData
+                - getUsers
+              description: Action to execute
+            actionData:
+              oneOf:
+                - $ref: '#/components/schemas/AuthenticateActionData'
+                - $ref: '#/components/schemas/SyncUsersActionData'
+                - $ref: '#/components/schemas/UserIdActionData'
+                - $ref: '#/components/schemas/UserListActionData'
+                - $ref: '#/components/schemas/GetUsersActionData'
+                - $ref: '#/components/schemas/EmptyActionData'
+
+    AuthenticateActionData:
+      type: object
+      required:
+        - authToken
+      properties:
+        authToken:
+          type: string
+          description: MCube authentication token
+
+    SyncUsersActionData:
+      type: object
+      required:
+        - list
+      properties:
+        requestedBy:
+          type: string
+          description: ID of user initiating the sync
+        list:
+          type: array
+          items:
+            type: object
+            required:
+              - userId
+            properties:
+              userId:
+                type: integer
+                format: int64
+                description: CRM user ID
+
+    UserIdActionData:
+      type: object
+      required:
+        - userId
+      properties:
+        userId:
+          type: integer
+          format: int64
+          description: CRM user ID
+        requestedBy:
+          type: string
+          description: ID of user initiating the action
+
+    UserListActionData:
+      type: object
+      properties:
+        start:
+          type: integer
+          default: 1
+          description: Page start index
+        limit:
+          type: integer
+          default: 20
+          maximum: 20
+          description: Maximum records to return
+        sort:
+          type: object
+          properties:
+            field:
+              type: string
+              description: Field to sort by
+            type:
+              type: string
+              enum: [asc, desc]
+              description: Sort direction
+
+    GetUsersActionData:
+      type: object
+      properties:
+        start:
+          type: integer
+          default: 1
+          description: Page start index
+        limit:
+          type: integer
+          default: 20
+          maximum: 20
+          description: Maximum records to return
+        criteria:
+          type: object
+          properties:
+            type:
+              type: string
+              description: Search filter type
+            value:
+              type: string
+              description: Search filter value
+
+    EmptyActionData:
+      type: object
+      description: No action data required
+
+    MessageResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Response code (0 for success)
+        message:
+          type: string
+          description: Response message
+
+    AuthDataResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        data:
+          type: object
+          properties:
+            authToken:
+              type: string
+              description: Stored authentication token
+            webhookUrl:
+              type: string
+              format: uri
+              description: Webhook URL for MCube callbacks
+
+    SyncUsersResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        messages:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Status message
+              status:
+                type: string
+                enum: [success, failure]
+                description: Operation status
+
+    UserResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: User ID
+            name:
+              type: string
+              description: User full name
+
+    UserListResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/MCubeUser'
+        totalRecords:
+          type: integer
+          description: Total number of records
+        hasMore:
+          type: boolean
+          description: Whether more records exist
+
+    MCubeUser:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+            name:
+              type: string
+            thumbnail:
+              type: object
+              description: User profile picture
+        role:
+          type: string
+          description: User role name
+        syncStatus:
+          type: string
+          enum: [connected, failed]
+          description: MCube sync status
+
+    EligibleUsersResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        totalRecords:
+          type: integer
+        hasMore:
+          type: boolean
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+              name:
+                type: string
+
+    InstallRequest:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum: [install]
+        data:
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: Marketplace app ID
+
+    InstallResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        type:
+          type: string
+          enum: [standalone]
+          description: Installation type
+        message:
+          type: string
+
+    UninstallRequest:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum: [uninstall]
+        data:
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: Marketplace app ID
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code (non-zero)
+        data:
+          type: object
+          properties:
+            errorCode:
+              type: string
+              description: Error code identifier
+            errorSummary:
+              type: object
+              properties:
+                error:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    key:
+                      type: string
+                errors:
+                  type: array
+                  items:
+                    type: object
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: CRM authentication token
+
+security:
+  - bearerAuth: []
+

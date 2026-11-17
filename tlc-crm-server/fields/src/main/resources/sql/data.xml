@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dumpdata>
+
+    <module name="fieldType">
+        <METFieldType ID="METFieldType:ID:CO:1" NAME="SINGLE_STRING" DISPLAY_NAME="i18n.entity.field.type.text" PLACEHOLDER="i18n.entity.field.type.text.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:2" NAME="TEXT" DISPLAY_NAME="i18n.entity.field.type.largeText" PLACEHOLDER="i18n.entity.field.type.text.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:3" NAME="SINGLE_NUMBER" DISPLAY_NAME="i18n.entity.field.type.numeric" PLACEHOLDER="i18n.entity.field.type.number.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:4" NAME="DROPDOWN" DISPLAY_NAME="i18n.entity.field.type.dropdown" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:5" NAME="MULTI_SELECT" DISPLAY_NAME="i18n.entity.field.type.multiSelect" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:6" NAME="OWNER" DISPLAY_NAME="i18n.entity.field.type.owner" CONFIG="{&quot;dropdown&quot; : &quot;ownerList&quot;}" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:7" NAME="COMPANY" DISPLAY_NAME="i18n.entity.field.type.company.placeholder" CONFIG="{&quot;dropdown&quot; : &quot;companyList&quot;}" PLACEHOLDER="i18n.entity.field.type.text.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:8" NAME="CONTACT" DISPLAY_NAME="i18n.entity.field.type.contact.placeholder" CONFIG="{&quot;dropdown&quot; : &quot;contactList&quot;}" PLACEHOLDER="i18n.entity.field.type.text.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:9" NAME="PHONE" DISPLAY_NAME="i18n.entity.field.type.phone">
+            <METFieldSubType ID="METFieldSubType:ID:CO:1" NAME="PHONE_TYPE" TYPE="4" DISPLAY_NAME="i18n.entity.field.subType.phone.type" CONFIG="{&quot;dropdown&quot; : &quot;phoneType&quot;}" INPUT_TYPE="DROPDOWN" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:2" NAME="COUNTRY_CODE" TYPE="4" DISPLAY_NAME="i18n.entity.field.subType.phone.countryId" CONFIG="{&quot;dropdown&quot; : &quot;countryList&quot;}" INPUT_TYPE="DROPDOWN" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:3" NAME="PHONE_NUMBER" TYPE="1" DISPLAY_NAME="i18n.entity.field.subType.phone.number" INPUT_TYPE="SINGLE_NUMBER" PLACEHOLDER="i18n.entity.field.type.phone.subfield.number.watermark"/>
+        </METFieldType>
+        <METFieldType ID="METFieldType:ID:CO:10" NAME="EMAIL" DISPLAY_NAME="i18n.entity.field.type.email">
+            <METFieldSubType ID="METFieldSubType:ID:CO:4" NAME="EMAIL_TYPE" TYPE="4" DISPLAY_NAME="i18n.entity.field.subType.email.type" CONFIG="{&quot;dropdown&quot; : &quot;emailType&quot;}" INPUT_TYPE="DROPDOWN" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:5" NAME="EMAIL_VALUE" TYPE="1" DISPLAY_NAME="i18n.entity.field.subType.email.value" INPUT_TYPE="SINGLE_STRING" PLACEHOLDER="i18n.entity.field.type.email.subfield.value.watermark"/>
+        </METFieldType>
+        <METFieldType ID="METFieldType:ID:CO:11" NAME="MONETARY" DISPLAY_NAME="i18n.entity.field.type.monetary">
+            <METFieldSubType ID="METFieldSubType:ID:CO:6" NAME="CURRENCY" TYPE="4" DISPLAY_NAME="i18n.entity.field.subType.monetary.currency" CONFIG="{&quot;dropdown&quot; : &quot;currencyList&quot;}" INPUT_TYPE="DROPDOWN" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:7" NAME="VALUE" TYPE="3" DISPLAY_NAME="i18n.entity.field.subType.monetary.value" CONFIG="{&quot;isWholeNumber&quot; : false, &quot;default&quot; : 0.00}" INPUT_TYPE="SINGLE_NUMBER" PLACEHOLDER="i18n.entity.field.type.monetary.subfield.value.watermark"/>
+        </METFieldType>
+        <METFieldType ID="METFieldType:ID:CO:12" NAME="TIME" DISPLAY_NAME="i18n.entity.field.type.time" PLACEHOLDER="i18n.entity.field.type.time.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:13" NAME="TIME_RANGE" DISPLAY_NAME="i18n.entity.field.type.timeRange">
+            <METFieldSubType ID="METFieldSubType:ID:CO:8" TYPE="12" NAME="FROM" DISPLAY_NAME="i18n.entity.field.subType.dateTimeRange.from" INPUT_TYPE="TIME" PLACEHOLDER="i18n.entity.field.type.timeRange.subfield.from.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:9" TYPE="12" NAME="TO" DISPLAY_NAME="i18n.entity.field.subType.dateTimeRange.to" INPUT_TYPE="TIME" PLACEHOLDER="i18n.entity.field.type.timeRange.subfield.to.watermark"/>
+        </METFieldType>
+        <METFieldType ID="METFieldType:ID:CO:14" NAME="DATE" DISPLAY_NAME="i18n.entity.field.type.date" PLACEHOLDER="i18n.entity.field.type.date.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:15" NAME="DATE_RANGE" DISPLAY_NAME="i18n.entity.field.type.dateRange">
+            <METFieldSubType ID="METFieldSubType:ID:CO:10" TYPE="14" NAME="FROM" DISPLAY_NAME="i18n.entity.field.subType.dateTimeRange.from" INPUT_TYPE="DATE" PLACEHOLDER="i18n.entity.field.type.dateRange.subfield.from.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:11" TYPE="14" NAME="TO" DISPLAY_NAME="i18n.entity.field.subType.dateTimeRange.to" INPUT_TYPE="DATE" PLACEHOLDER="i18n.entity.field.type.dateRange.subfield.to.watermark"/>
+        </METFieldType>
+        <METFieldType ID="METFieldType:ID:CO:16" NAME="DATE_TIME_RANGE" DISPLAY_NAME="i18n.entity.field.type.dateTimeRange">
+            <METFieldSubType ID="METFieldSubType:ID:CO:12" TYPE="16" NAME="FROM" DISPLAY_NAME="i18n.entity.field.subType.dateTimeRange.from" INPUT_TYPE="DATE_TIME" PLACEHOLDER="i18n.entity.field.type.dateTimeRange.subfield.from.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:13" TYPE="16" NAME="TO" DISPLAY_NAME="i18n.entity.field.subType.dateTimeRange.to" INPUT_TYPE="DATE_TIME" PLACEHOLDER="i18n.entity.field.type.dateTimeRange.subfield.to.watermark"/>
+        </METFieldType>
+        <METFieldType ID="METFieldType:ID:CO:17" NAME="ADDRESS" DISPLAY_NAME="i18n.entity.field.type.address">
+            <METFieldSubType ID="METFieldSubType:ID:CO:14" TYPE="1" NAME="CITY" DISPLAY_NAME="i18n.entity.field.subType.address.city" CONFIG="{&quot;maxLength&quot; : 125, &quot;maxLengthMessage&quot;: &quot;i18n.fields.violation.message.max.length&quot;}" INPUT_TYPE="SINGLE_STRING" PLACEHOLDER="i18n.entity.field.type.address.subfield.city.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:15" TYPE="1" NAME="STATE" DISPLAY_NAME="i18n.entity.field.subType.address.state" CONFIG="{&quot;maxLength&quot; : 125, &quot;maxLengthMessage&quot;: &quot;i18n.fields.violation.message.max.length&quot;}" INPUT_TYPE="SINGLE_STRING" PLACEHOLDER="i18n.entity.field.type.address.subfield.state.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:16" TYPE="1" NAME="COUNTRY" DISPLAY_NAME="i18n.entity.field.subType.address.country" INPUT_TYPE="DROPDOWN" PLACEHOLDER="i18n.entity.field.type.address.subfield.country.watermark" CONFIG="{&quot;dropdown&quot; : &quot;countryList&quot;}"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:17" TYPE="1" NAME="ZIPCODE" DISPLAY_NAME="i18n.entity.field.subType.address.zipcode" CONFIG="{&quot;maxLength&quot; : 25, &quot;maxLengthMessage&quot;: &quot;i18n.fields.violation.message.max.length&quot;}" INPUT_TYPE="SINGLE_STRING" PLACEHOLDER="i18n.entity.field.type.address.subfield.pincode.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:18" TYPE="2" NAME="ADDRESS_LINE1" DISPLAY_NAME="i18n.entity.field.subType.address.addressLine1" CONFIG="{&quot;isFilterable&quot; : false, &quot;maxLength&quot; : 300, &quot;maxLengthMessage&quot;: &quot;i18n.fields.violation.message.max.length&quot;, &quot;isDuplicateCheckEnabled&quot; : true}" INPUT_TYPE="TEXT" PLACEHOLDER="i18n.entity.field.type.address.subfield.addressLine1.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:19" TYPE="2" NAME="ADDRESS_LINE2" DISPLAY_NAME="i18n.entity.field.subType.address.addressLine2" CONFIG="{&quot;isFilterable&quot; : false, &quot;maxLength&quot; : 300, &quot;maxLengthMessage&quot;: &quot;i18n.fields.violation.message.max.length&quot;, &quot;isDuplicateCheckEnabled&quot; : true}" INPUT_TYPE="TEXT" PLACEHOLDER="i18n.entity.field.type.address.subfield.addressLine2.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:20" TYPE="3" NAME="LATITUDE" DISPLAY_NAME="i18n.entity.field.subType.address.lat" CONFIG="{&quot;isWholeNumber&quot; : false, &quot;isFilterable&quot; : false}" INPUT_TYPE="SINGLE_NUMBER" PLACEHOLDER="i18n.entity.field.type.number.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:21" TYPE="3" NAME="LONGITUDE" DISPLAY_NAME="i18n.entity.field.subType.address.lon" CONFIG="{&quot;isWholeNumber&quot; : false, &quot;isFilterable&quot; : false}" INPUT_TYPE="SINGLE_NUMBER" PLACEHOLDER="i18n.entity.field.type.number.watermark"/>
+        </METFieldType>
+        <!-- Contact, Contacts & Company Onboard display names has been changed to Contact & Company for screen showcase purpose -->
+        <METFieldType ID="METFieldType:ID:CO:18" NAME="CONTACT_ONBOARD" DISPLAY_NAME="i18n.entity.field.type.contact.placeholder" IS_COMMON="false" PLACEHOLDER="i18n.entity.field.type.text.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:19" NAME="COMPANY_ONBOARD" DISPLAY_NAME="i18n.entity.field.type.company.placeholder" IS_COMMON="false" PLACEHOLDER="i18n.entity.field.type.text.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:20" NAME="PRICE_TAGS" DISPLAY_NAME="i18n.entity.field.type.monetary" IS_COMMON="false">
+            <METFieldSubType ID="METFieldSubType:ID:CO:26" TYPE="1" NAME="CURRENCY" DISPLAY_NAME="i18n.entity.field.subType.currency" INPUT_TYPE="DROPDOWN" CONFIG="{&quot;dropdown&quot; : &quot;currencyList&quot;}" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:27" TYPE="2" NAME="UNIT_PRICE" DISPLAY_NAME="i18n.entity.field.subType.unit.price" INPUT_TYPE="SINGLE_NUMBER" CONFIG="{&quot;isWholeNumber&quot; : false}" PLACEHOLDER="i18n.entity.field.type.monetary.subfield.value.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:28" TYPE="3" NAME="TAX" DISPLAY_NAME="i18n.entity.field.subType.tax" INPUT_TYPE="SINGLE_NUMBER"  CONFIG="{&quot;isWholeNumber&quot; : false}" PLACEHOLDER="i18n.entity.field.type.number.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:29" TYPE="4" NAME="DISCOUNT" DISPLAY_NAME="i18n.entity.field.subType.discount" INPUT_TYPE="SINGLE_NUMBER"  CONFIG="{&quot;isWholeNumber&quot; : false}" PLACEHOLDER="i18n.entity.field.type.number.watermark"/>
+        </METFieldType>
+        <METFieldType ID="METFieldType:ID:CO:21" NAME="CONTACTS_ONBOARD" DISPLAY_NAME="i18n.entity.field.type.contact.placeholder" IS_COMMON="false" PLACEHOLDER="i18n.entity.field.type.text.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:22" NAME="DEAL_VALUE" DISPLAY_NAME="i18n.entity.field.type.monetary" IS_COMMON="false">
+            <METFieldSubType ID="METFieldSubType:ID:CO:35" NAME="CURRENCY" TYPE="4" DISPLAY_NAME="i18n.entity.field.subType.monetary.currency" CONFIG="{&quot;dropdown&quot; : &quot;currencyList&quot;}" INPUT_TYPE="DROPDOWN" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:36" NAME="VALUE" TYPE="3" DISPLAY_NAME="i18n.entity.field.subType.monetary.value" CONFIG="{&quot;isWholeNumber&quot; : false}" INPUT_TYPE="SINGLE_NUMBER" PLACEHOLDER="i18n.entity.field.type.monetary.subfield.value.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:37" NAME="PRODUCT" TYPE="26" DISPLAY_NAME="i18n.entity.field.subType.products" INPUT_TYPE="PRODUCT" PLACEHOLDER="i18n.entity.field.type.text.watermark"/>
+        </METFieldType>
+        <METFieldType ID="METFieldType:ID:CO:23" NAME="PHONES" DISPLAY_NAME="i18n.entity.field.type.phones">
+            <METFieldSubType ID="METFieldSubType:ID:CO:30" NAME="PHONE_TYPE" TYPE="4" DISPLAY_NAME="i18n.entity.field.subType.phone.type" CONFIG="{&quot;dropdown&quot; : &quot;PHONE_TYPE&quot;}" INPUT_TYPE="DROPDOWN" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:31" NAME="COUNTRY_CODE" TYPE="4" DISPLAY_NAME="i18n.entity.field.subType.phone.countryId" CONFIG="{&quot;dropdown&quot; : &quot;countryList&quot;}" INPUT_TYPE="DROPDOWN" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:32" NAME="PHONE_NUMBER" TYPE="1" DISPLAY_NAME="i18n.entity.field.subType.phone.number" INPUT_TYPE="SINGLE_NUMBER" PLACEHOLDER="i18n.entity.field.type.phone.subfield.number.watermark"/>
+        </METFieldType>
+        <METFieldType ID="METFieldType:ID:CO:24" NAME="EMAILS" DISPLAY_NAME="i18n.entity.field.type.emails">
+            <METFieldSubType ID="METFieldSubType:ID:CO:33" NAME="EMAIL_TYPE" TYPE="4" DISPLAY_NAME="i18n.entity.field.subType.email.type" CONFIG="{&quot;dropdown&quot; : &quot;EMAIL_TYPE&quot;}" INPUT_TYPE="DROPDOWN" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+            <METFieldSubType ID="METFieldSubType:ID:CO:34" NAME="EMAIL_VALUE" TYPE="1" DISPLAY_NAME="i18n.entity.field.subType.email.value" INPUT_TYPE="SINGLE_STRING" PLACEHOLDER="i18n.entity.field.type.email.subfield.value.watermark"/>
+        </METFieldType>
+        <!-- Deal, Product, Territory, Tags & Note display name has been changed to Number, Number, Dropdown & Multi Select & Large Text for screen showcase purpose -->
+        <METFieldType ID="METFieldType:ID:CO:25" NAME="DEAL" DISPLAY_NAME="i18n.entity.field.type.numeric" IS_COMMON="false"/>
+        <METFieldType ID="METFieldType:ID:CO:26" NAME="PRODUCT" DISPLAY_NAME="i18n.entity.field.type.numeric" IS_COMMON="false"/>
+        <METFieldType ID="METFieldType:ID:CO:27" NAME="TERRITORY" DISPLAY_NAME="i18n.entity.field.type.dropdown" IS_COMMON="false" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:28" NAME="TAGS" DISPLAY_NAME="i18n.entity.field.type.multiSelect" IS_COMMON="false" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:29" NAME="ICON" DISPLAY_NAME="i18n.entity.field.type.icon" IS_COMMON="false"/>
+        <METFieldType ID="METFieldType:ID:CO:30" NAME="NOTE" DISPLAY_NAME="i18n.entity.field.type.largeText" IS_COMMON="false"/>
+        <METFieldType ID="METFieldType:ID:CO:31" NAME="OWNERS" DISPLAY_NAME="i18n.entity.field.type.owner" IS_COMMON="false"/>
+        <METFieldType ID="METFieldType:ID:CO:32" NAME="DATE_TIME" DISPLAY_NAME="i18n.entity.field.type.date.time" IS_COMMON="false"/>
+        <METFieldType ID="METFieldType:ID:CO:33" NAME="IDENTIFIER" DISPLAY_NAME="i18n.entity.field.type.text" IS_COMMON="false"/>
+        <METFieldType ID="METFieldType:ID:CO:34" NAME="AUTO_NUMBER" DISPLAY_NAME="i18n.entity.field.type.auto.numeric" PLACEHOLDER="i18n.entity.field.type.number.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:35" NAME="MARKETING_LIST" DISPLAY_NAME="i18n.entity.field.type.multiSelect" IS_COMMON="false" PLACEHOLDER="i18n.entity.field.type.dropdown.watermark"/>
+        <METFieldType ID="METFieldType:ID:CO:36" NAME="BOOLEAN" DISPLAY_NAME="i18n.entity.field.type.boolean" IS_COMMON="false" PLACEHOLDER="i18n.entity.field.type.boolean.watermark"/>
+
+        <!--TODO Don't forget to add entries in METFTypeComparator and MWFLFieldTypeComparator, if you add a new store type here!-->
+    </module>
+
+</dumpdata>

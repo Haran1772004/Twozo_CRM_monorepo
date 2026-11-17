@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.tlc</groupId>
+        <artifactId>components</artifactId>
+        <version>6.47.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>features</artifactId>
+    <version>6.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>commons</artifactId>
+            <version>${tlc.commons.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>cache</artifactId>
+            <version>${tlc.cache.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>i18n</artifactId>
+            <version>${tlc.i18n.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>sql-common</artifactId>
+            <version>${tlc.sql.common.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>web</artifactId>
+            <version>${tlc.web.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>validator</artifactId>
+            <version>${tlc.validator.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>attachment</artifactId>
+            <version>${tlc.attachment.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>queue</artifactId>
+            <version>${tlc.queue.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>scheduler</artifactId>
+            <version>${tlc.scheduler.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>cluster</artifactId>
+            <version>${tlc.cluster.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>notification</artifactId>
+            <version>${tlc.notification.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>webclient</artifactId>
+            <version>${tlc.web.client.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>search</artifactId>
+            <version>${tlc.search.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>exchange-rate</artifactId>
+            <version>${tlc.exchange.rate.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>l10n</artifactId>
+            <version>${tlc.l10n.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.karaf.tooling</groupId>
+                <artifactId>karaf-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>karaf-deploy</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <enableGeneration>true</enableGeneration>
+                    <aggregateFeatures>true</aggregateFeatures>
+                    <primaryFeatureName>tlc-all-features</primaryFeatureName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

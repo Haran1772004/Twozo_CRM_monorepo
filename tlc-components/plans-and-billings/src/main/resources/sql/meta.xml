@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_plans_and_billings">
+
+        <table name="MPBFeatureGroups">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="KCHAR" nullable="false" max-length="250"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MPBFeatureGroups_PK" column="ID" sequence-generator="MPBFeatureGroups.ID"/>
+            <unique-keys>
+                <unique-key name="MPBFeatureGroups_UK">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MPBFeatures">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="GROUP_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="KCHAR" nullable="false" max-length="250"/>
+                <column name="DESCRIPTION" data-type="KCHAR" nullable="false" max-length="250"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+                <column name="CONFIG" data-type="TEXT" nullable="false"/>
+            </columns>
+            <primary-key name="MPBFeatures_PK" column="ID" sequence-generator="MPBFeatures.ID"/>
+            <foreign-keys>
+                <foreign-key name="MPBFeatures_GroupId_FK" reference-table="MPBFeatureGroups"
+                             local-column="GROUP_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MPBFeatures_UK">
+                    <unique-key-column>GROUP_ID</unique-key-column>
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MPBSubscriptionPlans">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="APPLICATION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="KCHAR" nullable="false" max-length="250"/>
+                <column name="DESCRIPTION" data-type="KCHAR" nullable="false" max-length="250"/>
+                <column name="SIMPLIFIED_DESCRIPTION" data-type="KCHAR" nullable="true"/>
+                <column name="PLAN_TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+                <column name="IS_ACTIVE" data-type="BOOLEAN" nullable="false" default-value="true"/>
+                <column name="IS_DEFAULT_TRIAL_PLAN" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="KEY_FEATURES" data-type="TEXT" nullable="true"/>
+            </columns>
+            <primary-key name="MPBSubscriptionPlans_PK" column="ID" sequence-generator="MPBSubscriptionPlans.ID"/>
+            <foreign-keys>
+                <foreign-key name="MPBSubscriptionPlans_AppId_FK" reference-table="TZApplication"
+                             local-column="APPLICATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MPBSubscriptionPlans_UK">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MPBPlanFeatures">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="PLAN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FEATURE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MPBPlanFeatures_PK" column="ID" sequence-generator="MPBPlanFeatures.ID"/>
+            <foreign-keys>
+                <foreign-key name="MPBPlanFeatures_PlanId_FK" reference-table="MPBSubscriptionPlans"
+                             local-column="PLAN_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MPBPlanFeatures_FeatureId_FK" reference-table="MPBFeatures"
+                             local-column="FEATURE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MPBPlanFeatures_UK">
+                    <unique-key-column>PLAN_ID</unique-key-column>
+                    <unique-key-column>FEATURE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MPBPricingSchemes">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="PLAN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="VALUE" data-type="DECIMAL" nullable="false"/>
+                <column name="PRICING_BASIS" data-type="SMALLINT" nullable="false"/>
+                <column name="BILLING_CYCLE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MPBPricingSchemes_PK" column="ID" sequence-generator="MPBPricingSchemes.ID"/>
+            <foreign-keys>
+                <foreign-key name="MPBPricingSchemes_PlanId_FK" reference-table="MPBSubscriptionPlans"
+                             local-column="PLAN_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MPBPricingSchemes_UK">
+                    <unique-key-column>PLAN_ID</unique-key-column>
+                    <unique-key-column>BILLING_CYCLE</unique-key-column>
+                    <unique-key-column>PRICING_BASIS</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MPBDiscounts">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="REFERENCE_ID" data-type="CHAR" nullable="false" max-length="25"/>
+                <column name="NAME" data-type="KCHAR" nullable="false" max-length="250"/>
+                <column name="DESCRIPTION" data-type="KCHAR" nullable="false" max-length="250"/>
+                <column name="SIMPLIFIED_DESCRIPTION" data-type="KCHAR" nullable="true" max-length="250"/>
+                <column name="VALUE" data-type="DECIMAL" nullable="false"/>
+                <column name="MAX_APPLY_LIMIT" data-type="INTEGER" nullable="true"/>
+                <column name="START_TIME" data-type="DATETIME" nullable="true"/>
+                <column name="EXPIRATION_TIME" data-type="DATETIME" nullable="true"/>
+                <column name="EXPIRATION_PERIOD" data-type="SCHAR" nullable="true" max-length="50"/>
+                <column name="TYPE" data-type="SMALLINT" nullable="false" default-value="1"/>
+                <column name="IS_ACTIVE" data-type="BOOLEAN" nullable="false" default-value="true"/>
+            </columns>
+            <primary-key name="MPBDiscounts_PK" column="ID" sequence-generator="MPBDiscounts.ID"/>
+            <unique-keys>
+                <unique-key name="MPBDiscounts_UK1">
+                    <unique-key-column>REFERENCE_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MPBDiscounts_UK2">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MPBPricingSchemeDiscounts">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="DISCOUNT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PRICING_SCHEME_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MPBPricingSchemeDiscounts_PK" column="ID" sequence-generator="MPBPricingSchemeDiscounts.ID"/>
+            <foreign-keys>
+                <foreign-key name="MPBPricingSchemeDiscounts_DiscountId_FK" reference-table="MPBDiscounts"
+                             local-column="DISCOUNT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MPBPricingSchemeDiscounts_PricingSchemeId_FK" reference-table="MPBPricingSchemes"
+                             local-column="PRICING_SCHEME_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MPBPricingSchemeDiscounts_UK">
+                    <unique-key-column>DISCOUNT_ID</unique-key-column>
+                    <unique-key-column>PRICING_SCHEME_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MPBFeatureModule">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="MODULE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FEATURE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MPBFeatureModule_PK" column="ID" sequence-generator="MPBFeatureModule.ID"/>
+            <foreign-keys>
+                <foreign-key name="MPBFeatureModule_ModuleId_FK" reference-table="TZApplicationModules"
+                             local-column="MODULE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MPBFeatureModule_FeatureId_FK" reference-table="MPBFeatures"
+                             local-column="FEATURE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MPBFeatureModule_UK">
+                    <unique-key-column>MODULE_ID</unique-key-column>
+                    <unique-key-column>FEATURE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MPBFeatureEndpoints">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="FEATURE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ENDPOINT_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MPBFeatureEndpoints_PK" column="ID" sequence-generator="MPBFeatureEndpoints.ID"/>
+            <foreign-keys>
+                <foreign-key name="MPBFeatureEndpoints_FeatureId_FK" reference-table="MPBFeatures"
+                             local-column="FEATURE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MPBFeatureEndpoints_EndpointId_FK" reference-table="TZAEndpoints"
+                             local-column="ENDPOINT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MPBFeatureEndpoints_UK">
+                    <unique-key-column>FEATURE_ID</unique-key-column>
+                    <unique-key-column>ENDPOINT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MPBCancellationReason">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="APPLICATION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="KCHAR" nullable="false" max-length="250"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MPBCancellationReason_PK" column="ID" sequence-generator="MPBCancellationReason.ID"/>
+            <foreign-keys>
+                <foreign-key name="MPBCancellationReason_ApplicationId_FK" reference-table="TZApplication"
+                             local-column="APPLICATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MPBCancellationReason_UK">
+                    <unique-key-column>APPLICATION_ID</unique-key-column>
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MPBCancellationFeedback">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="APPLICATION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FEEDBACK" data-type="CHAR" nullable="false" max-length="50000"/>
+            </columns>
+            <primary-key name="MPBCancellationFeedback_PK" column="ID" sequence-generator="MPBCancellationFeedback.ID"/>
+            <foreign-keys>
+                <foreign-key name="MPBCancellationFeedback_ApplicationId_FK" reference-table="TZApplication"
+                             local-column="APPLICATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+    </module>
+</metadata>

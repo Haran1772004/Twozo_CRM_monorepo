@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      #set($model = $template.get("webForm")) #set($webForm = $model.getWebForm()) #set($formStyle = $webForm.getFormStyle()) #set($font = $webForm.getFormStyle().getFont()) #set($submitAction = $webForm.getSubmitAction())
+      #set($formFieldProperties = $webForm.getFormFieldProperties())
+      #set($isIFrame = $model.isIframe())
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Web form</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <!-- Font Family -->
+      <link href="$font.getLink()" rel="stylesheet" />
+      <style>
+         :root {
+         #set($fieldStyle = $webForm.getFieldStyle())
+         #set($submitButtonStyle = $webForm.getSubmitButtonStyle())
+         /* font family */
+         --font-family: $font.getName();
+         /* form */
+         --form-bg-color: $formStyle.getBackgroundColor();
+         --form-alignment: $formStyle.getAlignment().getName();
+         --header-color: $formStyle.getHeaderTextColor();
+         --header-font-size: $formStyle.getHeaderFontSize()px;
+         --sub-header-color: $formStyle.getSubHeaderTextColor();
+         --sub-header-font-size: $formStyle.getSubHeaderFontSize()px;
+         --sub-text-font-size: $formStyle.getTextFontSize()px;
+         --sub-text-color: $formStyle.getTextColor();
+         --description-color: $formStyle.getDescriptionTextColor();
+         --description-font-size: $formStyle.getDescriptionFontSize()px;
+         --text-color: $formStyle.getTextColor();
+         --text-font-size: $formStyle.getTextFontSize()px;
+         /* fields */
+         --label-color: $fieldStyle.getLabelColor();
+         --label-font-size: $fieldStyle.getLabelFontSize()px;
+         --input-text-color: $fieldStyle.getInputTextColor();
+         --input-text-font-size: $fieldStyle.getInputFontSize()px;
+         --input-bg-color: $fieldStyle.getInputBackgroundColor();
+         /* submit button */
+         --submit-btn-bg-color: $submitButtonStyle.getBackgroundColor();
+         --submit-btn-text-color: $submitButtonStyle.getTextColor();
+         --submit-btn-alignment: $submitButtonStyle.getAlignment().getName();
+         }
+         * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+         }
+         body {
+         font-family: var(--font-family), sans-serif;
+         }
+         input:focus,
+         select:focus {
+         outline: none;
+         border-color: transparent;
+         box-shadow: none;
+         }
+         textarea:focus{
+         outline: none;
+         border-color: transparent;
+         box-shadow: none;
+         }
+
+         input,
+         option,
+         select,
+         .chip {
+         font-family: var(--font-family), sans-serif;
+         }
+         textarea{
+         font-family: var(--font-family), sans-serif;
+         }
+         .form-container {
+         width: 100%;
+         height: 100%;
+         #if(!$isIFrame)
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         #end
+         }
+         .form {
+         #if($isIFrame)
+         width: 100% ;
+         #else
+         width: 450px ;
+         #end
+         height: 100%;
+         display: flex;
+         flex-direction: column;
+         padding: 16px;
+         #if(!$isIFrame)
+         margin-top: 12px;
+         border-radius: 8px;
+         #end
+         border: none;
+         background-color: var(--form-bg-color);
+         text-align: var(--form-alignment);
+         }
+         @media (max-width: 600px) {
+         .form {
+         #if(!$isIFrame)
+         width: 100%;
+         #end
+         }
+         .form-container {
+         width: 100%;
+         padding: 16px;
+         }
+         }
+         .input-field {
+         padding: 8px 8px 8px 0;
+         }
+         select option:hover {
+         background-color: rgba(51, 188, 126, 0.24);
+         }
+         input[type="number"]::-webkit-inner-spin-button,
+         input[type="number"]::-webkit-outer-spin-button {
+         -webkit-appearance: none;
+         margin: 0;
+         }
+         /* Date field style */
+         input[type="date"] {
+         padding-left: 40px;
+         }
+         .calendar-icon {
+         position: absolute;
+         padding: 10px;
+         cursor: pointer;
+         }
+         .date-picker-field {
+         position: relative;
+         }
+         input[type="date"]::-webkit-calendar-picker-indicator {
+         opacity: 0;
+         cursor: pointer;
+         z-index: 3;
+         }
+         .form-title {
+         font-size: var(--header-font-size);
+         color: var(--header-color);
+         padding-left: 8px;
+         font-weight: 600;
+         padding-bottom: 8px;
+         white-space: normal;
+         overflow-wrap: break-word;
+         word-break: break-word;
+         }
+         .form-sub-title {
+         padding: 8px;
+         font-size: var(--sub-header-font-size);
+         font-weight: 400;
+         color: var(--sub-header-color);
+         }
+         .form-sub-text {
+          font-size: var(--sub-text-font-size);
+          font-weight: 400;
+          color: var(--sub-text-color);
+          padding: 8px;
+          }
+         .form-label {
+         display: block;
+         font-size: var(--label-font-size);
+         color: var(--label-color);
+         padding: 0 0 8px 8px;
+         font-weight: 500;
+         white-space: normal;
+         overflow-wrap: break-word;
+         }
+         .form-input {
+         width: 100%;
+         color: var(--input-text-color);
+         font-size: var(--input-text-font-size);
+         font-weight: 400;
+         min-height: 42px;
+         padding: 8px 16px;
+         background-color: var(--input-bg-color);
+         border-radius: 8px;
+         border: none;
+         text-align: left;
+         }
+         select {
+         min-height: 42px;
+         padding: 8px 14px;
+         background-color: var(--input-bg-color);
+         border-radius: 8px;
+         font-size: var(--label-font-size);
+         }
+         .select-option {
+         display: flex;
+         justify-content: space-between;
+         align-items: start;
+         padding: 4px 0;
+         }
+         .single-select {
+         appearance: none;
+         -webkit-appearance: none;
+         -moz-appearance: none;
+         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+         background-position: right 12px center;
+         background-repeat: no-repeat;
+         background-size: 20px 20px;
+         white-space: nowrap;
+         text-overflow:ellipsis;
+         overflow:hidden;
+         padding-right:30px;
+         }
+         .multi-select {
+         width: 100%;
+         position: relative
+         }
+         .checkbox {
+         width: 12px;
+         height: 12px;
+         border: 1.5px solid rgba(0, 0, 0, 1);
+         margin-top: 4px;
+         }
+         .multi-select-option {
+         font-size: var(--input-text-font-size);
+         white-space: normal;
+         overflow-wrap: break-word;
+         word-break: break-word;
+         padding-right: 16px;
+         }
+         .dropdown {
+         width: 100%;
+         position: relative;
+         display: inline-block;
+         border: "none";
+         }
+         .dropdown-content label {
+         display: block;
+         }
+         .dropdown-content {
+         display: none;
+         position: absolute;
+         background-color: #fff;
+         width: 100%;
+         margin-top: 2px;
+         border-radius: 8px;
+         padding: 8px;
+         z-index: 1;
+         min-height: 0px;
+         max-height: 200px;
+         overflow: auto;
+         }
+         .chip {
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         background-color: var(--form-bg-color);
+         color: var(--input-text-color);
+         padding: 3px 4px;
+         border-radius: 8px;
+         font-size: var(--input-text-font-size);
+         font-weight: 500;
+         gap: 4px;
+         margin-right: 8px;
+         margin-bottom: 2px
+         }
+         .chip-close {
+         background: none;
+         border: none;
+         color: gray;
+         cursor: pointer;
+         padding: 0;
+         width: 20px;
+         height: 20px;
+         border-radius: 50%;
+         display: flex;
+         justify-content: center;
+         row-gap: 4px;
+         font-size: 18px;
+         }
+         .chip-close:hover {
+         background-color: rgba(0, 0, 0, 0.1);
+         }
+         .chip-span{
+         max-width: 350px;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         }
+         .placeholder-text {
+         color: #999;
+         }
+         .submit-btn-container {
+         width: 100%;
+         padding: 16px 30px 0 8px;
+         text-align: var(--submit-btn-alignment);
+         }
+         .submit-btn {
+         min-height: 36px;
+         font-size: 13px;
+         font-weight: 600;
+         padding: 10px 16px;
+         border-radius: 8px;
+         color: var(--submit-btn-text-color);
+         background-color: var(--submit-btn-bg-color);
+         border: none;
+         cursor: pointer;
+         white-space: normal;
+         overflow-wrap: break-word;
+         word-break: break-word;
+         }
+         .required-simple {
+         color: red;
+         visibility: visible;
+         }
+         /* thankyou message styles */
+         .thank-you-sub-container {
+         height: 90vh;
+         width: 90vw;
+         background-color: var(--form-bg-color);
+         border-radius: 12px;
+         padding: 40px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         flex-direction: column;
+         gap: 21px;
+         max-width: 400px;
+         margin-top: 30px;
+         }
+         .thank-you-container {
+         width: 100%;
+         height: 100%;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         flex-direction: column;
+         }
+         .form-description {
+         padding: 8px;
+         font-size: var(--description-font-size);
+         font-weight: 400;
+         color: var(--description-color);
+         padding-left: 8px;
+         opacity: 0.6;
+         }
+         .checkmark-circle {
+         width: 211px;
+         height: 143px;
+         }
+         .thank-you-text {
+         font-size: 17px;
+         color: rgba(0, 0, 0, 0.87);
+         font-weight: 600;
+         }
+         .monetary-field {
+         display: flex;
+         align-items: center;
+         }
+         .monetary-select {
+         width: 30%;
+         border-radius: 0px 8px 8px 0px !important;
+         margin-left: -10px !important;
+         border-left: 1px solid rgba(0, 0, 0, 0.2) !important;
+         appearance: none;
+         -webkit-appearance: none;
+         -moz-appearance: none;
+         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+         background-position: right 12px center;
+         background-repeat: no-repeat;
+         background-size: 20px 20px;
+         }
+          /* Validation error styles */
+          .validation-error {
+          color: red;
+          font-size: 14px;
+          margin-top: 5px;
+          display: block;
+          }
+          /* Image element styles */
+          .form-banner-image {
+              width: var(--image-width, 100%);
+              height: var(--image-height, auto);
+              max-width: 100%;
+              object-fit: fill;
+              display: block;
+              margin: 8px 8px 8px 0;
+            }
+          .input-field.store-type-IMAGE {
+              max-width: 100%;
+              max-height: 1024px;
+              overflow: hidden;
+              display: flex;
+              justify-content: var(--image-align, flex-start);
+          }
+       </style>
+   </head>
+   <body>
+      <!-- Form container -->
+      <section class="form-container">
+      <!-- Form -->
+      <form class="form" id="web-form">
+         <!-- Form title -->
+         <p class="form-title">$webForm.getName()</p>
+         <!-- Form description -->
+         #set($description = $webForm.getDescription())
+         #if($description)
+         <p class="form-description">$description</p>
+         #end
+         <input type="hidden" id="id" value="$webForm.id()" />
+         #foreach($formFieldProperty in $formFieldProperties) #set($fieldLabelName = $formFieldProperty.getLabel()) #set($storeElementType=$formFieldProperty.getName()) #if("ELEMENT" == $formFieldProperty.getType().name())
+          #if($storeElementType == "Subheader")
+          <p class="form-sub-title">$fieldLabelName</p>
+          #elseif($storeElementType == "Image")
+          <div class="input-field store-type-IMAGE">
+             <img
+             id="form-image-$formFieldProperty.id()"
+             class="form-banner-image"
+             />
+          </div>
+          #else
+          <p class="form-sub-text">$fieldLabelName</p>
+          #end
+         #else #set($labelName = $fieldLabelName) #set($fieldPropertyId = $formFieldProperty.id()) #set($fieldId = $formFieldProperty.getFieldId()) #set($storeType = $formFieldProperty.getStoreType().getName()) #set($isRequired =
+         $formFieldProperty.isRequired())
+         <div class="input-field store-type-$storeType">
+            <label class="form-label" for="$labelName">
+            $labelName #if($isRequired)
+            <span class="required-simple">*</span>
+            #end
+            </label>
+            #if($storeType == "SINGLE_NUMBER")
+            <input #if($isRequired) required #end id="$fieldPropertyId" oninput="handleNumberChange(event, '$fieldPropertyId')" name="$labelName" class="form-input" type="text" />
+            #elseif($storeType == "DROPDOWN")
+            <select #if($isRequired) required #end id="$fieldPropertyId" name="$labelName" class="form-input single-select">
+            #set($options = $model.getOptionMap().get($fieldId))
+            <option value="" disabled selected></option>
+            #foreach($option in $options)
+            <option value="$option.id()">$option.getOption()</option>
+            #end
+            </select>
+            </select>
+            #elseif($storeType == "EMAIL" || $storeType == "EMAILS")
+            <input #if($isRequired) required #end
+            id="$fieldPropertyId"
+            name="$labelName"
+            class="form-input"
+            oninput="handleEmailInputChange(event, '$fieldPropertyId')"
+            type="text" />
+            #elseif($storeType == "PHONE" || $storeType == "PHONES")
+            <input #if($isRequired) required #end
+            id="$fieldPropertyId"
+            name="$labelName"
+            onkeypress="return /[0-9+\-() ]/.test(event.key)"
+            class="form-input"
+            oninput="handlePhoneInputChange(event, '$fieldPropertyId')"
+            type="text" />
+            #elseif($storeType == "MULTI_SELECT")
+            <div class="multi-select">
+               <button type="button" id="$fieldPropertyId" class="form-input multi-select" onclick="toggleMultiselectDropdown(event, '$fieldId', '$fieldPropertyId')"></button>
+               <div id="$fieldId" class="dropdown-content">
+                  #set($options = $model.getOptionMap().get($fieldId)) #if($options && $options.size() > 0) #foreach($option in $options)
+                  <label>
+                     <div class="select-option">
+                        <p class="multi-select-option">$option.option</p>
+                        <input id="$fieldPropertyId" type="checkbox" class="checkbox" value="$option.id()" />
+                     </div>
+                  </label>
+                  #end #else
+                  <p>No options available.</p>
+                  #end
+               </div>
+            </div>
+            #elseif($storeType == "MONETARY")
+            <div class="monetary-field">
+               <input #if($isRequired) required #end id="$fieldPropertyId" name="$labelName" type="number" class="form-input" min="0" step="0.01" />
+               <select required id="${fieldPropertyId}-currency" name="${labelName}-currency" class="form-input monetary-select">
+                  #set($currencyDataList = $model.getCurrencyDataList()) #foreach($currencyData in $currencyDataList) #set($currency = $currencyData.currency())
+                  <option value="$currency.getId()">$currency.getCode()</option>
+                  #end
+               </select>
+            </div>
+            #elseif($storeType == "DATE")
+            <div class="date-picker-field">
+               <div class="calendar-icon" onclick="openDatePicker('$fieldPropertyId')">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                     <g opacity="0.6">
+                        <path d="M6.66602 1.66699V3.33366" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M13.334 1.66699V3.33366" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M2.91602 7.5752H17.0827" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path
+                           d="M17.5 14.167C17.5 16.667 16.25 18.3337 13.3333 18.3337H6.66667C3.75 18.3337 2.5 16.667 2.5 14.167V7.08366C2.5 4.58366 3.75 2.91699 6.66667 2.91699H13.3333C16.25 2.91699 17.5 4.58366 17.5 7.08366V14.167Z"
+                           stroke="black"
+                           stroke-width="1.5"
+                           stroke-linecap="round"
+                           stroke-linejoin="round"
+                           />
+                        <path d="M13.0781 11.417H13.0856" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M9.99609 11.417H10.0036" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M9.99609 14.75H10.0036" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M6.91211 11.417H6.91959" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M6.91211 14.75H6.91959" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                     </g>
+                  </svg>
+               </div>
+               <input #if($isRequired) required #end id="$fieldPropertyId" name="$labelName" type="date" class="form-input" />
+            </div>
+            #elseif($storeType == "SINGLE_STRING")
+            <input #if($isRequired) required #end
+            id="$fieldPropertyId"
+            name="$labelName"
+            class="form-input"
+            oninput="handleTextInputChange(event, '$fieldPropertyId')"
+            type="text" />
+            #elseif($storeType == "TEXT")
+            <textarea #if($isRequired) required #end style="resize:none;" id="$fieldPropertyId" rows="3" name="$labelName"
+            class="form-input" oninput="handleTextAreaInputChange(event, '$fieldPropertyId')"></textarea>
+            #else
+            <input #if($isRequired) required #end id="$fieldPropertyId" name="$labelName" class="form-input" type="text" />
+            #end
+         </div>
+         #end #end
+         <!-- Form submit button -->
+         <div class="submit-btn-container">
+            <button class="submit-btn" type="submit">$webForm.getSubmitButtonName()</button>
+         </div>
+      </form>
+      <!-- Thank You Message -->
+      <div id="thank-you" style="display: none;">
+         <div class="thank-you-container">
+            <div class="thank-you-sub-container">
+               <div class="checkmark-circle">
+                  <svg width="211" height="143" viewBox="0 0 211 143" fill="none" xmlns="http://www.w3.org/2000/svg">
+                     <g clip-path="url(#clip0_702_75174)">
+                        <path
+                           d="M8.43085 77.2791C2.36085 46.6491 -0.499149 21.6291 27.8709 7.99906C59.2309 -7.06094 64.9709 17.8591 97.2709 21.0191C124.851 23.7191 136.191 10.3991 147.991 43.0591C156.931 67.7791 149.751 102.999 140.501 116.439C123.851 140.629 98.5408 139.679 67.3108 139.249C44.2208 138.889 22.9408 134.679 14.5409 116.439C9.62085 105.749 11.2309 91.4891 8.41085 77.2691L8.43085 77.2791Z"
+                           fill="#EDF8F1" />
+                        <path
+                           d="M137.051 21.0195H50.0209C47.8725 21.0195 46.1309 22.7611 46.1309 24.9095V135.51C46.1309 137.658 47.8725 139.4 50.0209 139.4H137.051C139.199 139.4 140.941 137.658 140.941 135.51V24.9095C140.941 22.7611 139.199 21.0195 137.051 21.0195Z"
+                           fill="white" />
+                        <path
+                           d="M84.9004 36.4707H64.8904C63.9294 36.4707 63.1504 37.2497 63.1504 38.2107V60.4107C63.1504 61.3717 63.9294 62.1507 64.8904 62.1507H84.9004C85.8614 62.1507 86.6404 61.3717 86.6404 60.4107V38.2107C86.6404 37.2497 85.8614 36.4707 84.9004 36.4707Z"
+                           fill="#66C38B" />
+                        <path
+                           d="M122.611 41.3203H96.9905C95.7866 41.3203 94.8105 42.2963 94.8105 43.5003C94.8105 44.7043 95.7866 45.6803 96.9905 45.6803H122.611C123.815 45.6803 124.791 44.7043 124.791 43.5003C124.791 42.2963 123.815 41.3203 122.611 41.3203Z"
+                           fill="#EDEDED" />
+                        <path
+                           d="M122.611 52.6191H96.9905C95.7866 52.6191 94.8105 53.5952 94.8105 54.7991C94.8105 56.0031 95.7866 56.9791 96.9905 56.9791H122.611C123.815 56.9791 124.791 56.0031 124.791 54.7991C124.791 53.5952 123.815 52.6191 122.611 52.6191Z"
+                           fill="#FC7557" />
+                        <path
+                           d="M122.611 74.1699H64.1409C62.937 74.1699 61.9609 75.1459 61.9609 76.3499C61.9609 77.5539 62.937 78.5299 64.1409 78.5299H122.611C123.815 78.5299 124.791 77.5539 124.791 76.3499C124.791 75.1459 123.815 74.1699 122.611 74.1699Z"
+                           fill="#EDEDED" />
+                        <path
+                           d="M122.611 85.4004H64.1409C62.937 85.4004 61.9609 86.3764 61.9609 87.5804C61.9609 88.7844 62.937 89.7604 64.1409 89.7604H122.611C123.815 89.7604 124.791 88.7844 124.791 87.5804C124.791 86.3764 123.815 85.4004 122.611 85.4004Z"
+                           fill="#EDEDED" />
+                        <path
+                           d="M122.611 96.6406H64.1409C62.937 96.6406 61.9609 97.6166 61.9609 98.8206C61.9609 100.025 62.937 101.001 64.1409 101.001H122.611C123.815 101.001 124.791 100.025 124.791 98.8206C124.791 97.6166 123.815 96.6406 122.611 96.6406Z"
+                           fill="#EDEDED" />
+                        <path
+                           d="M122.611 107.869H64.1409C62.937 107.869 61.9609 108.845 61.9609 110.049C61.9609 111.253 62.937 112.229 64.1409 112.229H122.611C123.815 112.229 124.791 111.253 124.791 110.049C124.791 108.845 123.815 107.869 122.611 107.869Z"
+                           fill="#EDEDED" />
+                        <path
+                           d="M122.611 119.109H64.1409C62.937 119.109 61.9609 120.085 61.9609 121.289C61.9609 122.493 62.937 123.469 64.1409 123.469H122.611C123.815 123.469 124.791 122.493 124.791 121.289C124.791 120.085 123.815 119.109 122.611 119.109Z"
+                           fill="#EDEDED" />
+                        <path
+                           d="M141.599 40.96C152.634 40.96 161.579 32.0146 161.579 20.98C161.579 9.94535 152.634 1 141.599 1C130.564 1 121.619 9.94535 121.619 20.98C121.619 32.0146 130.564 40.96 141.599 40.96Z"
+                           fill="#4E8F68" />
+                        <path d="M133.82 22.4796L139.38 26.5296L148.32 15.0996" stroke="white" stroke-width="3"
+                           stroke-linecap="round" stroke-linejoin="round" />
+                        <path
+                           d="M182 140.229C198.85 131.799 222.34 107.869 197.96 85.3993C185.68 72.7193 169.05 62.6793 154.64 77.3993C145.71 86.5193 153.77 95.0493 165.7 100.999C174.41 105.339 178.54 110.969 180.17 116.449C171.19 109.169 160.1 106.899 156.26 117.919C151.32 132.089 166.27 138.599 182 140.239V140.229Z"
+                           fill="#84CEA2" />
+                        <path d="M153.109 79.1699C202.589 98.6399 200.789 117.74 187.959 136.75" stroke="white"
+                           stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M0 141.85H210.38" stroke="#BFBFBF" stroke-width="2" stroke-miterlimit="10" />
+                        <path d="M181.6 139.259C179.45 127.009 170.92 119.759 157.09 116.449" stroke="white"
+                           stroke-miterlimit="10" stroke-linecap="round" />
+                     </g>
+                     <defs>
+                        <clipPath id="clip0_702_75174">
+                           <rect width="210.38" height="142.85" fill="white" />
+                        </clipPath>
+                     </defs>
+                  </svg>
+               </div>
+               <p class="thank-you-text">$submitAction.getThankYouMessage()</p>
+            </div>
+         </div>
+      </div>
+       <script>
+          function applyImageFieldConfig(elementId, { src, alt, align, width, height }) {
+              const img = document.getElementById(elementId);
+              if (!img) return;
+              const container = img.closest(".store-type-IMAGE");
+
+              const DEFAULT_WIDTH = "100%";
+              const DEFAULT_HEIGHT = "auto";
+
+              if (alt) img.alt = alt;
+              if (align && container) {
+                  const map = { left: "flex-start", center: "center", right: "flex-end" };
+                  container.style.setProperty("--image-align", map[align] || "flex-start");
+              }
+
+              const applyDimensions = (w, h) => {
+                  if (w) img.style.setProperty("--image-width", typeof w === "number" ? `${w}px` : w);
+                  if (h) img.style.setProperty("--image-height", typeof h === "number" ? `${h}px` : h);
+              };
+
+              if (width || height) {
+                  applyDimensions(width, height);
+                  if (src) img.src = src;
+              } else if (src) {
+                  img.addEventListener("load", () => {
+                      applyDimensions(img.naturalWidth, img.naturalHeight);
+                  }, { once: true });
+
+                  img.addEventListener("error", () => applyDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT), { once: true });
+
+                  img.src = src;
+              }
+          }
+
+          ## Apply config for each Image element
+          #foreach($fp in $formFieldProperties)
+          #if("ELEMENT" == $fp.getType().name() && "Image" == $fp.getName())
+          #set($cfg = $fp.getConfigAsJson())
+          #set($imgUrl = $cfg.opt("url"))
+          #set($imgAlt = $cfg.opt("altText"))
+          #set($imgAlign = $cfg.opt("align"))
+          #set($imgW = $cfg.optInt("width", 0))
+          #set($imgH = $cfg.optInt("height", 0))
+          applyImageFieldConfig("form-image-$fp.id()", {
+              src: "$!imgUrl",
+              alt: "$!imgAlt",
+              align: "$imgAlign",
+              #if($imgW > 0)
+              width: $imgW,
+              #end
+              #if($imgH > 0)
+              height: $imgH,
+              #end
+          });
+          #end
+          #end
+
+          let isEmailValid = true;
+         let isPhoneValid = true;
+         let isStringValid = true;
+         let isTextValid = true;
+         let isNumberField = true;
+
+         // Email and phone validation functions
+         function validateEmail(email) {
+             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+             return emailRegex.test(email);
+         }
+
+         function validatePhone(phone) {
+             const cleanPhone = phone.replace(/\D/g, "");
+             return cleanPhone.length >= 5 && cleanPhone.length <= 17;
+         }
+
+         function validateStringLength(value) {
+             return value.length <= 255;
+         }
+
+         function validateTextLength(value) {
+              return value.length <= 32000;
+         }
+
+         function validateNumber(value) {
+              return value.toString().length <= 16;
+         }
+
+         function showValidationError(fieldId, message, fieldType) {
+             fieldId = String(fieldId); // ensure it's a string
+
+             // Remove existing error for THIS field only
+             const existingError = document.getElementById(`error-${fieldType}-${fieldId}`);
+             if (existingError) existingError.remove();
+
+             const field = document.getElementById(fieldId);
+
+             if (field) {
+                 const errorDiv = document.createElement("div");
+                 errorDiv.id = `error-${fieldType}-${fieldId}`; // Unique error ID
+                 errorDiv.className = `validation-error`;
+                 errorDiv.style.color = "red";
+                 errorDiv.style.fontSize = "14px";
+                 errorDiv.style.marginTop = "5px";
+                 errorDiv.textContent = message;
+
+                 field.parentNode.appendChild(errorDiv);
+                 field.style.borderColor = "red";
+             }
+         }
+
+         function clearValidationError(fieldId, fieldType) {
+             const existingError = document.getElementById(`error-${fieldType}-${fieldId}`);
+             if (existingError) existingError.remove();
+
+             const field = document.getElementById(fieldId);
+             if (field) field.style.borderColor = "";
+         }
+
+         // Validate email field on change
+         function handleEmailInputChange(event, fieldId) {
+             const value = event.target.value;
+
+             // Clear any old error
+             clearValidationError(fieldId, "email");
+             if (value) {
+                 if (!validateEmail(value)) {
+                     isEmailValid = false;
+                     showValidationError(fieldId, "Please enter a valid email address", "email");
+                 } else {
+                     isEmailValid = true;
+                 }
+             }
+         }
+
+         // Validate phone field on change
+         function handlePhoneInputChange(event, fieldId) {
+             const input = event.target;
+             input.value = input.value.replace(/[^0-9+\-() ]/g, "");
+
+             // Clear any old error
+             clearValidationError(fieldId, "phone");
+             if (input.value) {
+                 if (!validatePhone(input.value)) {
+                     isPhoneValid = false;
+                     showValidationError(fieldId, "Phone number must be between 5 and 17 digits", "phone");
+                 } else {
+                     isPhoneValid = true;
+                 }
+             }
+         }
+
+          function handleTextInputChange(event, fieldId) {
+             const value = event.target.value;
+
+             // Clear any old error
+             clearValidationError(fieldId, "single_string");
+
+             if (value && !validateStringLength(value)) {
+                 isStringValid = false;
+                 showValidationError(fieldId, "Max. of 255 characters are allowed", "single_string");
+             } else {
+                 isStringValid = true;
+             }
+         }
+
+          function handleTextAreaInputChange(event, fieldId) {
+                         const value = event.target.value;
+
+                         //Clear any old error
+                         clearValidationError(fieldId, "TEXT");
+
+                         if (value && !validateTextLength(value)) {
+                             isTextValid = false;
+                             showValidationError(fieldId, "Max. of 32000 characters are allowed", "TEXT");
+                         } else {
+                             isTextValid = true;
+                         }
+                     }
+
+          function handleNumberChange(event, fieldId) {
+                          const input = event.target;
+                          input.value = input.value.replace(/\D/g, "");
+
+                          const value = input.value;
+
+                          //Clear any old error
+                          clearValidationError(fieldId, "SINGLE_NUMBER");
+
+                          if (value && !validateNumber(value)) {
+                               isNumberField = false;
+                               showValidationError(fieldId, "Max. of 16 numbers are allowed","SINGLE_NUMBER");
+                          } else {
+                               isNumberField = true;
+                          }
+                      }
+
+         const openDatePicker = (fieldId) => {
+             const input = document.getElementById(fieldId);
+             if (input) {
+                 input.showPicker?.();
+                 input.focus();
+                 input.click();
+             }
+         };
+
+         // Store event listeners to avoid duplicates
+         const addedListeners = new Set();
+
+         document.addEventListener("click", function (event) {
+             document.querySelectorAll(".dropdown-content").forEach(function (dropdown) {
+                 const fieldPropertyId = dropdown.previousElementSibling?.id;
+                 const multiBtn = fieldPropertyId ? document.getElementById(fieldPropertyId) : null;
+
+                 if (
+                     dropdown.style.display === "block" &&
+                     multiBtn && !multiBtn.contains(event.target) &&
+                     !dropdown.contains(event.target)
+                 ) {
+                     dropdown.style.display = "none";
+                 }
+             });
+         });
+
+
+         function toggleMultiselectDropdown(event, fieldId, fieldPropertyId) {
+             event.stopPropagation();
+
+             const multiBtn = document.getElementById(fieldPropertyId);
+             const dropdown = document.getElementById(fieldId);
+             const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
+
+             function updateMultiBtnContent() {
+                 const selectedOptions = Array.from(checkboxes)
+                     .filter((cb) => cb.checked)
+                     .map((cb) => ({
+                         value: cb.value,
+                         label: cb.parentElement.textContent.trim(),
+                     }));
+
+                 multiBtn.innerHTML = "";
+
+                 if (selectedOptions.length !== 0) {
+                     selectedOptions.forEach((option) => {
+                         const chip = document.createElement("div");
+                         chip.className = "chip";
+
+                         const label = document.createElement("span");
+                         label.className = "chip-span";
+                         label.textContent = option.label;
+
+                         const closeBtn = document.createElement("button");
+                         closeBtn.className = "chip-close";
+                         closeBtn.innerHTML = "\u00D7";
+                         closeBtn.type = "button";
+                         closeBtn.onclick = function (e) {
+                             e.stopPropagation();
+                             removeOption(option.value);
+                         };
+
+                         chip.appendChild(label);
+                         chip.appendChild(closeBtn);
+                         multiBtn.appendChild(chip);
+                     });
+                 }
+             }
+
+             function removeOption(value) {
+                 const checkbox = Array.from(checkboxes).find(
+                     (cb) => cb.value === value
+                 );
+                 if (checkbox) {
+                     checkbox.checked = false;
+                     updateMultiBtnContent();
+                 }
+             }
+
+             // Toggle dropdown
+             const isOpen = dropdown.style.display === "block";
+             dropdown.style.display = isOpen ? "none" : "block";
+
+             // Add event listeners only once per checkbox
+             checkboxes.forEach((cb) => {
+                 const listenerId = `${fieldPropertyId}-${cb.value}`;
+                 if (!addedListeners.has(listenerId)) {
+                     cb.addEventListener("change", updateMultiBtnContent);
+                     addedListeners.add(listenerId);
+                 }
+             });
+
+
+
+             // Initialize content
+             updateMultiBtnContent();
+         }
+
+         document.getElementById("web-form").addEventListener("submit", function (event) {
+             event.preventDefault();
+
+             if (!isEmailValid || !isPhoneValid || !isStringValid || !isTextValid || !isNumberField) {
+                 return;
+             }
+
+             const formData = {};
+             const fields = document.querySelectorAll(".input-field");
+
+             fields.forEach((field) => {
+             const storeTypeMatch = field.className.match(/store-type-([A-Z_]+)/);
+             const storeType = storeTypeMatch ? storeTypeMatch[1] : null;
+
+             let fieldId = null;
+
+             switch (storeType) {
+                  case "IMAGE":
+                      // Image elements are display-only; skip form data collection
+                      break;
+
+                  case "DATE": {
+                     const input = field.querySelector("input");
+                     if (input) {
+                         const value = input.value;
+
+                         if (value) {
+                             fieldId = input.id;
+                             formData[fieldId] = value;
+                         }
+                     }
+                     break;
+                 }
+
+                case "DROPDOWN": {
+                    const select = field.querySelector("select");
+                    if (select && select.value) {
+                        fieldId = select.id;
+                        const numericValue = Number(select.value);
+                        formData[fieldId] = isNaN(numericValue) ? select.value : numericValue;
+                    }
+                    break;
+                }
+
+                 case "MULTI_SELECT": {
+                     const button = field.querySelector("button");
+                     if (button) fieldId = button.id;
+
+                     const checkboxes = field.querySelectorAll(".dropdown-content input[type='checkbox']:checked");
+
+                     const selectedValues = Array.from(checkboxes).map(cb => {
+                         const val = Number(cb.value);
+                         return isNaN(val) ? cb.value : val;
+                     });
+
+                     if (selectedValues.length > 0) {
+                         formData[fieldId] = selectedValues;
+                     }
+
+                     break;
+                 }
+
+                 case "MONETARY": {
+                     const amountInput = field.querySelector("input[type='number']");
+                     const currencySelect = field.querySelector("select");
+                     if (amountInput && currencySelect && amountInput.value) {
+                         fieldId = amountInput.id;
+                         formData[fieldId] = {
+                         amount: Number(amountInput.value),
+                         currency: currencySelect.value
+                         };
+                     }
+                     break;
+                 }
+
+                default: {
+                                            const defaultInput = field.querySelector("input, textarea");
+                                            if (defaultInput && defaultInput.value) {
+                                                fieldId = defaultInput.id;
+                                                formData[fieldId] = defaultInput.value;
+                                            }
+                                            break;
+                                        }
+             }
+             });
+
+             function redirectToURL() {
+                window.location.href = "$submitAction.getRedirectUrl()";
+             };
+
+             const formId = document.getElementById("id")?.value;
+             formData["id"] = formId;
+             const csrfToken = document.getElementById("csrfToken")?.value;
+
+             fetch("$model.getFormSubmitUrl()", {
+             method: "POST",
+             headers: {
+                 "Content-Type": "application/json",
+                 "X-CSRF-Token": csrfToken
+             },
+             body: JSON.stringify({ data: formData })
+             })
+             .then(response => response.json())
+             .then(data => {
+             const formElement = document.getElementById("web-form");
+             const thankYouElement = document.getElementById("thank-you");
+
+                #if($submitAction.isRedirectEnabled() && $submitAction.isThankYouMessageEnabled() )
+                  formElement.style.display = "none";
+                                   thankYouElement.style.display = "block";
+                                    formElement.reset();
+                setTimeout(redirectToURL, 3000);
+
+                #elseif($submitAction.isRedirectEnabled())
+                   window.location.href = "$submitAction.getRedirectUrl()";
+
+                 #elseif($submitAction.isThankYouMessageEnabled())
+                    formElement.style.display = "none";
+                   thankYouElement.style.display = "block";
+                    formElement.reset();
+                #end
+             })
+             .catch((error) => {
+             console.error("Error:", error);
+             alert("Something went wrong while submitting the form.");
+             });
+         });
+      </script>
+   </body>
+</html>

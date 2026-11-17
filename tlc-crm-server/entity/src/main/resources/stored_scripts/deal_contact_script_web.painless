@@ -1,0 +1,30 @@
+def sourceContact = params._source.contact;
+
+if (null != sourceContact) {
+  def contactFollowers = sourceContact.followerIds;
+  def ownerId = params.ownerId;
+
+  if (("territory".equals(params.contactPermission) && params.territoryIds.contains(sourceContact.territoryId)) ||
+      ownerId == sourceContact.ownerId || (params.isContactFollower && null != contactFollowers && contactFollowers.contains(ownerId))) {
+    Map contactFields = new HashMap();
+    def contactCompany = sourceContact.company;
+
+    contactFields.put("name", sourceContact.name);
+    contactFields.put("emails", sourceContact.emails);
+    contactFields.put("phones", sourceContact.phones);
+    contactFields.put("linkedin", sourceContact.linkedin);
+    contactFields.put("facebook", sourceContact.facebook);
+    contactFields.put("id", sourceContact.id);
+
+    if ("global".equals(params.companyPermission) && null != contactCompany) {
+      Map contactCompanyMap = new HashMap();
+
+      contactCompanyMap.put("name", contactCompany.name);
+      contactCompanyMap.put("id", contactCompany.id);
+      contactFields.put("company", contactCompanyMap);
+    }
+    return contactFields;
+  }
+}
+return null;
+

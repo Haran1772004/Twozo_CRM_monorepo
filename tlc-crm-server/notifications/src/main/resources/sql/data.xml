@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dumpdata>
+
+    <module name="module_crm_voice_call">
+
+        <OMNCCallingService ID="OMNCCallingService:ID:CO:1" DISPLAY_NAME="i18n.notifications.calling.service.ask.every.time" NAME="askEveryTime"/>
+        <OMNCCallingService ID="OMNCCallingService:ID:CO:2" DISPLAY_NAME="i18n.notifications.calling.service.twozo.dialler" NAME="twozoDialler"/>
+
+    </module>
+
+</dumpdata>

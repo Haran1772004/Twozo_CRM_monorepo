@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_social">
+
+        <table name="MSOChannel">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="300"/>
+                <column name="TYPE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MSOChannel_PK" column="ID" sequence-generator="MSOChannel.ID"/>
+            <!-- The name column contains fb page name. So different account can have same page name       -->
+        </table>
+
+        <table name="MSORecipientProfile">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="300"/>
+                <column name="PROFILE_PIC_ID" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="MSORecipientProfile_PK" column="ID" sequence-generator="MSORecipientProfile.ID"/>
+            <unique-keys>
+                <unique-key name="MSORecipientProfile_UK1">
+                    <unique-key-column>PROFILE_PIC_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MSOChat">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="PLATFORM" data-type="SMALLINT" nullable="false"/>
+                <column name="LAST_MESSAGE_TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="LAST_MESSAGE_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="UNREAD_COUNT" data-type="INTEGER" nullable="false"/>
+                <column name="PROFILE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CHANNEL_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MSOChat_PK" column="ID" sequence-generator="MSOChat.ID"/>
+            <unique-keys>
+                <unique-key name="MSOChat_UK1">
+                    <unique-key-column>PROFILE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSOChat_FK1" reference-table="MSORecipientProfile"
+                             local-column="PROFILE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MSOChat_FK2" reference-table="MSOChannel"
+                             local-column="CHANNEL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MSOMessage">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CHAT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONTENT" data-type="TEXT" nullable="true"/>
+                <column name="MESSAGE_FLOW" data-type="SMALLINT" nullable="false"/>
+                <column name="STATE" data-type="SMALLINT" nullable="false"/>
+                <column name="SEND_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="DELIVERED_TIME" data-type="BIGINT" nullable="true"/>
+                <column name="READ_TIME" data-type="BIGINT" nullable="true"/>
+                <column name="FAILED_REASON" data-type="TEXT" nullable="true"/>
+            </columns>
+            <primary-key name="MSOMessage_PK" column="ID" sequence-generator="MSOMessage.ID"/>
+            <foreign-keys>
+                <foreign-key name="MSOMessage_FK1" reference-table="MSOChat"
+                             local-column="CHAT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MSOAttachment">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="MESSAGE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ATTACHMENT_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MSOAttachment_PK" column="ID" sequence-generator="MSOAttachment.ID"/>
+            <unique-keys>
+                <unique-key name="MSOAttachment_UK1">
+                    <unique-key-column>MESSAGE_ID</unique-key-column>
+                    <unique-key-column>ATTACHMENT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSOAttachment_FK1" reference-table="MSOMessage"
+                             local-column="MESSAGE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MSORecipient">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CHAT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PROFILE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MSORecipient_PK" column="ID" sequence-generator="MSORecipient.ID"/>
+            <unique-keys>
+                <unique-key name="MSORecipient_UK1">
+                    <unique-key-column>CHAT_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MSORecipient_UK2">
+                    <unique-key-column>PROFILE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSORecipient_FK" reference-table="MSOChat"
+                             local-column="CHAT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MSORecipient_FK2" reference-table="MSORecipientProfile"
+                             local-column="PROFILE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+    </module>
+
+    <module name="module-facebook">
+
+        <table name="MSOFBMessage">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="MESSAGE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXTERNAL_MESSAGE_ID" data-type="CHAR" nullable="false" max-length="300"/>
+            </columns>
+            <primary-key name="MSOFBMessage_PK" column="ID" sequence-generator="MSOFBMessage.ID"/>
+            <unique-keys>
+                <unique-key name="MSOFBMessage_UK1">
+                    <unique-key-column>MESSAGE_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MSOFBMessage_UK2">
+                    <unique-key-column>EXTERNAL_MESSAGE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSOFBMessage_FK1" reference-table="MSOMessage"
+                             local-column="MESSAGE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MSOFBPage">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="EXTERNAL_PAGE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CHANNEL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ACCESS_TOKEN" data-type="CHAR" nullable="false" max-length="500"/>
+            </columns>
+            <primary-key name="MSOFBPage_PK" column="ID" sequence-generator="MSOFBPage.ID"/>
+            <unique-keys>
+                <unique-key name="MSOFBPage_UK1">
+                    <unique-key-column>EXTERNAL_PAGE_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MSOFBPage_UK2">
+                    <unique-key-column>CHANNEL_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSOFBPage_FK1" reference-table="MSOChannel"
+                             local-column="CHANNEL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MSOFBPageRecipient">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="RECIPIENT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PAGE_SCOPED_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PAGE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MSOFBPageRecipient_PK" column="ID" sequence-generator="MSOFBPageRecipient.ID"/>
+            <unique-keys>
+                <unique-key name="MSOFBPageRecipient_UK1">
+                    <unique-key-column>RECIPIENT_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MSOFBPageRecipient_UK2">
+                    <unique-key-column>PAGE_SCOPED_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSOFBPageRecipient_FK1" reference-table="MSORecipient"
+                             local-column="RECIPIENT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MSOFBPageRecipient_FK2" reference-table="MSOFBPage"
+                             local-column="PAGE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+    </module>
+
+    <module name="module-instagram">
+
+        <table name="MSOInstagramMessage">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="MESSAGE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXTERNAL_MESSAGE_ID" data-type="CHAR" nullable="false" max-length="300"/>
+            </columns>
+            <primary-key name="MSOInstagramMessage_PK" column="ID" sequence-generator="MSOInstagramMessage.ID"/>
+            <unique-keys>
+                <unique-key name="MSOInstagramMessage_UK1">
+                    <unique-key-column>MESSAGE_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MSOInstagramMessage_UK2">
+                    <unique-key-column>EXTERNAL_MESSAGE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSOInstagramMessage_FK1" reference-table="MSOMessage"
+                             local-column="MESSAGE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MSOInstagramPage">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="EXTERNAL_PAGE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FB_PAGE_EXTERNAL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CHANNEL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ACCESS_TOKEN" data-type="CHAR" nullable="false" max-length="500"/>
+            </columns>
+            <primary-key name="MSOInstagramPage_PK" column="ID" sequence-generator="MSOInstagramPage.ID"/>
+            <unique-keys>
+                <unique-key name="MSOInstagramPage_UK1">
+                    <unique-key-column>EXTERNAL_PAGE_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MSOInstagramPage_UK2">
+                    <unique-key-column>CHANNEL_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSOInstagramPage_FK1" reference-table="MSOChannel"
+                             local-column="CHANNEL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MSOInstagramPageRecipient">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="RECIPIENT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PAGE_SCOPED_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PAGE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MSOInstagramPageRecipient_PK" column="ID" sequence-generator="MSOInstagramPageRecipient.ID"/>
+            <unique-keys>
+                <unique-key name="MSOInstagramPageRecipient_UK1">
+                    <unique-key-column>RECIPIENT_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MSOInstagramPageRecipient_UK2">
+                    <unique-key-column>PAGE_SCOPED_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSOInstagramPageRecipient_FK1" reference-table="MSORecipient"
+                             local-column="RECIPIENT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MSOInstagramPageRecipient_FK2" reference-table="MSOInstagramPage"
+                             local-column="PAGE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+    </module>
+
+    <module name="module-whatsapp">
+
+        <table name="MSOWAMessage">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="MESSAGE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXTERNAL_MESSAGE_ID" data-type="CHAR" nullable="false" max-length="150"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="true" default-value="false"/>
+            </columns>
+            <primary-key name="MSOWAMessage_PK" column="ID" sequence-generator="MSOWAMessage.ID"/>
+            <unique-keys>
+                <unique-key name="MSOWAMessage_UK1">
+                    <unique-key-column>MESSAGE_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MSOWAMessage_UK2">
+                    <unique-key-column>EXTERNAL_MESSAGE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSOWAMessage_FK1" reference-table="MSOMessage"
+                             local-column="MESSAGE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MSOWABusinessAccount">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="EXTERNAL_BUSINESS_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXTERNAL_WABA_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TOKEN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SYNC_STATUS" data-type="SMALLINT" nullable="true" default-value="1"/>
+                <column name="LAST_SYNCED_TIME" data-type="DATETIME" nullable="true"/>
+            </columns>
+            <primary-key name="MSOWABusinessAccount_PK" column="ID" sequence-generator="MSOWABusinessAccount.ID"/>
+            <unique-keys>
+                <unique-key name="MSOWABusinessAccount_UK1">
+                    <unique-key-column>EXTERNAL_BUSINESS_ID</unique-key-column>
+                    <unique-key-column>EXTERNAL_WABA_ID</unique-key-column>
+                </unique-key>
+
+                <unique-key name="MSOWABusinessAccount_UK2">
+                    <unique-key-column>TOKEN_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+
+            <foreign-keys>
+                <foreign-key name="MSOWABusinessAccount_FK1" reference-table="MOARefreshableToken"
+                             local-column="TOKEN_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MSOWABusinessPhoneNumber">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="WA_BUSINESS_ACCOUNT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="DISPLAY_PHONE_NUMBER" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="EXTERNAL_PHONE_NUMBER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CHANNEL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_REGISTERED" data-type="BOOLEAN" default-value="false" nullable="false"/>
+                <column name="ENCODED_PIN" data-type="CHAR" nullable="true" max-length="250"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="true" default-value="false"/>
+            </columns>
+            <primary-key name="MSOWABusinessPhoneNumber_PK" column="ID" sequence-generator="MSOWABusinessPhoneNumber.ID"/>
+            <unique-keys>
+                <unique-key name="MSOWABusinessPhoneNumber_UK2">
+                    <unique-key-column>EXTERNAL_PHONE_NUMBER_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MSOWABusinessPhoneNumber_UK3">
+                    <unique-key-column>CHANNEL_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSOWABusinessPhoneNumber_FK1" reference-table="MSOWABusinessAccount"
+                             local-column="WA_BUSINESS_ACCOUNT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+
+                <foreign-key name="MSOWABusinessPhoneNumber_FK2" reference-table="MSOChannel"
+                             local-column="CHANNEL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MSOWARecipient">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="EXTERNAL_RECIPIENT_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MSOWARecipient_PK" column="ID" sequence-generator="MSOWARecipient.ID"/>
+            <unique-keys>
+                <unique-key name="MSOWARecipient_UK1">
+                    <unique-key-column>EXTERNAL_RECIPIENT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MSOWAPhoneRecipient">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="RECIPIENT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="WA_RECIPIENT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="BUSINESS_PHONE_NUMBER_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MSOWAPhoneRecipient_PK" column="ID" sequence-generator="MSOWAPhoneRecipient.ID"/>
+            <unique-keys>
+                <unique-key name="MSOWAPhoneRecipient_UK1">
+                    <unique-key-column>RECIPIENT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSOWAPhoneRecipient_FK1" reference-table="MSORecipient"
+                             local-column="RECIPIENT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MSOWAPhoneRecipient_FK2" reference-table="MSOWABusinessPhoneNumber"
+                             local-column="BUSINESS_PHONE_NUMBER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MSOWAPhoneRecipient_FK3" reference-table="MSOWARecipient"
+                             local-column="WA_RECIPIENT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MSOWATemplate">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="EXTERNAL_TEMPLATE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="WA_BUSINESS_ACCOUNT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="512"/>
+                <column name="PARAMETER_FORMAT" data-type="SMALLINT" nullable="false"/>
+                <column name="LANGUAGE" data-type="SMALLINT" nullable="false"/>
+                <column name="CATEGORY" data-type="SMALLINT" nullable="false"/>
+                <column name="SUB_CATEGORY" data-type="SMALLINT" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="CREATED_AT" data-type="BIGINT" nullable="false"/>
+                <column name="UPDATED_AT" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MSOWATemplate_PK" column="ID" sequence-generator="MSOWATemplate.ID"/>
+            <unique-keys>
+                <unique-key name="MSOWATemplate_UK1">
+                    <unique-key-column>EXTERNAL_TEMPLATE_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MSOWATemplate_UK2">
+                    <unique-key-column>WA_BUSINESS_ACCOUNT_ID</unique-key-column>
+                    <unique-key-column>NAME</unique-key-column>
+                    <unique-key-column>LANGUAGE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSOWATemplate_FK1" reference-table="MSOWABusinessAccount"
+                             local-column="WA_BUSINESS_ACCOUNT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MSOWATemplateComponent">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TEMPLATE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="CONTENT" data-type="TEXT" nullable="true"/>
+                <column name="HEADER_TYPE" data-type="SMALLINT" nullable="true"/>
+                <column name="BUTTON_TYPE" data-type="SMALLINT" nullable="true"/>
+                <column name="ADDITIONAL_DATA" data-type="TEXT" nullable="true"/>
+                <column name="HAS_PLACEHOLDER" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+            <primary-key name="MSOWATemplateComponent_PK" column="ID" sequence-generator="MSOWATemplateComponent.ID"/>
+            <unique-keys>
+                <unique-key name="MSOWATemplateComponent_UK1">
+                    <unique-key-column>TEMPLATE_ID</unique-key-column>
+                    <unique-key-column>HEADER_TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MSOWATemplateComponent_FK1" reference-table="MSOWATemplate"
+                             local-column="TEMPLATE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+    </module>
+</metadata>

@@ -1,0 +1,569 @@
+services:
+
+  # ─────────────────────────── Infrastructure ──────────────────────────────
+  postgres:
+    image: postgres:16
+    pull_policy: if_not_present
+    container_name: postgres-local
+    shm_size: 512mb
+    env_file:
+      - ./config/env/app.env
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d TLC"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1g
+
+  pgadmin:
+    image: dpage/pgadmin4
+    pull_policy: if_not_present
+    container_name: pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@twozo.io
+      PGADMIN_DEFAULT_PASSWORD: Twozo@123
+      PGADMIN_SERVER_JSON_FILE: /pgadmin4/servers.json
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./config/pgadmin/servers.json:/pgadmin4/servers.json:ro
+      - ./config/pgadmin/pgpass:/pgadmin4/pgpass:ro
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        cp /pgadmin4/pgpass /tmp/pgpass
+        chmod 0600 /tmp/pgpass
+        exec /entrypoint.sh
+    depends_on:
+      postgres:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512m
+
+  redis:
+    image: redis:7
+    pull_policy: if_not_present
+    container_name: redis-local
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass Twozo@123
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a Twozo@123 ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256m
+
+  hazelcast:
+    image: hazelcast/hazelcast:5.3.7-jdk17
+    pull_policy: if_not_present
+    container_name: hazelcast
+    ports:
+      - "5701:5701"
+    environment:
+      HAZELCAST_CONFIG: /opt/hazelcast/config/hazelcast.yml
+      HZ_NETWORK_RESTAPI_ENABLED: "true"
+    volumes:
+      - ./hazelcast.yml:/opt/hazelcast/config/hazelcast.yml
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:5701/hazelcast/health/ready || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512m
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    pull_policy: if_not_present
+    container_name: zookeeper-local
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+      ZOOKEEPER_4LW_COMMANDS_WHITELIST: srvr,ruok,stat,conf
+      ZOOKEEPER_AUTOPURGE_SNAP_RETAIN_COUNT: 3
+      ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL: 24
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper/data
+      - zookeeper_logs:/var/lib/zookeeper/log
+    healthcheck:
+      test: ["CMD-SHELL", "echo srvr | nc localhost 2181 | grep -q 'Mode:'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512m
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    pull_policy: if_not_present
+    container_name: kafka-local
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      # Zookeeper-based broker — KRaft vars removed to avoid conflict
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+      KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
+      KAFKA_TOOLS_LOG4J_LOGLEVEL: ERROR
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_LOG_SEGMENT_BYTES: 1073741824
+      KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: 300000
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_HEAP_OPTS: -Xms256M -Xmx512M
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-broker-api-versions --bootstrap-server localhost:9092 || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1g
+
+  kafka-connect:
+    profiles: ["connect"]
+    image: confluentinc/cp-kafka-connect:7.6.0
+    container_name: kafka-connect
+    depends_on:
+      kafka:
+        condition: service_started
+    ports:
+      - "8083:8083"   # host:container
+    volumes:
+      - /home/saravanan/Downloads/kafka-connect-plugins:/plugins
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: kafka:9092
+      CONNECT_GROUP_ID: connect-cluster
+      CONNECT_REST_PORT: 8083
+      CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
+      CONNECT_CONFIG_STORAGE_TOPIC: connect-configs
+      CONNECT_OFFSET_STORAGE_TOPIC: connect-offsets
+      CONNECT_STATUS_STORAGE_TOPIC: connect-status
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+      CONNECT_PLUGIN_PATH: /plugins
+
+  opensearch:
+    profiles: ["search"]
+    image: opensearchproject/opensearch:2.13.0
+    pull_policy: if_not_present
+    container_name: opensearch-local
+    environment:
+      node.name: opensearch
+      cluster.name: opensearch-docker-cluster
+      discovery.type: single-node
+      OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m -XX:+UseG1GC -XX:MaxGCPauseMillis=200
+      DISABLE_SECURITY_PLUGIN: "true"
+      bootstrap.memory_lock: "false"
+      plugins.security.ssl.transport.enabled: "false"
+      plugins.security.ssl.http.enabled: "false"
+      path.repo: /usr/share/opensearch/data/backup
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 262144
+        hard: 262144
+      nproc:
+        soft: 4096
+        hard: 4096
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9200/_cluster/health?wait_for_status=yellow || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1g
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    pull_policy: if_not_present
+    container_name: azurite
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+    volumes:
+      - azurite_data:/data
+    command: "azurite --skipApiVersionCheck --loose --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0"
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('net').createConnection(10000, 'localhost').on('connect', () => process.exit(0)).on('error', () => process.exit(1))\""]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512m
+
+  azurite-init:
+    image: mcr.microsoft.com/azure-storage/azurite
+    pull_policy: if_not_present
+    container_name: azurite-init
+    env_file:
+      - ./config/env/app.env
+    depends_on:
+      azurite:
+        condition: service_healthy
+    volumes:
+      - ./config/init-azurite-containers.sh:/init.sh:ro
+    entrypoint: ["/bin/sh", "/init.sh"]
+    restart: "no"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256m
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:26.8
+    pull_policy: if_not_present
+    container_name: clickhouse-local
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    environment:
+      - CLICKHOUSE_USER=clickhouse
+      - CLICKHOUSE_PASSWORD=root@123
+      - CLICKHOUSE_DB=olap
+    volumes:
+      - clickhouse_data_268_test:/var/lib/clickhouse
+    healthcheck:
+      test: ["CMD-SHELL", "wget -nv -t1 --spider http://localhost:8123/ping || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1g
+
+  # ────────────────────────── Application services ─────────────────────────
+
+  iam-server:
+    container_name: iam-server-local
+    image: accountId/iam-server:latest
+    pull_policy: never
+    ports:
+      - "8081:8080"
+      - "5006:5006"
+    env_file:
+      - ./config/env/app.env
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      zookeeper:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      azurite:
+        condition: service_healthy
+      azurite-init:
+        condition: service_completed_successfully
+      clickhouse:
+        condition: service_healthy
+    volumes:
+      - application_data:/opt/data
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -sf http://localhost:8080/api/iam/healthcheck || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1g
+
+  file-server:
+    container_name: file-server-local
+    image: accountId/file-server:latest
+    pull_policy: never
+    ports:
+      - "8084:8080"
+      - "5007:5007"
+    env_file:
+      - ./config/env/app.env
+    depends_on:
+      iam-server:
+        condition: service_healthy
+    volumes:
+      - application_data:/opt/data
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -sf http://localhost:8080/api/storage/healthcheck || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1g
+
+  email-server:
+    container_name: email-server-local
+    image: accountId/email-server:latest
+    pull_policy: never
+    ports:
+      - "8089:8080"
+      - "5008:5008"
+    env_file:
+      - ./config/env/app.env
+    depends_on:
+      file-server:
+        condition: service_healthy
+    volumes:
+      - application_data:/opt/data
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -sf http://localhost:8080/api/email-service/healthcheck || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1g
+
+  social:
+    container_name: social-local
+    image: accountId/social:latest
+    pull_policy: never
+    ports:
+      - "8085:8080"
+      - "5009:5009"
+    env_file:
+      - ./config/env/app.env
+    depends_on:
+      file-server:
+        condition: service_healthy
+    volumes:
+      - application_data:/opt/data
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:8080/api/social/healthcheck || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1g
+
+  crm-server:
+    container_name: crm-server-local
+    image: accountId/crm-server:latest
+    pull_policy: never
+    ports:
+      - "8181:8080"
+      - "5005:5005"
+    env_file:
+      - ./config/env/app.env
+    depends_on:
+      email-server:
+        condition: service_healthy
+      social:
+        condition: service_healthy
+    volumes:
+      - application_data:/opt/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/api/healthcheck || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 80s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2g
+
+  crm-client:
+    container_name: crm-client-local
+    image: accountId/crm-client:latest
+    pull_policy: never
+    ports:
+      - "8082:8080"
+    depends_on:
+      crm-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256m
+
+  # ──────────────────────────── Reverse proxy ──────────────────────────────
+
+  nginx:
+    image: nginx:stable-alpine
+    pull_policy: if_not_present
+    container_name: nginx-proxy
+    ports:
+      - "8080:80"
+    depends_on:
+      crm-client:
+        condition: service_healthy
+      crm-server:
+        condition: service_healthy
+      iam-server:
+        condition: service_healthy
+      file-server:
+        condition: service_healthy
+      email-server:
+        condition: service_healthy
+      social:
+        condition: service_healthy
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:80/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256m
+
+  # ──────────────────────────── Ngrok Tunnel ─────────────────────────────────
+  # Exposes the nginx proxy to the internet via a public ngrok URL.
+  # Only starts when the "tunnel" profile is active:
+  #   docker compose --profile tunnel up -d
+  #
+  # If NGROK_DOMAIN is set in app.env → uses a static/fixed URL
+  # If NGROK_DOMAIN is empty          → assigns a random URL each time
+  ngrok:
+    image: ngrok/ngrok:latest
+    pull_policy: if_not_present
+    container_name: ngrok-tunnel
+    profiles:
+      - tunnel
+    env_file:
+      - ./config/env/app.env
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        if [ -n "$$NGROK_DOMAIN" ]; then
+          echo "Starting ngrok with static domain: $$NGROK_DOMAIN"
+          exec ngrok http nginx:80 --url https://$$NGROK_DOMAIN --log stdout --log-level info
+        else
+          echo "Starting ngrok with random URL"
+          exec ngrok http nginx:80 --log stdout --log-level info
+        fi
+    depends_on:
+      nginx:
+        condition: service_healthy
+    ports:
+      - "4040:4040"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo -e 'GET /api/tunnels HTTP/1.1\\r\\nHost: localhost\\r\\n\\r\\n' > /dev/tcp/localhost/4040"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256m
+
+# ═══════════════════════════════════  VOLUMES  ════════════════════════════════
+volumes:
+  application_data:
+  postgres_data:
+  opensearch_data:
+  pgadmin_data:
+  azurite_data:
+  kafka_data:
+  zookeeper_data:
+  zookeeper_logs:
+  clickhouse_data_268_test:

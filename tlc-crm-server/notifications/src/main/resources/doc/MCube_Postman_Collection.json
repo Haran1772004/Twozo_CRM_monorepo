@@ -1,0 +1,1005 @@
+{
+	"info": {
+		"_postman_id": "mcube-marketplace-api-collection",
+		"name": "MCube Marketplace APIs",
+		"description": "Collection for testing MCube Telephony Marketplace APIs in CRM.\n## Setup Instructions\n1. Set the `baseUrl` variable to your CRM server URL\n2. Login to CRM in browser (cookies will be sent automatically)\n3. Set the `mcubeAppId` variable with your MCube marketplace app ID\n4. Set the `mcubeAuthToken` variable with your MCube auth token\n## Execution Order (Run Collection)\nThe folders are organized to run in the correct sequence:\n### 1. Setup\n- Install MCube App\n- Authenticate with MCube\n- Get Auth Data\n### 2. User Sync Operations\n- Get Users (Eligible for Sync)\n- Sync Users (Bulk)\n### 3. User Management\n- User List (view synced users)\n- Get User\n- Update User\n- Sync User (single)\n- Remove User\n### 4. Cleanup\n- Remove Auth Data\n- Uninstall MCube App\n### 5. Error Scenarios (Optional)\n- Test error handling cases",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://margert-dozier-carlton.ngrok-free.dev",
+			"type": "default",
+			"enabled": true,
+			"description": "CRM server base URL. Change to your server URL (e.g., https://your-domain.com or ngrok URL)"
+		},
+		{
+			"key": "mcubeAppId",
+			"value": "3",
+			"type": "default",
+			"enabled": true,
+			"description": "MCube marketplace app installation ID from CRM"
+		},
+		{
+			"key": "mcubeAuthToken",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUSEVfQ0xBSU0iLCJhdWQiOiJUSEVfQVVESUVOQ0UiLCJpYXQiOjE3NzE1OTM2NjIsImV4cF9kYXRhIjoxODAzMTI5NjYyLCJkYXRhIjp7ImJpZCI6IjgyOTkifX0.r1K95-HkHPAxzCfbI0S4PBGFML-eBnMIqMi5bFRnB5g",
+			"type": "secret",
+			"enabled": true,
+			"description": "MCube authentication token from MCube provider portal"
+		},
+		{
+			"key": "testUserId",
+			"value": "3",
+			"type": "default",
+			"enabled": true,
+			"description": "Test user ID for sync operations. Auto-updated by 'Get Users' test"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Setup",
+			"description": "Install and authenticate MCube app",
+			"item": [
+				{
+					"name": "1. Install MCube App",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Installation successful\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.eql(0);",
+									"    pm.expect(jsonData.type).to.eql(\"standalone\");",
+									"});",
+									"",
+									"pm.test(\"Response has message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"install\",\n    \"data\": {\n        \"id\": {{mcubeAppId}}\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Installs the MCube marketplace app for the organization."
+					},
+					"response": []
+				},
+				{
+					"name": "2. Authenticate with MCube",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Authentication successful\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"Response has success message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"authenticate\",\n        \"actionData\": {\n            \"authToken\": \"{{mcubeAuthToken}}\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Links MCube credentials using an authentication token."
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get Auth Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"Auth data or message exists\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var hasData = jsonData.data && jsonData.data.authToken;",
+									"    var hasMessage = jsonData.message !== undefined;",
+									"    pm.expect(hasData || hasMessage).to.be.true;",
+									"});",
+									"",
+									"// If auth data exists, verify structure",
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data) {",
+									"    pm.test(\"Auth data has webhookUrl\", function () {",
+									"        pm.expect(jsonData.data.webhookUrl).to.exist;",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"getAuthData\",\n        \"actionData\": {}\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Fetches stored MCube authentication metadata including authToken and webhookUrl."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. User Sync Operations",
+			"description": "Sync CRM users with MCube",
+			"item": [
+				{
+					"name": "4. Get Users (Eligible for Sync)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"Response has pagination info\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.totalRecords).to.exist;",
+									"    pm.expect(jsonData.hasMore).to.exist;",
+									"});",
+									"",
+									"pm.test(\"Response has users array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.users).to.be.an('array');",
+									"});",
+									"",
+									"// Save first user ID for subsequent tests",
+									"var jsonData = pm.response.json();",
+									"if (jsonData.users && jsonData.users.length > 0) {",
+									"    pm.collectionVariables.set(\"testUserId\", jsonData.users[0].id);",
+									"    console.log(\"Set testUserId to: \" + jsonData.users[0].id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"getUsers\",\n        \"actionData\": {\n            \"start\": 1,\n            \"limit\": 20\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Fetches eligible CRM users who are active, have phone numbers, and are not already synced to MCube."
+					},
+					"response": []
+				},
+				{
+					"name": "4a. Get Users (With Search Criteria)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"Response has users array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.users).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"getUsers\",\n        \"actionData\": {\n            \"start\": 1,\n            \"limit\": 10,\n            \"criteria\": {\n                \"type\": \"name\",\n                \"value\": \"test\"\n            }\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Fetches eligible CRM users with search criteria filter."
+					},
+					"response": []
+				},
+				{
+					"name": "5. Sync Users (Bulk)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    // Check for either success or already synced message",
+									"    var isSuccess = jsonData.code === 0;",
+									"    pm.expect(isSuccess).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Response has messages or message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var hasMessages = jsonData.messages !== undefined;",
+									"    var hasMessage = jsonData.message !== undefined;",
+									"    pm.expect(hasMessages || hasMessage).to.be.true;",
+									"});",
+									"",
+									"// Log the response for debugging",
+									"console.log(\"Sync Users Response: \" + JSON.stringify(pm.response.json()));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"syncUsers\",\n        \"actionData\": {\n            \"list\": [\n                {\n                    \"userId\": {{testUserId}}\n                }\n            ]\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Syncs multiple users that are not already linked to MCube. Users already synced are skipped."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. User Management",
+			"description": "Manage synced MCube users",
+			"item": [
+				{
+					"name": "6. User List (Synced Users)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"Response has pagination info\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.totalRecords).to.exist;",
+									"    pm.expect(jsonData.hasMore).to.exist;",
+									"});",
+									"",
+									"pm.test(\"Response has users array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.users).to.be.an('array');",
+									"});",
+									"",
+									"// Verify user structure if users exist",
+									"var jsonData = pm.response.json();",
+									"if (jsonData.users && jsonData.users.length > 0) {",
+									"    pm.test(\"User has required fields\", function () {",
+									"        var user = jsonData.users[0];",
+									"        pm.expect(user.user).to.exist;",
+									"        pm.expect(user.role).to.exist;",
+									"        pm.expect(user.syncStatus).to.exist;",
+									"    });",
+									"    ",
+									"    pm.test(\"Sync status is valid\", function () {",
+									"        var user = jsonData.users[0];",
+									"        pm.expect(['connected', 'failed']).to.include(user.syncStatus);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"userList\",\n        \"actionData\": {\n            \"start\": 1,\n            \"limit\": 20,\n            \"sort\": {\n                \"field\": \"user\",\n                \"type\": \"asc\"\n            }\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Returns paginated linked MCube users with sync status."
+					},
+					"response": []
+				},
+				{
+					"name": "6a. User List (Descending Sort)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"Response has users array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.users).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"userList\",\n        \"actionData\": {\n            \"start\": 1,\n            \"limit\": 10,\n            \"sort\": {\n                \"field\": \"user\",\n                \"type\": \"desc\"\n            }\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Returns paginated linked MCube users sorted in descending order."
+					},
+					"response": []
+				},
+				{
+					"name": "7. Get User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"Response has user or message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var hasUser = jsonData.user !== undefined;",
+									"    var hasMessage = jsonData.message !== undefined;",
+									"    pm.expect(hasUser || hasMessage).to.be.true;",
+									"});",
+									"",
+									"// Verify user structure if exists",
+									"var jsonData = pm.response.json();",
+									"if (jsonData.user) {",
+									"    pm.test(\"User has required fields\", function () {",
+									"        pm.expect(jsonData.user.id).to.exist;",
+									"        pm.expect(jsonData.user.name).to.exist;",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"getUser\",\n        \"actionData\": {\n            \"userId\": {{testUserId}}\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Fetches one linked MCube user by user ID."
+					},
+					"response": []
+				},
+				{
+					"name": "8. Update User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    // Can be success or user not found",
+									"    pm.expect(jsonData.code).to.exist;",
+									"});",
+									"",
+									"pm.test(\"Response has message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"updateUser\",\n        \"actionData\": {\n            \"userId": {{testUserId}}\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Updates MCube details for an already-linked user."
+					},
+					"response": []
+				},
+				{
+					"name": "9. Sync User (Single)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.exist;",
+									"});",
+									"",
+									"pm.test(\"Response has message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"syncUser\",\n        \"actionData\": {\n            \"userId": {{testUserId}}\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Creates/syncs one already-linked user with MCube."
+					},
+					"response": []
+				},
+				{
+					"name": "10. Remove User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"Response has message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"removeUser\",\n        \"actionData\": {\n            \"userId\": {{testUserId}}\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Removes one linked user from local mapping and MCube."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Cleanup",
+			"description": "Remove auth data and uninstall app",
+			"item": [
+				{
+					"name": "11. Remove Auth Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Remove auth data successful\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"Response has message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"removeAuthData\",\n        \"actionData\": {}\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Removes MCube auth configuration and disconnects all linked users."
+					},
+					"response": []
+				},
+				{
+					"name": "12. Uninstall MCube App",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Uninstallation successful\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"Response has message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"uninstall\",\n    \"data\": {\n        \"id\": {{mcubeAppId}}\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Uninstalls the MCube marketplace app and removes all linked users."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5. Error Scenarios",
+			"description": "Test error handling",
+			"item": [
+				{
+					"name": "Auth - Duplicate Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 400\", function () {",
+									"    pm.expect([200, 400]).to.include(pm.response.code);",
+									"});",
+									"",
+									"// This should fail if token is already linked",
+									"pm.test(\"Response indicates error or success\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"authenticate\",\n        \"actionData\": {\n            \"authToken\": \"{{mcubeAuthToken}}\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Test authentication with an already-linked token. Should return APP_ID_ALREADY_LINKED error."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User - Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has not found message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"getUser\",\n        \"actionData\": {\n            \"userId\": 999999999\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Test getting a user that doesn't exist."
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Action",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response received\", function () {",
+									"    pm.expect(pm.response.code).to.exist;",
+									"});",
+									"",
+									"// Invalid action should not crash the server",
+									"pm.test(\"Server handled invalid action\", function () {",
+									"    pm.expect([200, 400, 500]).to.include(pm.response.code);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"executeAction\",\n    \"data\": {\n        \"id\": {{mcubeAppId}},\n        \"action\": \"invalidAction\",\n        \"actionData\": {}\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/marketplace/mgmt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"marketplace",
+								"mgmt"
+							]
+						},
+						"description": "Test with an invalid action name."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

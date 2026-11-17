@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8" />
+   <title>DNS Records Setup</title>
+</head>
+<body>
+   #set($model = $template.get("model"))
+   #set($dnsRecords = $model.getDnsRecords())
+   <div data-info-group="subject" style="display: none">
+      Add DNS records for $model.getDomainName()
+   </div>
+
+   <div style="margin: 0 auto; background: #fafafa; padding: 5% 10%">
+      <div
+         style="
+         background: white;
+         border-radius: 8px;
+         border: 1px rgba(0, 0, 0, 0.1) solid;
+         overflow: auto;
+         padding: 40px;
+         "
+      >
+         <!-- Logo -->
+         <div>
+            <img
+               width="140px"
+               height="auto"
+               src="https://twozo.io/_next/image?url=%2Fimages%2Flogo%2Ftwozo-full-logo.png&w=256&q=75"
+               alt="twozo"
+            />
+         </div>
+
+         <!-- Content -->
+         <div style="padding-top: 32px">
+            <p
+               style="
+               margin: 0px;
+               font-size: 18px;
+               font-weight: 700;
+               font-family: Verdana, Geneva, Tahoma, sans-serif;
+               "
+            >
+               Hi There,
+            </p>
+
+            <p
+               style="
+               margin: 0px;
+               padding-top: 16px;
+               font-size: 14px;
+               font-weight: 400;
+               font-family: Verdana, Geneva, Tahoma, sans-serif;
+               color: rgba(0, 0, 0, 0.8);
+               "
+            >
+               To start using your domain
+               <strong>$model.getDomainName()</strong>
+               for sending emails via Twozo, please add the following DNS records in your DNS manager.
+            </p>
+
+            <!-- DNS Table -->
+            <div style="padding-top: 24px">
+               <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="
+                  border-collapse: collapse;
+                  font-family: Verdana, Geneva, Tahoma, sans-serif;
+                  font-size: 13px;
+                  "
+               >
+                  <thead>
+                     <tr style="background: #f5f7f9">
+                        <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Type</th>
+                        <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Host</th>
+                        <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Value</th>
+                        <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Status</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     #foreach($record in $dnsRecords)
+                     <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                           $record.getRecordType()
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd; color: #2ea871;">
+                           $record.getHost()
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd; color: #2ea871; word-break: break-all;">
+                           $record.getValue()
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                           #if($record.getStatus() == "VERIFIED")
+                              <span style="color: #2ea871; font-weight: 600;">verified</span>
+                           #else
+                              <span style="color: #e67e22; font-weight: 600;">pending</span>
+                           #end
+                        </td>
+                     </tr>
+                     #end
+                  </tbody>
+               </table>
+            </div>
+
+            <p
+               style="
+               margin: 0px;
+               padding-top: 16px;
+               font-size: 12px;
+               font-family: Verdana, Geneva, Tahoma, sans-serif;
+               color: rgba(0, 0, 0, 0.6);
+               "
+            >
+               Verification may take 24–48 hours. We will notify you once the domain is successfully verified.
+            </p>
+
+            <!-- Footer -->
+            <div style="padding-top: 40px">
+               <p style="margin: 0px; font-size: 14px; font-family: Verdana, Geneva, Tahoma, sans-serif;">
+                  Cheers,
+               </p>
+               <p style="margin: 0px; font-size: 14px; font-weight: 600; font-family: Verdana, Geneva, Tahoma, sans-serif;">
+                  Team Twozo
+               </p>
+            </div>
+         </div>
+      </div>
+
+      <!-- Bottom Footer -->
+      <div style="padding-top: 16px; text-align: center">
+         <p
+            style="
+            margin: 0px;
+            font-size: 10px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgba(0, 0, 0, 0.6);
+            "
+         >
+            Twozo Inc.
+         </p>
+      </div>
+   </div>
+</body>
+</html>

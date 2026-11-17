@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_exchange_rate">
+
+        <table name="MERCurrencyExchangeRate">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="BASE_CURRENCY_ID" data-type="SMALLINT" nullable="false"/>
+                <column name="EXCHANGE_RATES" data-type="TEXT" nullable="false" max-length="6000"/>
+                <column name="CREATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="MODIFIED_TIME" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MERCurrencyExchangeRate_PK" column="ID" sequence-generator="MERCurrencyExchangeRate.ID"/>
+            <unique-keys>
+                <unique-key name="MERCurrencyExchangeRate_UK1">
+                    <unique-key-column>BASE_CURRENCY_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+
+</metadata>

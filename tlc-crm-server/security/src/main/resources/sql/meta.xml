@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="tlc_crm_user_and_role">
+
+        <table name="OMCRMUser" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="IAM_USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="520"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="HAS_PENDING_NOTIFICATION" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="PENDING_NOTIFICATION_COUNT" data-type="INTEGER" nullable="true" default-value="0"/>
+            </columns>
+            <primary-key name="OMCRMUser_PK" column="ID" sequence-generator="OMCRMUser.ID"/>
+            <unique-keys>
+                <unique-key name="OMCRMUser_UK1">
+                    <unique-key-column>IAM_USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMCRMUser_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <index-keys>
+                <index-key-column>IAM_USER_ID</index-key-column>
+            </index-keys>
+        </table>
+
+        <table name="OMCRMRole" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="CHAR" max-length="255" nullable="false"/>
+                <column name="DEFAULT_SCOPE" data-type="SMALLINT" nullable="false"/>
+                <column name="CREATED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="CREATED_BY" data-type="BIGINT" nullable="true"/>
+                <column name="UPDATED_BY" data-type="BIGINT" nullable="true"/>
+                <column name="CONFIG" data-type="TEXT" nullable="false" max-length="255"/>
+                <column name="PERMISSIONS" data-type="TEXT" nullable="false" max-length="50000"/>
+            </columns>
+            <primary-key name="OMCRMRole_PK" column="ID" sequence-generator="OMCRMRole.ID"/>
+            <unique-keys>
+                <unique-key name="OMCRMRole_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                    <unique-key-column>ORG_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMCRMRole_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMCRMRole_FK2" reference-table="OMCRMUser" local-column="CREATED_BY"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMCRMRole_FK3" reference-table="OMCRMUser" local-column="UPDATED_BY"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+        </table>
+
+    </module>
+
+    <module name="tlc_crm_permission_set">
+
+        <table name="IAMPCategory">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+            </columns>
+            <primary-key name="IAMPCategory_PK" column="ID" sequence-generator="IAMPCategory.ID"/>
+            <unique-keys>
+                <unique-key name="IAMPCategory_UK">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="IAMPSubCategory">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="DISPLAY_NAME" data-type="KCHAR" nullable="false" max-length="150"/>
+                <column name="CATEGORY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="REQUISITES" data-type="TEXT" nullable="true" max-length="1000"/>
+            </columns>
+            <primary-key name="IAMPSubCategory_PK" column="ID" sequence-generator="IAMPSubCategory.ID"/>
+            <foreign-keys>
+                <foreign-key name="IAMPSubCategory_FK" reference-table="IAMPCategory" local-column="CATEGORY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="IAMPSubCategory_UK">
+                    <unique-key-column>CATEGORY_ID</unique-key-column>
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="IAMPAction">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="DISPLAY_NAME" data-type="KCHAR" nullable="false" max-length="150"/>
+                <column name="REQUISITES" data-type="TEXT" nullable="true" max-length="1000"/>
+                <column name="IS_PRIVATE" data-type="BOOLEAN" nullable="true" default-value="false"/>
+            </columns>
+            <primary-key name="IAMPAction_PK" column="ID" sequence-generator="IAMPAction.ID"/>
+            <unique-keys>
+                <unique-key name="IAMPAction_UK">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="IAMPSubCategoryAction">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ACTION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SUB_CATEGORY_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="IAMPSubCategoryAction_PK" column="ID" sequence-generator="IAMPSubCategoryAction.ID"/>
+            <foreign-keys>
+                <foreign-key name="IAMPSubCategoryAction_FK1" reference-table="IAMPSubCategory"
+                             local-column="SUB_CATEGORY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="IAMPSubCategoryAction_FK2" reference-table="IAMPAction" local-column="ACTION_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="IAMPSubCategoryAction_UK">
+                    <unique-key-column>SUB_CATEGORY_ID</unique-key-column>
+                    <unique-key-column>ACTION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="IAMPActionDependency">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="SUBCATEGORY_ACTION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="DEPENDENT_SUBCATEGORY_ACTION_ID" data-type="BIGINT" nullable="true"/>
+                <column name="REQUISITES" data-type="TEXT" nullable="true" max-length="1000"/>
+            </columns>
+            <primary-key name="IAMPActionDependency_PK" column="ID" sequence-generator="IAMPActionDependency.ID"/>
+            <foreign-keys>
+                <foreign-key name="IAMPActionDependency_FK1" reference-table="IAMPSubCategoryAction"
+                             local-column="SUBCATEGORY_ACTION_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="IAMPActionDependency_FK2" reference-table="IAMPSubCategoryAction"
+                             local-column="DEPENDENT_SUBCATEGORY_ACTION_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="IAMPActionDependency_UK">
+                    <unique-key-column>SUBCATEGORY_ACTION_ID</unique-key-column>
+                    <unique-key-column>DEPENDENT_SUBCATEGORY_ACTION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MIAMPTable">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TABLE_NAME" data-type="CHAR" max-length="50" nullable="false"/>
+                <column name="CONFIG" data-type="TEXT" nullable="true"/>
+                <column name="IS_SECURE" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+            <primary-key name="MIAMPTable_PK" column="ID" sequence-generator="MIAMPTable.ID"/>
+            <unique-keys>
+                <unique-key name="MIAMPTable_UK1">
+                    <unique-key-column>TABLE_NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MIAMPRelatedTable">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TABLE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="RELATED_TABLE_ID" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="MIAMPRelatedTable_PK" column="ID" sequence-generator="MIAMPRelatedTable.ID"/>
+            <foreign-keys>
+                <foreign-key name="MIAMPRelatedTable_FK1" reference-table="MIAMPTable" local-column="TABLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MIAMPRelatedTable_FK2" reference-table="MIAMPTable" local-column="RELATED_TABLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MIAMPRelatedTable_UK1">
+                    <unique-key-column>TABLE_ID</unique-key-column>
+                    <unique-key-column>RELATED_TABLE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MIAMPTableSubCategoryAction">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TABLE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SUBCATEGORY_ACTION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_PRIMARY" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+            <primary-key name="MIAMPTableSubCategoryAction_PK" column="ID"
+                         sequence-generator="MIAMPTableSubCategoryAction.ID"/>
+            <foreign-keys>
+                <foreign-key name="MIAMPTableSubCategoryAction_FK1" reference-table="IAMPSubCategoryAction"
+                             local-column="SUBCATEGORY_ACTION_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MIAMPTableSubCategoryAction_FK2" reference-table="MIAMPTable" local-column="TABLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MIAMPTableSubCategoryAction_UK1">
+                    <unique-key-column>TABLE_ID</unique-key-column>
+                    <unique-key-column>SUBCATEGORY_ACTION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MIAMPColumn">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TABLE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="CHAR" max-length="50" nullable="false"/>
+                <column name="CONFIG" data-type="TEXT" nullable="true"/>
+                <column name="IS_SECURE" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+            <primary-key name="MIAMPColumn_PK" column="ID" sequence-generator="MIAMPColumn.ID"/>
+            <foreign-keys>
+                <foreign-key name="MIAMPColumn_FK1" reference-table="MIAMPTable" local-column="TABLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MIAMPColumn_UK">
+                    <unique-key-column>TABLE_ID</unique-key-column>
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OIAMPActionLimitDetails" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ACTION_TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="REMAINING_COUNT" data-type="BIGINT" nullable="true"/>
+                <column name="CURRENTLY_USED_COUNT" data-type="BIGINT" nullable="false"/>
+                <column name="EXPIRATION_TIME" data-type="DATETIME" nullable="false"/>
+            </columns>
+            <primary-key name="OIAMPActionLimitDetails_PK" column="ID" sequence-generator="OIAMPActionLimitDetails.ID"/>
+            <foreign-keys>
+                <foreign-key name="OIAMPActionLimitDetails_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OIAMPActionLimitDetails_FK2" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OIAMPActionLimitDetails_UK">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>ACTION_TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+    </module>
+
+    <module name="field_permissions">
+
+        <table name="OIAMPFieldPermissions" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ROLE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_PERMISSION_CONFIG" data-type="CHAR" nullable="false" max-length="86000"/>
+            </columns>
+            <primary-key name="OIAMPFieldPermissions_PK" column="ID" sequence-generator="OIAMPFieldPermissions.ID"/>
+            <unique-keys>
+                <unique-key name="OIAMPFieldPermissions_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>ROLE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OIAMPFieldPermissions_Org_Id" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OIAMPFieldPermissions_Role_Id" reference-table="OMCRMRole" local-column="ROLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MIAMPApiDataExtractionRules">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="API_PATH" data-type="CHAR" nullable="false" max-length="150"/>
+                <column name="API_TYPE" data-type="CHAR" nullable="false" max-length="50"/>
+                <column name="RULES" data-type="TEXT" nullable="false"/>
+            </columns>
+            <primary-key name="MIAMPApiDataExtractionRules_PK" column="ID" sequence-generator="MIAMPApiDataExtractionRules.ID"/>
+            <unique-keys>
+                <unique-key name="MIAMPApiDataExtractionRules_UK1">
+                    <unique-key-column>API_PATH</unique-key-column>
+                    <unique-key-column>API_TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+    </module>
+</metadata>

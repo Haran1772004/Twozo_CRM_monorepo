@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.tlc</groupId>
+        <artifactId>tlc-parent</artifactId>
+        <version>2.0.17-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>components</artifactId>
+    <version>6.47.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <tlc.features.version>6.1.0-SNAPSHOT</tlc.features.version>
+        <tlc.commons.version>5.35.0-SNAPSHOT</tlc.commons.version>
+        <tlc.validator.version>5.8.0-SNAPSHOT</tlc.validator.version>
+        <tlc.cache.version>5.6.0-SNAPSHOT</tlc.cache.version>
+        <tlc.i18n.version>5.3.0-SNAPSHOT</tlc.i18n.version>
+        <tlc.web.version>5.17.0-SNAPSHOT</tlc.web.version>
+        <tlc.web.client.version>5.4.0-SNAPSHOT</tlc.web.client.version>
+        <tlc.sql.common.version>5.24.0-SNAPSHOT</tlc.sql.common.version>
+        <tlc.sql.oltp.version>1.1.0-SNAPSHOT</tlc.sql.oltp.version>
+        <tlc.tools.version>5.6.0-SNAPSHOT</tlc.tools.version>
+        <tlc.queue.version>5.9.0-SNAPSHOT</tlc.queue.version>
+        <tlc.notification.version>5.25.0-SNAPSHOT</tlc.notification.version>
+        <tlc.attachment.version>5.12.0-SNAPSHOT</tlc.attachment.version>
+        <tlc.scheduler.version>5.4.0-SNAPSHOT</tlc.scheduler.version>
+        <tlc.cluster.version>5.2.0-SNAPSHOT</tlc.cluster.version>
+        <tlc.search.version>5.12.0-SNAPSHOT</tlc.search.version>
+        <tlc.exchange.rate.version>2.2.0-SNAPSHOT</tlc.exchange.rate.version>
+        <tlc.l10n.version>2.14.0-SNAPSHOT</tlc.l10n.version>
+        <tlc.entity.version>1.4.0-SNAPSHOT</tlc.entity.version>
+        <tlc.sync.service.oauth.version>1.10.0-SNAPSHOT</tlc.sync.service.oauth.version>
+        <tlc.otp.processor.version>1.1.0-SNAPSHOT</tlc.otp.processor.version>
+        <tlc.payment.gateway.version>1.4.0-SNAPSHOT</tlc.payment.gateway.version>
+        <tlc.identity.provider.version>1.2.0-SNAPSHOT</tlc.identity.provider.version>
+        <tlc.cdc.core.version>1.2.0-SNAPSHOT</tlc.cdc.core.version>
+        <tlc.mcp.version>1.2.0-SNAPSHOT</tlc.mcp.version>
+    </properties>
+
+    <modules>
+        <module>commons</module>
+        <module>scheduler</module>
+        <module>cluster</module>
+        <module>cache</module>
+        <module>queue</module>
+        <module>i18n</module>
+        <module>sql</module>
+        <module>web</module>
+        <module>validator</module>
+        <module>features</module>
+        <module>tools</module>
+        <module>attachment</module>
+        <module>notification</module>
+        <module>webclient</module>
+        <module>search</module>
+        <module>exchange-rate</module>
+        <module>l10n</module>
+        <module>entity</module>
+        <module>sync-service-oauth</module>
+        <module>observability</module>
+        <module>otp-processor</module>
+        <module>plans-and-billings</module>
+        <module>payment-gateway</module>
+        <module>marketplace</module>
+        <module>identity-provider</module>
+        <module>cdc-core</module>
+        <module>mcp</module>
+    </modules>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi.core</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>commons</artifactId>
+                <version>${tlc.commons.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>validator</artifactId>
+                <version>${tlc.validator.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>attachment</artifactId>
+                <version>${tlc.attachment.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>cache</artifactId>
+                <version>${tlc.cache.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>exchange-rate</artifactId>
+                <version>${tlc.exchange.rate.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>i18n</artifactId>
+                <version>${tlc.i18n.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>l10n</artifactId>
+                <version>${tlc.l10n.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>queue</artifactId>
+                <version>${tlc.queue.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>scheduler</artifactId>
+                <version>${tlc.scheduler.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>sql-common</artifactId>
+                <version>${tlc.sql.common.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>oltp</artifactId>
+                <version>${tlc.sql.oltp.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>web</artifactId>
+                <version>${tlc.web.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>webclient</artifactId>
+                <version>${tlc.web.client.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.18.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.json</groupId>
+                <artifactId>jakarta.json-api</artifactId>
+                <version>2.1.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>1.7</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-tools</artifactId>
+                <version>2.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>apache-client</artifactId>
+                <version>2.27.21</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.microsoft.azure</groupId>
+                <artifactId>msal4j</artifactId>
+                <version>1.23.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.microsoft.graph</groupId>
+                <artifactId>microsoft-graph</artifactId>
+                <version>5.42.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>entity</artifactId>
+                <version>${tlc.entity.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>cdc-core</artifactId>
+                <version>${tlc.cdc.core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>mcp</artifactId>
+                <version>${tlc.mcp.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <scm>
+        <url>https://github.com/thelaunchclub/tlc-components.git</url>
+        <connection>scm:git:https://github.com/thelaunchclub/tlc-components.git</connection>
+        <developerConnection>scm:git:https://github.com/thelaunchclub/tlc-components.git</developerConnection>
+        <tag>v4.1.4</tag>
+    </scm>
+
+   <repositories>
+       <repository>
+           <id>twozo-mvn-artifactory</id>
+           <url>https://pkgs.dev.azure.com/twozo/TwozoCRM/_packaging/twozo-mvn-artifactory/maven/v1</url>
+           <releases>
+               <enabled>true</enabled>
+           </releases>
+           <snapshots>
+               <enabled>true</enabled>
+           </snapshots>
+       </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>tlc.commons.mvn.builder.release</id>
+            <url>https://pkgs.dev.azure.com/twozo/TwozoCRM/_packaging/twozo-mvn-artifactory/maven/v1</url>
+        </repository>
+        <snapshotRepository>
+            <id>tlc.commons.builder.snapshot</id>
+            <url>https://pkgs.dev.azure.com/twozo/TwozoCRM/_packaging/twozo-mvn-artifactory/maven/v1</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <targetPath>resources</targetPath>
+            </resource>
+        </resources>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.karaf.tooling</groupId>
+                    <artifactId>karaf-maven-plugin</artifactId>
+                    <version>4.4.3</version>
+                    <configuration>
+                        <includeTransitiveDependency>true</includeTransitiveDependency>
+                        <markTransitiveAsDependency>true</markTransitiveAsDependency>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>features-generate-descriptor</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.17.1</version>
+                <configuration>
+                    <generateBackupPoms>false</generateBackupPoms>
+                    <processAllModules>true</processAllModules>
+                    <processDependencies>true</processDependencies>
+                    <processParent>true</processParent>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

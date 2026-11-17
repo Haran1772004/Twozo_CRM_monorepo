@@ -1,0 +1,95 @@
+package com.tlc.crm.notifications.internal.status;
+
+import com.tlc.commons.code.ErrorCodeGroup;
+import com.tlc.commons.code.ErrorCodeProvider;
+
+/**
+ * <p>
+ * Represents error codes related to notification
+ * </p>
+ *
+ * @author Venkatesh Nambiyar
+ * @version 1.0
+ */
+public enum NotificationErrorCodes implements ErrorCodeProvider {
+
+    INVALID_REMINDER_TYPE(0x01),
+    INVALID_REMINDER_TIME(0X02),
+    INVALID_EMAIL_ALERT_CONFIG(0x03),
+    INVALID_SUMMARY_CONFIG(0x04),
+    INVALID_REMINDER_CONFIG(0x05),
+    INVALID_ASSIGNMENT_CONFIG(0x06),
+    INVALID_TRACKING_CONFIG(0x07),
+    NOTIFICATION_NOT_FOUND(0x08),
+    NOTIFICATION_STATE_NOT_FOUND(0x09),
+    INVALID_NOTIFICATION_TYPE(0x10),
+    STATE_MODIFICATION_FAILED(0X11),
+    STATE_IS_TURNED_OFF(0x12),
+    FAILED_TO_REGISTER_ACTIONS(0x13),
+    PHONE_NUMBER_PURCHASE_FAILED(0x14),
+    PHONE_NUMBER_UPDATE_FAILED(0x15),
+    PHONE_NUMBER_DELETE_FAILED(0x16),
+    PHONE_NUMBER_NOT_FOUND(0x17),
+    INVALID_RECORD_TYPE(0x18),
+    FAILED_TO_STORE_PURCHASED_NUMBER(0x19),
+    FAILED_TO_UPDATE_NUMBER(0x20),
+    FAILED_TO_DELETE_NUMBER(0x21),
+    NOTIFICATION_SETTINGS_RESET_FAILED(0x22),
+    NOTIFICATION_SETTINGS_UPDATE_FAILED(0x23),
+    INVALID_CALL_STATUS(0x24),
+    CALL_DETAILS_NOT_FOUND(0x25),
+    INVALID_FILTER_FIELD(0x26),
+    CALL_NOTE_CREATE_ACTION_FAILED(0x27),
+    CONTACT_CREATE_ACTION_FAILED(0X28),
+    CALL_LOG_CREATE_FAILED(0x29),
+    AUTHENTICATION_FAILED(0x30),
+    UNSUPPORTED_OPERATION(0x31),
+    INVALID_USER_SYNC_STATUS(0x32),
+    INVALID_FIELD(0x33),
+    USER_SYNC_ACTION_FAILED(0x34),
+    USER_RETRIEVAL_ACTION_FAILED(0x35),
+    USERS_SYNC_ACTION_FAILED(0x36),
+    INVALID_ALERT_TYPE(0x37),
+    INVALID_SEVERITY_TYPE(0x38),
+    APP_ID_ALREADY_LINKED(0x39),
+    ALERT_NOT_FOUND(0x40),
+    INVALID_CALLING_SERVICE(0x41),
+    INVALID_CALLING_METHOD(0x42),
+    FAILED_TO_UPDATE_PHONE_SETTINGS(0x43),
+    COULD_NOT_BUY_NUMBER(0x45),
+    CALL_HISTORY_CREATE_FAILED(0x46),
+    CALL_HISTORY_UPDATE_FAILED(0x47),
+    USER_DATA_VALIDATION_FAILED(0x48),
+    AUTH_TOKEN_ALREADY_LINKED(0x49),
+    CALL_NOTE_UPDATE_ACTION_FAILED(0x50),
+    USER_ALREADY_SYNCED(0x51),
+    TELEPHONY_PROVIDER_ALREADY_INSTALLED(0x52),
+    USER_DATA_MISMATCH(0x53),
+    USER_PHONE_MISMATCH(0x54),
+    USER_PHONE_EMAIL_MISMATCH(0x55),
+    USER_REMOVE_ACTION_FAILED(0x56),
+    INVALID_AGENT_ID(0x57),
+    EXISTING_USER_SYNC_ACTION_FAILED(0x58),
+    AUTH_TOKEN_REMOVAL_FAILED(0x59),
+    ;
+
+    private final int code;
+
+    NotificationErrorCodes(final int localCode) {
+        this.code = NotificationErrorCodeGroup.GROUP.getConvertedCode(localCode);
+    }
+
+    @Override
+    public int getCode() {
+        return code;
+    }
+
+    private static class NotificationErrorCodeGroup implements ErrorCodeGroup {
+        private static final ErrorCodeGroup GROUP = new NotificationErrorCodes.NotificationErrorCodeGroup();
+
+        @Override
+        public int getPrefix() {
+            return 0x21_0_0001;
+        }
+    }
+}

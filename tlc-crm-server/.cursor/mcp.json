@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "mcpServers": {
+    "tlc-crm123": {
+      "type": "http",
+      "url": "https://crm-dev.twozo.live/rest/api/mcp",
+      "headers": {
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_1VPywrCMBD8l5xLaaqpjSfBkwdBRD8gbUNdbRJJNtYH_rsbUKiXZZiZnZ19sU7foNVsyY72Yt1oWcZarxXq7gCGeL6oF7yUZVVIWWcMOrIKMZNzMsag_YYIwTPmwl-G8_1PabwbyUjyzgU0yu6jxZRNaSFtgUXtrRryoNvoAR85ju7pckhBKqaL6_2WcIgNYTypQYFJo6iELPiqNwqGvHWGPGeESUNQOHmByuj79UuIuqj4-wMyfr_FAQEAAA.YGlyQGdQ2eFFeJPRBtnTE_NMR1d5KrDbDLPBYM861HU" 
+      }
+    }
+  }
+  }
+}

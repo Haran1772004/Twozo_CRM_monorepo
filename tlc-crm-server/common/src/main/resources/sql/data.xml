@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dumpdata>
+
+    <module name="twozo_app_details">
+
+        <TZApplication ID="TZApplication:ID:AM:1" NAME="CRM">
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:1"
+                                  NAME="CONTACT"
+                                  BASE_PATH="/contact/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:2"
+                                  NAME="COMPANY"
+                                  BASE_PATH="/company/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:3"
+                                  NAME="DEAL"
+                                  BASE_PATH="/deal/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:4"
+                                  NAME="PRODUCT"
+                                  BASE_PATH="/product/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:5"
+                                  NAME="ACTIVITY"
+                                  BASE_PATH="/activity/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:6"
+                                  NAME="WEBFORM"
+                                  BASE_PATH="/webform/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:7"
+                                  NAME="WORKFLOW"
+                                  BASE_PATH="/workflow/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:8"
+                                  NAME="DATA_IMPORT"
+                                  BASE_PATH="/import/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:9"
+                                  NAME="DATA_EXPORT"
+                                  BASE_PATH="/export/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:10"
+                                  NAME="EMAIL"
+                                  BASE_PATH="/email/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:11"
+                                  NAME="VOICE_CALL"
+                                  BASE_PATH="/call/voice/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:12"
+                                  NAME="ANALYTICS"
+                                  BASE_PATH="/analytics/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:13"
+                                  NAME="CONTACT_SYNC"
+                                  BASE_PATH="/sync/contact/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:14"
+                                  NAME="CALENDAR_SYNC"
+                                  BASE_PATH="/sync/calendar/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:15"
+                                  NAME="SETTINGS"
+                                  BASE_PATH="/settings/"/>
+
+            <TZApplicationModules ID="TZApplicationModules:ID:AM:16"
+                                  NAME="PERMISSION_SETS"
+                                  BASE_PATH="/permission/"/>
+        </TZApplication>
+    </module>
+
+    <module name="module_otp">
+        <MOTPApplication ID="MOTPApplication:ID:CO:1" NAME="crm"/>
+        <MOTPCategory ID="MOTPCategory:ID:CO:1" NAME ="accountVerification" APPLICATION_ID="MOTPApplication:ID:CO:1" CONFIG="{&quot;resendDuration&quot; : &quot;30&quot;,&quot;maxAllowedAttempts&quot; : 30, &quot;lockoutDurationAfterMaxAttempts&quot; : &quot;60&quot;}"/>
+    </module>
+
+</dumpdata>

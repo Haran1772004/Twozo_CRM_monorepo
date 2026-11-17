@@ -1,0 +1,765 @@
+<metadata>
+
+    <module name="module_notifications">
+
+                            <!-- Address SQL Meta -->
+
+        <table name="OMEMAddress" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EMAIL_ADDRESS" data-type="CHAR" nullable="false" max-length="320"/>
+                <column name="HAS_UNSUBSCRIBED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+            <primary-key name="OMEMAddress_PK" column="ID" sequence-generator="OMEMAddress.ID"/>
+            <indexes>
+                <index name="OMEMAddress_Idx1">
+                    <index-column>EMAIL_ADDRESS</index-column>
+                </index>
+            </indexes>
+            <unique-keys>
+                <unique-key name="OMEMAddress_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>EMAIL_ADDRESS</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMAddress_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMEMFromAddress" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="IS_ACTIVE" data-type="BOOLEAN" nullable="false" default-value="true"/>
+            </columns>
+            <primary-key name="OMEMFromAddress_PK" column="ID" sequence-generator="OMEMFromAddress.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMFromAddress_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                    <unique-key-column>TYPE</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMFromAddress_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMFromAddress_FK2" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMFromAddress_FK3" reference-table="OMEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMParentBccAddress">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="EMAIL_ADDRESS" data-type="CHAR" nullable="false" max-length="320"/>
+            </columns>
+            <primary-key name="MEMParentBccAddress_PK" column="ID" sequence-generator="MEMParentBccAddress.ID"/>
+            <unique-keys>
+                <unique-key name="MEMParentBccAddress_UK1">
+                    <unique-key-column>EMAIL_ADDRESS</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMEMBlockedAddress" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EMAIL_ADDRESS" data-type="CHAR" nullable="false" max-length="320"/>
+            </columns>
+            <primary-key name="OMEMBlockedAddress_PK" column="ID" sequence-generator="OMEMBlockedAddress.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMBlockedAddress_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>EMAIL_ADDRESS</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMBlockedAddress_FK1" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMBlockedAddress_FK2" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMEMUserRecipients" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMEMUserRecipients_PK" column="ID" sequence-generator="OMEMUserRecipients.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMEMUserRecipients_FK1" reference-table="OMEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMUserRecipients_FK2" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMEMUserRecipients_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+                                  <!-- Email Sync SQL Meta -->
+
+        <table name="OMEMSyncedEmail" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_SYNC_ENABLED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="CONNECTION_STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="SYNC_SETTING_CONFIG" data-type="TEXT" nullable="false" max-length="200"/>
+                <column name="SYNC_DATE_CONFIG" data-type="TEXT" nullable="true" max-length="200"/>
+                <column name="IN_PROGRESS_SETTING_CONFIG" data-type="TEXT" nullable="true" max-length="200"/>
+                <column name="LAST_SYNC_TIME" data-type="BIGINT" nullable="true"/>
+                <column name="SYNC_STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="PROVIDER" data-type="SMALLINT" nullable="true"/>
+                <column name="IS_DEFAULT" data-type="BOOLEAN" nullable="true" default-value="false"/>
+            </columns>
+            <primary-key name="OMEMSyncedEmail_PK" column="ID" sequence-generator="OMEMSyncedEmail.ID"/>
+            <indexes>
+                <index name="OMEMSyncedEmail_Idx1">
+                    <index-column>CONNECTION_STATUS</index-column>
+                </index>
+            </indexes>
+            <unique-keys>
+                <unique-key name="OMEMSyncedEmail_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMSyncedEmail_FK1" reference-table="OMEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMSyncedEmail_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMSyncedEmail_FK3" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMEMThread" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="SUBJECT" data-type="TEXT" nullable="true" max-length="998"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="HAS_ACTIVE_MESSAGES" data-type="BOOLEAN" default-value="true"/>
+                <column name="HAS_ATTACHMENTS" data-type="BOOLEAN" default-value="false"/>
+                <column name="HAS_DRAFTS" data-type="BOOLEAN" default-value="false"/>
+                <column name="HAS_UNREAD_MESSAGES" data-type="BOOLEAN" default-value="false"/>
+                <column name="IS_ARCHIVED" data-type="BOOLEAN" default-value="false"/>
+                <column name="HAS_AWAITING_MESSAGES" data-type="BOOLEAN" default-value="false" nullable="false"/>
+                <column name="IS_STARRED" data-type="BOOLEAN" default-value="false"/>
+                <column name="HAS_BOUNCED_MESSAGES" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="THREAD_ID" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="OMEMThread_PK" column="ID" sequence-generator="OMEMThread.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMEMThread_FK1" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMThread_FK2" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMEMThread_UK1">
+                    <unique-key-column>THREAD_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>ORG_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMEMConversations" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SUBJECT" data-type="TEXT" nullable="true" max-length="998"/>
+                <column name="CONTENT" data-type="TEXT" nullable="true"/>
+                <column name="CREATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="UPDATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="IS_ACTIVE" data-type="BOOLEAN" nullable="false" default-value="true"/>
+                <column name="IS_INITIAL_MESSAGE" data-type="BOOLEAN" nullable="false"/>
+                <column name="MESSAGE_CATEGORY" data-type="SMALLINT" nullable="false"/>
+                <column name="IS_READ" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="THREAD_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_BOUNCED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="IS_SCHEDULED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="CONVERSATION_ID" data-type="BIGINT" nullable="true"/>
+                <column name="PARENT_CONVERSATION_ID" data-type="BIGINT" nullable="true"/>
+                <column name="VARIANT" data-type="SMALLINT" nullable="true"/>
+            </columns>
+            <primary-key name="OMEMConversations_PK" column="ID" sequence-generator="OMEMConversations.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMEMConversations_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMConversations_FK2" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMConversations_FK3" reference-table="OMEMThread"
+                             local-column="THREAD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <unique-keys>
+                <unique-key name="OMEMConversations_UK1">
+                    <unique-key-column>CONVERSATION_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>ORG_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMEMExternalMessage" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="MESSAGE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="MESSAGE_CATEGORY" data-type="SMALLINT" nullable="false"/>
+                <column name="CONVERSATION_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMEMExternalMessage_PK" column="ID" sequence-generator="OMEMExternalMessage.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMExternalMessage_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>MESSAGE_ID</unique-key-column>
+                    <unique-key-column>MESSAGE_CATEGORY</unique-key-column>
+                </unique-key>
+                <unique-key name="OMEMExternalMessage_UK2">
+                    <unique-key-column>CONVERSATION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMExternalMessage_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMExternalMessage_FK2" reference-table="OMEMConversations"
+                             local-column="CONVERSATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+      <table name="OMEMReference">
+        <columns>
+          <column name="ID" data-type="BIGINT"/>
+          <column name="PARENT_ID" data-type="BIGINT" nullable="false"/>
+          <column name="CHILD_ID" data-type="BIGINT" nullable="false"/>
+        </columns>
+        <primary-key name="OMEMReference_PK" column="ID" sequence-generator="OMEMReference.ID"/>
+        <unique-keys>
+          <unique-key name="OMEMReference_UK1">
+            <unique-key-column>PARENT_ID</unique-key-column>
+            <unique-key-column>CHILD_ID</unique-key-column>
+          </unique-key>
+        </unique-keys>
+        <foreign-keys>
+          <foreign-key name="OMEMReference_FK1" reference-table="OMEMExternalMessage"
+                       local-column="PARENT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+          <foreign-key name="OMEMReference_FK2" reference-table="OMEMExternalMessage"
+                       local-column="CHILD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+        </foreign-keys>
+      </table>
+
+        <table name="OMEMSmartBccAddress" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PARENT_BCC_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMEMSmartBccAddress_PK" column="ID" sequence-generator="OMEMSmartBccAddress.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMSmartBccAddress_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="OMEMSmartBccAddress_UK2">
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMSmartBccAddress_FK1" reference-table="MEMParentBccAddress"
+                             local-column="PARENT_BCC_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMSmartBccAddress_FK2" reference-table="OMEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+
+        <table name="OMEMSyncedEmailConversations" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SYNCED_EMAIL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONVERSATION_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMEMSyncedEmailConversations_PK" column="ID" sequence-generator="OMEMSyncedEmailConversations.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMSyncedEmailConversations_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>SYNCED_EMAIL_ID</unique-key-column>
+                    <unique-key-column>CONVERSATION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMSyncedEmailConversations_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMSyncedEmailConversations_FK2" reference-table="OMEMSyncedEmail"
+                             local-column="SYNCED_EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMSyncedEmailConversations_FK3" reference-table="OMEMConversations"
+                             local-column="CONVERSATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+                           <!-- Domain SQL Meta -->
+
+        <table name="OMEMDomain" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="CHAR" size="255" nullable="false"/>
+                <column name="DOMAIN_ID" data-type="BIGINT" nullable="true"/>
+                <column name="CREATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="IS_ACTIVE" data-type="BOOLEAN" nullable="false" default-value="true"/>
+            </columns>
+
+            <primary-key name="OMEMDomain_PK" column="ID" sequence-generator="OMEMDomain.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="OMEMDomain_FK1" local-column="ORG_ID"
+                             reference-table="FGOrganisation" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMDomain_FK2" local-column="USER_ID"
+                             reference-table="OMCRMUser" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <unique-keys>
+                <unique-key name="OMEMDomain_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>DOMAIN_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+
+            <indexes>
+                <index name="OMEMDomain_Idx1">
+                    <index-column>DOMAIN_ID</index-column>
+                </index>
+            </indexes>
+        </table>
+
+        <table name="OMEMDomainConfig" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="DOMAIN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="DEFAULT_SENDER_NAME" data-type="CHAR" size="70" nullable="true"/>
+                <column name="INCLUDE_DEFAULT_FROM_AS_IN_REPLY_TO" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="DEFAULT_SENDER" data-type="BIGINT" nullable="true"/>
+                <column name="DEFAULT_REPLY_TO" data-type="BIGINT" nullable="true"/>
+            </columns>
+
+            <primary-key name="OMEMDomainConfig_PK" column="ID" sequence-generator="OMEMDomainConfig.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="OMEMDomainConfig_FK1" local-column="ORG_ID"
+                             reference-table="FGOrganisation" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMDomainConfig_FK2" local-column="USER_ID"
+                             reference-table="OMCRMUser" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMDomainConfig_FK3" local-column="DOMAIN_ID"
+                             reference-table="OMEMDomain" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMDomainConfig_FK4" local-column="DEFAULT_SENDER"
+                             reference-table="OMEMFromAddress" reference-column="ID" constraint="ON-DELETE-SET-NULL"/>
+                <foreign-key name="OMEMDomainConfig_FK5" local-column="DEFAULT_REPLY_TO"
+                             reference-table="OMEMAddress" reference-column="ID" constraint="ON-DELETE-SET-NULL"/>
+            </foreign-keys>
+
+            <unique-keys>
+                <unique-key name="OMEMDomainConfig_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>DOMAIN_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMEMDomainDNSRecords" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="DOMAIN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="DNS_RECORD_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+
+            <primary-key name="OMEMDomainDNSRecords_PK" column="ID" sequence-generator="OMEMDomainDNSRecords.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="OMEMDomainDNSRecords_FK1" local-column="DOMAIN_ID"
+                             reference-table="OMEMDomain" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMDomainDNSRecords_FK2" local-column="ORG_ID" reference-table="FGOrganisation"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMDomainDNSRecords_FK3" local-column="USER_ID" reference-table="OMCRMUser"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <unique-keys>
+                <unique-key name="OMEMDomainDNSRecords_UK1">
+                    <unique-key-column>DOMAIN_ID</unique-key-column>
+                    <unique-key-column>DNS_RECORD_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+
+            <indexes>
+                <index name="OMEMDomainDNSRecords_Idx1">
+                    <index-column>DNS_RECORD_ID</index-column>
+                </index>
+            </indexes>
+        </table>
+
+        <table name="OMEMDomainFilterPreference" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="true"/>
+                <column name="CREATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="UPDATED_TIME" data-type="BIGINT" nullable="true"/>
+            </columns>
+
+            <primary-key name="OMEMDomainFilterPreference_PK" column="ID" sequence-generator="OMEMDomainFilterPreference.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="OMEMDomainFilterPreference_FK1" local-column="ORG_ID"
+                             reference-table="FGOrganisation" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+
+                <foreign-key name="OMEMDomainFilterPreference_FK2" local-column="USER_ID"
+                             reference-table="OMCRMUser" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <unique-keys>
+                <unique-key name="OMEMDomainFilterPreference_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>STATUS</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+                                    <!-- Team Inbox SQL Meta -->
+
+        <table name="OMEMTeamInbox" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="OWNER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_ACTIVE" data-type="INTEGER" nullable="false" default-value="1"/>
+                <column name="VERIFICATION_STATE" data-type="INTEGER" nullable="false" default-value="2"/>
+                <column name="EMAIL_VERIFICATION_STATE" data-type="SMALLINT" nullable="true" default-value="2"/>
+                <column name="DOMAIN_ID" data-type="BIGINT" nullable="true"/>
+                <column name="AUTO_FORWARDED_STATUS_TIME" data-type="BIGINT" nullable="true"/>
+                <column name="VISIBILITY_STATUS" data-type="SMALLINT" default-value="1" nullable="false"/>
+                <!--Todo set auto forward status time based on incoming mails-->
+            </columns>
+            <primary-key name="OMEMTeamInbox_PK" column="ID" sequence-generator="OMEMTeamInbox.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMTeamInbox_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMTeamInbox_FK1" reference-table="OMEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMTeamInbox_FK2" reference-table="OMCRMUser"
+                             local-column="OWNER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMTeamInbox_FK3" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMTeamInbox_FK4" reference-table="OMEMDomain"
+                             local-column="DOMAIN_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMEMTeamInboxUser" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TEAM_INBOX_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMEMTeamInboxUser_PK" column="ID" sequence-generator="OMEMTeamInboxUser.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMTeamInboxUser_UK1">
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>TEAM_INBOX_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMTeamInboxUser_FK1" reference-table="OMEMTeamInbox"
+                             local-column="TEAM_INBOX_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMTeamInboxUser_FK2" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMEMTeamInboxTerritory" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TERRITORY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TEAM_INBOX_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMEMTeamInboxTerritory_PK" column="ID" sequence-generator="OMEMTeamInboxTerritory.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMTeamInboxTerritory_UK1">
+                    <unique-key-column>TERRITORY_ID</unique-key-column>
+                    <unique-key-column>TEAM_INBOX_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMTeamInboxTerritory_FK1" reference-table="OMCRMTerritory"
+                             local-column="TERRITORY_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMTeamInboxTerritory_FK2" reference-table="OMEMTeamInbox"
+                             local-column="TEAM_INBOX_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMTeamInboxTerritory_FK3" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMEMTeamInboxTeam" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TEAM_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TEAM_INBOX_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMEMTeamInboxTeam_PK" column="ID" sequence-generator="OMEMTeamInboxTeam.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMTeamInboxTeam_UK1">
+                    <unique-key-column>TEAM_ID</unique-key-column>
+                    <unique-key-column>TEAM_INBOX_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMTeamInboxTeam_FK1" reference-table="OMCRMTeam"
+                             local-column="TEAM_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMTeamInboxTeam_FK2" reference-table="OMEMTeamInbox"
+                             local-column="TEAM_INBOX_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMTeamInboxTeam_FK3" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMParentAutoForwardingAddress">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="EMAIL_ADDRESS" data-type="CHAR" nullable="false" max-length="320"/>
+            </columns>
+            <primary-key name="MEMParentAutoForwardingAddress_PK" column="ID" sequence-generator="MEMParentAutoForwardingAddress.ID"/>
+            <unique-keys>
+                <unique-key name="MEMParentAutoForwardingAddress_UK1">
+                    <unique-key-column>EMAIL_ADDRESS</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMEMAutoForwardingAddress" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PARENT_INBOX_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMEMAutoForwardingAddress_PK" column="ID" sequence-generator="OMEMAutoForwardingAddress.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMAutoForwardingAddress_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="OMEMAutoForwardingAddress_UK2">
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMAutoForwardingAddress_FK1" reference-table="MEMParentAutoForwardingAddress"
+                             local-column="PARENT_INBOX_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMAutoForwardingAddress_FK2" reference-table="OMEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMEMTeamInboxThreads" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="THREAD_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TEAM_INBOX_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMEMTeamInboxThreads_PK" column="ID" sequence-generator="OMEMTeamInboxThreads.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMTeamInboxThreads_UK1">
+                    <unique-key-column>THREAD_ID</unique-key-column>
+                    <unique-key-column>TEAM_INBOX_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMTeamInboxThreads_FK1" reference-table="OMEMTeamInbox"
+                             local-column="TEAM_INBOX_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMTeamInboxThreads_FK2" reference-table="OMEMThread"
+                             local-column="THREAD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMTeamInboxThreads_FK4" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMEMRecentTeamInboxConversation" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONVERSATION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="THREAD_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CREATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="MESSAGE_CATEGORY" data-type="INTEGER" nullable="false"/>
+                <column name="TEAM_INBOX_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMEMRecentTeamInboxConversation_PK" column="ID" sequence-generator="OMEMRecentTeamInboxConversation.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMRecentTeamInboxConversation_UK1">
+                    <unique-key-column>THREAD_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="OMEMRecentTeamInboxConversation_UK2">
+                    <unique-key-column>CONVERSATION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMRecentTeamInboxConversation_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMRecentTeamInboxConversation_FK2" reference-table="OMEMThread"
+                             local-column="THREAD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMRecentTeamInboxConversation_FK3" reference-table="OMEMConversations"
+                             local-column="CONVERSATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMRecentTeamInboxConversation_FK4" reference-table="OMEMTeamInbox"
+                             local-column="TEAM_INBOX_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMEMVerificationLinkDetails" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXPIRATION_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="CATEGORY" data-type="SMALLINT" nullable="false"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TRACKING_ID" data-type="CHAR" nullable="true" max-length="1000"/>
+            </columns>
+            <primary-key name="OMEMVerificationLinkDetails_PK" column="ID" sequence-generator="OMEMVerificationLinkDetails.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMVerificationLinkDetails_UK1">
+                    <unique-key-column>TRACKING_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMVerificationLinkDetails_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMVerificationLinkDetails_FK2" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMVerificationLinkDetails_FK3" reference-table="OMEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+
+        <table name="OMEMUserEmailSettings" type="11">                    <!--Todo To insert default values when the user is created-->
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EMAIL_TRACKER_SETTINGS" data-type="TEXT" nullable="false" max-length="150"/>
+                <column name="EMAIL_LINKER_SETTINGS" data-type="TEXT" nullable="false" max-length="150"/>
+                <column name="EMAIL_SIGNATURE" data-type="TEXT" nullable="true" max-length="10000"/>
+            </columns>
+            <primary-key name="OMEMUserEmailSettings_PK" column="ID" sequence-generator="OMEMUserEmailSettings.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMUserEmailSettings_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-key name="OMEMUserEmailSettings_FK1" reference-table="OMCRMUser" local-column="USER_ID"
+                         reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            <foreign-key name="OMEMUserEmailSettings_FK2" reference-table="FGOrganisation" local-column="ORG_ID"
+                         reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+        </table>
+
+        <table name="OMEMOrganizationEmail" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="CHAR" nullable="false"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_VERIFIED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+            <primary-key name="OMEMOrganizationEmail_PK" column="ID" sequence-generator="OMEMOrganizationEmail.ID"/>
+            <unique-keys>
+                <unique-key name="OMEMOrganizationEmail_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+                <unique-key name="OMEMOrganizationEmail_UK2">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMEMOrganizationEmail_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMOrganizationEmail_FK2" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMEMOrganizationEmail_FK3" reference-table="OMEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMOrganizationEmailRole">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_EMAIL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ROLE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MEMOrganizationEmailRole_PK" column="ID" sequence-generator="MEMOrganizationEmailRole.ID"/>
+            <unique-keys>
+                <unique-key name="MEMOrganizationEmailRole_UK1">
+                    <unique-key-column>ORG_EMAIL_ID</unique-key-column>
+                    <unique-key-column>ROLE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MEMOrganizationEmailRole_FK1" reference-table="OMEMOrganizationEmail"
+                             local-column="ORG_EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MEMOrganizationEmailRole_FK2" reference-table="OMCRMRole"
+                             local-column="ROLE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+    </module>
+</metadata>

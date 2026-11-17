@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <title>New Activity</title>
+   </head>
+   <body>
+      #set($model = $template.get("model"))
+      #set($activity = $model.getActivity())
+      #set($title = $activity.getTitle())
+      #set($dateFormat = "dd MMM yyyy, hh:mm a")
+      #set($dateTool = $date)
+      #set($collaboratorIds = $activity.getCollaboratorIds())
+      #set($usersList = $template.getAll("users"))
+      #set($isUsersListNotEmpty = $usersList && !$usersList.isEmpty())
+      #set($isCollaboratorIdsNotEmpty = $collaboratorIds && !$collaboratorIds.isEmpty())
+      #set($collaboratorsFullNames = [])
+      #set($creatorId = $activity.getCreatorId())
+      #if($isUsersListNotEmpty)
+      #foreach($user in $usersList)
+      #set($userId = $user.id())
+      #if($userId.equals($activity.getCreatorId()))
+      #set($userFullName = $user.getFullName())
+      #set($userEmail = $user.getEmail())
+      #end
+      #if($isCollaboratorIdsNotEmpty && $collaboratorIds.contains($userId))
+      #set($dummy = $collaboratorsFullNames.add($user.getFullName()))
+      #end
+      #end
+      #end
+      #set($isCollaboratorsNotEmpty = $collaboratorsFullNames && !$collaboratorsFullNames.isEmpty())
+      <div data-info-group="subject" style="display: none">Activity created: $title</div>
+      <div style="margin: 0 auto; background: #fafafa; padding: 5% 10%">
+         <div>
+            <div
+               style="
+               background: white;
+               border-radius: 8px;
+               border: 1px rgba(0, 0, 0, 0.1) solid;
+               overflow: auto;
+               padding: 40px;
+               "
+               >
+               <div>
+                  <img
+                     width="107px"
+                     height="33px"
+                     src="https://twozo.io/_next/image?url=%2Fimages%2Flogo%2Ftwozo-full-logo.png&w=256&q=75"
+                     alt="twozo"
+                     />
+               </div>
+               <div style="padding-top: 32px">
+                  <div>
+                     <p
+                        style="
+                        margin: 0px;
+                        font-size: 18px;
+                        font-weight: 600;
+                        font-family: Verdana, Geneva, Tahoma, sans-serif;
+                        "
+                        >
+                        Hello $userFullName,
+                     </p>
+                     <p
+                        style="
+                        margin: 0px;
+                        padding-top: 9px;
+                        font-size: 14px;
+                        font-weight: 400;
+                        font-family: Verdana, Geneva, Tahoma, sans-serif;
+                        color: rgba(0, 0, 0, 0.6);
+                        "
+                        >
+                        You have a new activity:
+                        <span style="color: black"> "$title"</span>
+                     </p>
+                  </div>
+                  <div style="padding-top: 24px">
+                     <table style="border-spacing: 0px 12px">
+                        #set($note = $activity.getNote())
+                        #if($note)
+                        #set($noteContent = $note.getContent().replace("<p", "<p style='margin: 0px;'").replace("<ol", "<ol style='margin: 0px;'").replace("<ul", "<ul style='margin: 0px;'"))
+                        <tr
+                           style="
+                           font-family: Verdana, Geneva, Tahoma, sans-serif;
+                           font-size: 14px;
+                           font-weight: 400;
+                           "
+                           >
+                           <td
+                              style="width: 110px; color: #00000099; vertical-align: top"
+                              >
+                              Private Note :
+                           </td>
+                           <td>
+                             <div>
+                               $noteContent
+                             </div>
+                           </td>
+                        </tr>
+                        #end
+                       #set($recipient = $template.get("recipient"))
+                       #set($tzId = "UTC")
+                       #if($recipient && $recipient.getPreferenceHolder())
+                           #foreach($pref in $recipient.getPreferenceHolder().getAll())
+                               #set($tzInfo = $pref.getTimezoneInfo())
+                               #if($tzInfo)
+                                   #set($tzId = $tzInfo.getTimeZone().getID())
+                               #end
+                           #end
+                       #end
+                       #set($tz = $TimeZone.getTimeZone($tzId))
+                       #set($locale = $dateTool.getLocale())
+                       #set($start = $activity.getStartTime().getTimeStamp())
+                       #set($end = $activity.getEndTime().getTimeStamp())
+                       #set($offset = $dateTool.format("XXX", $start, $locale, $tz).replace("Z", "+00:00"))
+                        <tr
+                           style="
+                           font-family: Verdana, Geneva, Tahoma, sans-serif;
+                           font-size: 14px;
+                           font-weight: 400;
+                           "
+                           >
+                           <td
+                              style="width: 110px; color: #00000099; vertical-align: top"
+                              >
+                              When :
+                           </td>
+                           <td>
+                              <span>
+                                 $dateTool.format($dateFormat, $start, $locale, $tz).replace("am", "AM").replace("pm", "PM") - $dateTool.format($dateFormat, $end, $locale, $tz).replace("am", "AM").replace("pm", "PM"),
+                                 <span style="color: rgba(0, 0, 0, 0.6)">(UTC$offset) $tzId</span>
+                              </span>
+                           </td>
+                        </tr>
+                        <tr
+                           style="
+                           font-family: Verdana, Geneva, Tahoma, sans-serif;
+                           font-size: 14px;
+                           font-weight: 400;
+                           "
+                           >
+                           <td
+                              style="width: 110px; color: #00000099; vertical-align: top"
+                              >
+                              Who :
+                           </td>
+                           <td>
+                              <span>
+                              $userFullName -
+                              <a target="_blank"
+                                 style="cursor: pointer; color: #33bc7e"
+                                 href="mailto: $userEmail"
+                                 >$userEmail</a
+                                 >
+                              <span style="color: rgba(0, 0, 0, 0.6)">
+                              (Organizer)#if($isCollaboratorsNotEmpty),#end
+                              </span
+                                 >
+                              #if($isCollaboratorsNotEmpty)
+                              #set($index = 0)
+                              #set($collaboratorsSize = $collaboratorsFullNames.size())
+                              #foreach($collaborator in $collaboratorsFullNames)
+                              <span>$collaborator#if($index < $collaboratorsSize - 1),#end
+                              #set($index = $index + 1)
+                              </span>
+                              #end
+                              #end
+                              </span>
+                           </td>
+                        </tr>
+                        #set($deal = $model.getDeal())
+                        #if($deal)
+                        <tr
+                           style="
+                           font-family: Verdana, Geneva, Tahoma, sans-serif;
+                           font-size: 14px;
+                           font-weight: 400;
+                           "
+                           >
+                           <td style="width: 110px; color: #00000099; vertical-align: top">
+                              Deal :
+                           </td>
+                           <td>
+                              <a
+                                 href=$deal.getURL("deal")$deal.id()
+                                 style="
+                                 color: #33bc7e;
+                                 cursor: pointer;
+                                 text-decoration: none;
+                                 "
+                                 target="_blank"
+                                 >$deal.getTitle()
+                              </a>
+                           </td>
+                        </tr>
+                        #end
+                        #set($contacts = $model.getContacts())
+                        #if($contacts && !$contacts.isEmpty())
+                        <tr
+                           style="
+                           font-family: Verdana, Geneva, Tahoma, sans-serif;
+                           font-size: 14px;
+                           font-weight: 400;
+                           "
+                           >
+                           <td
+                              style="width: 110px; color: #00000099; vertical-align: top"
+                              >
+                              Related to :
+                           </td>
+                           <td>
+                              #set($index = 0)
+                              #set($contactSize = $contacts.size())
+                              #foreach($contact in $contacts)
+                              <a
+                                 href=$contact.getURL("contact")$contact.id()
+                                 style="
+                                 color: #33bc7e;
+                                 cursor: pointer;
+                                 text-decoration: none;
+                                 "
+                                 target="_blank"
+                                 >$contact.getFullName()#if($index < $contactSize - 1),#end
+                              #set($index = $index + 1)
+                              </a>
+                              #end
+                           </td>
+                        </tr>
+                        #end
+                     </table>
+                  </div>
+                  <div style="padding-top: 32px">
+                     <p
+                        style="
+                        margin: 0px;
+                        font-size: 14px;
+                        font-weight: 400;
+                        font-family: Verdana, Geneva, Tahoma, sans-serif;
+                        "
+                        >
+                        Cheers,
+                     </p>
+                     <p
+                        style="
+                        margin: 0px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        font-family: Verdana, Geneva, Tahoma, sans-serif;
+                        padding-top: 4px;
+                        "
+                        >
+                        Team Twozo
+                     </p>
+                  </div>
+               </div>
+            </div>
+            <div style="padding-top: 16px; text-align: center">
+               <div style="text-align: center">
+                  <div>
+                     <a href="https://play.google.com/store/apps/details?id=twozo.io.crm">
+                     <img
+                        width="72px"
+                        height="22px"
+                        style="margin-right: 12px"
+                        src="https://ci3.googleusercontent.com/meips/ADKq_NaXM9lCOs5luvUcsKwYTE4a39T_j1ruuTAj8HA3Qy8qB1bdzlLyIO7AHV_2K__Ot03VQ3EH1vuUB1Mu4qt5BUWTutbWF1RsGsPe3yntKkeEGmn6iw=s0-d-e1-ft#https://ind-assets.freshsales.io/assets/images/google-play.png"
+                        alt="google-play"
+                        />
+                     </a>
+                     <img
+                        width="72px"
+                        height="22px"
+                        style="margin-left: 12px"
+                        src="https://ci3.googleusercontent.com/meips/ADKq_NYiX6-9q45vsuMEOkPWau7MEr-X5uNrY1gMEsfkpicybI2bRIGTjDMrYhP1Bb6j4v5dNNUwVTT-mPj1IC6Zw-0IN2YHoEVW5WJE2TyQJgp2vRQlQ9vHvok=s0-d-e1-ft#https://ind-assets.freshsales.io/assets/images/apple-app-store.png"
+                        alt="apple-app-store"
+                        />
+                  </div>
+                  <div style="padding-top: 8px">
+                     <p
+                        style="
+                        margin: 0px;
+                        font-size: 10px;
+                        font-family: Verdana, Geneva, Tahoma, sans-serif;
+                        color: rgba(0, 0, 0, 0.6);
+                        "
+                        >
+                        Twozo Inc.
+                     </p>
+                  </div>
+                  <div style="text-align: center; padding-top: 8px; opacity: 0.6">
+                     <img
+                        width="20px"
+                        height="20px"
+                        src="https://cdn4.iconfinder.com/data/icons/iconsimple-logotypes/512/facebook-64.png"
+                        alt="facebook"
+                        />
+                     <img
+                        width="20px"
+                        height="20px"
+                        style="margin: 0px 32px"
+                        src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_twitter-64.png"
+                        alt="twitter"
+                        />
+                     <img
+                        width="20px"
+                        height="20px"
+                        src="https://cdn2.iconfinder.com/data/icons/social-media-2102/100/social_media_circled_network-03-64.png"
+                        alt="linkedIn"
+                        />
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </body>
+</html>

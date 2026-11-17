@@ -1,0 +1,20 @@
+def sourceCompany = params._source.company;
+
+if (null != sourceCompany) {
+    def ownerId = params.ownerId;
+    def companyFollowers = sourceCompany.followerIds;
+
+    if (params.isCompanyFollower && null != companyFollowers && companyFollowers.contains(ownerId)) {
+        Map companyFields = new HashMap();
+
+        companyFields.put("name", sourceCompany.name);
+        companyFields.put("website", sourceCompany.website);
+        companyFields.put("address", sourceCompany.address);
+        companyFields.put("id", sourceCompany.id);
+
+        return companyFields;
+    }
+}
+
+return null;
+

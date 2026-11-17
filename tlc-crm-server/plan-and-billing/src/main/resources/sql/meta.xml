@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_plan_and_billing">
+
+        <table name="OMPBOrgSpecificPlans" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PLAN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PRICING_SCHEME_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMPBOrgSpecificPlans_PK" column="ID" sequence-generator="OMPBOrgSpecificPlans.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMPBOrgSpecificPlans_OrgId_FK" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBOrgSpecificPlans_PlanId_FK" reference-table="MPBSubscriptionPlans"
+                             local-column="PLAN_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBOrgSpecificPlans_PricingSchemeId_FK" reference-table="MPBPricingSchemes"
+                             local-column="PRICING_SCHEME_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMPBOrgSpecificPlans_UK">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>PLAN_ID</unique-key-column>
+                    <unique-key-column>PRICING_SCHEME_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMPBOrganizationSubscriptions" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PLAN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PRICING_SCHEME_ID" data-type="BIGINT" nullable="false"/>
+                <column name="QUANTITY" data-type="INTEGER" nullable="false"/>
+                <column name="START_TIME" data-type="DATETIME" nullable="true"/>
+                <column name="EXPIRATION_TIME" data-type="DATETIME" nullable="true"/>
+                <column name="SUBSCRIPTION_STATUS" data-type="SMALLINT" nullable="false" default-value="2"/>
+                <column name="CONTRACT_STATE" data-type="SMALLINT" nullable="false" default-value="3"/>
+            </columns>
+            <primary-key name="OMPBOrganizationSubscriptions_PK" column="ID" sequence-generator="OMPBOrganizationSubscriptions.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMPBOrganizationSubscriptions_OrgId_FK" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBOrganizationSubscriptions_PlanId_FK" reference-table="MPBSubscriptionPlans"
+                             local-column="PLAN_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBOrganizationSubscriptions_PricingSchemeId_FK" reference-table="MPBPricingSchemes"
+                             local-column="PRICING_SCHEME_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMPBOrganizationDiscounts" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORG_PLAN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="DISCOUNT_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMPBOrganizationDiscounts_PK" column="ID" sequence-generator="OMPBOrganizationDiscounts.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMPBOrganizationDiscounts_OrgId_FK" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBOrganizationDiscounts_OrgPlanId_FK" reference-table="OMPBOrganizationSubscriptions"
+                             local-column="ORG_PLAN_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBOrganizationDiscounts_DiscountId_FK" reference-table="MPBDiscounts"
+                             local-column="DISCOUNT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMPBOrganizationDiscounts_UK">
+                    <unique-key-column>ORG_PLAN_ID</unique-key-column>
+                    <unique-key-column>DISCOUNT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMPBBillingContact" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ADDRESS_ID" data-type="BIGINT" nullable="true"/>
+                <column name="FIRST_NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="LAST_NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="COMPANY" data-type="CHAR" nullable="false" max-length="150"/>
+                <column name="EMAIL" data-type="CHAR" nullable="true" max-length="356"/>
+                <column name="PHONE" data-type="CHAR" nullable="true" max-length="25"/>
+            </columns>
+            <primary-key name="OMPBBillingContact_PK" column="ID" sequence-generator="OMPBBillingContact.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMPBBillingContact_OrgId_FK" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBBillingContact_UserId_FK" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBBillingContact_AddressId_FK" reference-table="OMETAddress"
+                             local-column="ADDRESS_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMPBBillingContact_UK">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMPBTransaction" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="BILLING_CONTACT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TRANSACTION_ID" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="AMOUNT" data-type="DECIMAL" nullable="false" precision="15" scale="3"/>
+                <column name="TAX" data-type="DECIMAL" nullable="false" precision="15" scale="3"/>
+                <column name="DISCOUNT" data-type="DECIMAL" nullable="false" precision="15" scale="3"/>
+                <column name="CONVENIENCE_FEE" data-type="DECIMAL" nullable="false" precision="15" scale="3"/>
+                <column name="TOTAL_AMOUNT" data-type="DECIMAL" nullable="false" precision="15" scale="3"/>
+                <column name="CURRENCY" data-type="SMALLINT" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="COMPLETION_STATUS" data-type="BOOLEAN" nullable="true" default-value="false"/>
+            </columns>
+            <primary-key name="OMPBTransaction_PK" column="ID" sequence-generator="OMPBTransaction.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMPBTransaction_OrgId_FK" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBTransaction_BillingContactId_FK" reference-table="OMPBBillingContact"
+                             local-column="BILLING_CONTACT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMPBTransaction_UK">
+                    <unique-key-column>TRANSACTION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMPBPlanTransaction" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORG_PLAN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TRANSACTION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PLAN_META" data-type="TEXT" nullable="false"/>
+            </columns>
+            <primary-key name="OMPBPlanTransaction_PK" column="ID" sequence-generator="OMPBPlanTransaction.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMPBPlanTransaction_OrgId_FK" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBPlanTransaction_OrgPlanId_FK" reference-table="OMPBOrganizationSubscriptions"
+                             local-column="ORG_PLAN_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBPlanTransaction_TransactionId_FK" reference-table="OMPBTransaction"
+                             local-column="TRANSACTION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMPBInvoice" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TRANSACTION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="BILLING_DATE" data-type="DATE" nullable="false"/>
+                <column name="PDF_URL" data-type="CHAR" nullable="true" max-length="500"/>
+            </columns>
+            <primary-key name="OMPBInvoice_PK" column="ID" sequence-generator="OMPBInvoice.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMPBInvoice_OrgId_FK" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBInvoice_TransactionId_FK" reference-table="OMPBTransaction"
+                             local-column="TRANSACTION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMPBInvoice_UK">
+                    <unique-key-column>TRANSACTION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMPBCancellationFeedback" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FEEDBACK_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMPBCancellationFeedback_PK" column="ID" sequence-generator="OMPBCancellationFeedback.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMPBCancellationFeedback_OrgId_FK" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBCancellationFeedback_UserId_FK" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBCancellationFeedback_FeedbackId_FK" reference-table="MPBCancellationFeedback"
+                             local-column="FEEDBACK_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMPBCancellationReason" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="REASON_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMPBCancellationReason_PK" column="ID" sequence-generator="OMPBCancellationReason.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMPBCancellationReason_OrgId_FK" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBCancellationReason_UserId_FK" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBCancellationReason_ReasonId_FK" reference-table="MPBCancellationReason"
+                             local-column="REASON_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMPBOrgSpecificDiscounts" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="DISCOUNT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USED_COUNT" data-type="INTEGER" nullable="false" default-value="0"/>
+                <column name="START_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="EXPIRATION_DATE" data-type="DATETIME" nullable="true"/>
+            </columns>
+            <primary-key name="OMPBOrgSpecificDiscounts_PK" column="ID" sequence-generator="OMPBOrgSpecificDiscounts.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMPBOrgSpecificDiscounts_OrgId_FK" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMPBOrgSpecificDiscounts_DiscountId_FK" reference-table="MPBDiscounts"
+                             local-column="DISCOUNT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMPBOrgSpecificDiscounts_UK">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>DISCOUNT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+    </module>
+</metadata>

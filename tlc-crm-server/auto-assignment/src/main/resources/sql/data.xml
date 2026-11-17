@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dumpdata>
+
+    <module name="crm_workflow">
+        <!-- Comparators for auto-assignment condition-->
+        <MASRComparator ID="MASRComparator:ID:CO:1" NAME="i18n.auto.assignment.comparator.is" ALIAS_NAME="equal"/>
+        <MASRComparator ID="MASRComparator:ID:CO:2" NAME="i18n.auto.assignment.comparator.is.not" ALIAS_NAME="notEqual"/>
+        <MASRComparator ID="MASRComparator:ID:CO:3" NAME="i18n.auto.assignment.comparator.is.empty" ALIAS_NAME="empty" HAS_VALUE="false"/>
+        <MASRComparator ID="MASRComparator:ID:CO:4" NAME="i18n.auto.assignment.comparator.is.not.empty" ALIAS_NAME="notEmpty" HAS_VALUE="false"/>
+        <MASRComparator ID="MASRComparator:ID:CO:5" NAME="i18n.auto.assignment.comparator.is.more.than" ALIAS_NAME="gt"/>
+        <MASRComparator ID="MASRComparator:ID:CO:6" NAME="i18n.auto.assignment.comparator.is.more.than.equal" ALIAS_NAME="gte"/>
+        <MASRComparator ID="MASRComparator:ID:CO:7" NAME="i18n.auto.assignment.comparator.is.less.than" ALIAS_NAME="lt"/>
+        <MASRComparator ID="MASRComparator:ID:CO:8" NAME="i18n.auto.assignment.comparator.is.less.than.equal" ALIAS_NAME="lte"/>
+        <MASRComparator ID="MASRComparator:ID:CO:9" NAME="i18n.auto.assignment.comparator.contains" ALIAS_NAME="contains"/>
+        <MASRComparator ID="MASRComparator:ID:CO:10" NAME="i18n.auto.assignment.comparator.does.not.contain" ALIAS_NAME="notContains"/>
+        <MASRComparator ID="MASRComparator:ID:CO:11" NAME="i18n.auto.assignment.comparator.starts.with" ALIAS_NAME="startsWith"/>
+        <MASRComparator ID="MASRComparator:ID:CO:12" NAME="i18n.auto.assignment.comparator.does.not.start.with" ALIAS_NAME="notStartsWith"/>
+        <MASRComparator ID="MASRComparator:ID:CO:13" NAME="i18n.auto.assignment.comparator.ends.with" ALIAS_NAME="endsWith"/>
+        <MASRComparator ID="MASRComparator:ID:CO:14" NAME="i18n.auto.assignment.comparator.does.not.end.with" ALIAS_NAME="notEndsWith"/>
+        <MASRComparator ID="MASRComparator:ID:CO:15" NAME="i18n.auto.assignment.comparator.is.any" ALIAS_NAME="any"/>
+        <MASRComparator ID="MASRComparator:ID:CO:16" NAME="i18n.auto.assignment.comparator.is.earlier.than" ALIAS_NAME="earlierThan"/>
+        <MASRComparator ID="MASRComparator:ID:CO:17" NAME="i18n.auto.assignment.comparator.is.later.than" ALIAS_NAME="laterThan"/>
+        <MASRComparator ID="MASRComparator:ID:CO:18" NAME="i18n.auto.assignment.comparator.is.exactly.or.earlier.than" ALIAS_NAME="exactlyEarlierThan"/>
+        <MASRComparator ID="MASRComparator:ID:CO:19" NAME="i18n.auto.assignment.comparator.is.exactly.or.later.than" ALIAS_NAME="exactlyLaterThan"/>
+
+
+        <!--Comparators of FieldType -> TEXT-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1" FIELD_TYPE_ID="METFieldType:ID:CO:1" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:2" FIELD_TYPE_ID="METFieldType:ID:CO:1" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:3" FIELD_TYPE_ID="METFieldType:ID:CO:1" COMPARATOR_ID="MASRComparator:ID:CO:9"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:4" FIELD_TYPE_ID="METFieldType:ID:CO:1" COMPARATOR_ID="MASRComparator:ID:CO:10"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:5" FIELD_TYPE_ID="METFieldType:ID:CO:1" COMPARATOR_ID="MASRComparator:ID:CO:11"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:6" FIELD_TYPE_ID="METFieldType:ID:CO:1" COMPARATOR_ID="MASRComparator:ID:CO:12"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:7" FIELD_TYPE_ID="METFieldType:ID:CO:1" COMPARATOR_ID="MASRComparator:ID:CO:13"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:8" FIELD_TYPE_ID="METFieldType:ID:CO:1" COMPARATOR_ID="MASRComparator:ID:CO:14"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:11" FIELD_TYPE_ID="METFieldType:ID:CO:1" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:12" FIELD_TYPE_ID="METFieldType:ID:CO:1" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <!--Comparators of FieldType -> SINGLE_STRING-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:100" FIELD_TYPE_ID="METFieldType:ID:CO:2" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:101" FIELD_TYPE_ID="METFieldType:ID:CO:2" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:102" FIELD_TYPE_ID="METFieldType:ID:CO:2" COMPARATOR_ID="MASRComparator:ID:CO:9"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:103" FIELD_TYPE_ID="METFieldType:ID:CO:2" COMPARATOR_ID="MASRComparator:ID:CO:10"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:104" FIELD_TYPE_ID="METFieldType:ID:CO:2" COMPARATOR_ID="MASRComparator:ID:CO:11"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:105" FIELD_TYPE_ID="METFieldType:ID:CO:2" COMPARATOR_ID="MASRComparator:ID:CO:12"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:106" FIELD_TYPE_ID="METFieldType:ID:CO:2" COMPARATOR_ID="MASRComparator:ID:CO:13"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:107" FIELD_TYPE_ID="METFieldType:ID:CO:2" COMPARATOR_ID="MASRComparator:ID:CO:14"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:110" FIELD_TYPE_ID="METFieldType:ID:CO:2" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:111" FIELD_TYPE_ID="METFieldType:ID:CO:2" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <!--Comparators of FieldType -> SINGLE_NUMBER-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:150" FIELD_TYPE_ID="METFieldType:ID:CO:3" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:151" FIELD_TYPE_ID="METFieldType:ID:CO:3" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:152" FIELD_TYPE_ID="METFieldType:ID:CO:3" COMPARATOR_ID="MASRComparator:ID:CO:5"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:153" FIELD_TYPE_ID="METFieldType:ID:CO:3" COMPARATOR_ID="MASRComparator:ID:CO:6"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:154" FIELD_TYPE_ID="METFieldType:ID:CO:3" COMPARATOR_ID="MASRComparator:ID:CO:7"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:155" FIELD_TYPE_ID="METFieldType:ID:CO:3" COMPARATOR_ID="MASRComparator:ID:CO:8"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:156" FIELD_TYPE_ID="METFieldType:ID:CO:3" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:157" FIELD_TYPE_ID="METFieldType:ID:CO:3" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <!--Comparators of FieldType -> DROPDOWN-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:200" FIELD_TYPE_ID="METFieldType:ID:CO:4" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:201" FIELD_TYPE_ID="METFieldType:ID:CO:4" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:202" FIELD_TYPE_ID="METFieldType:ID:CO:4" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:203" FIELD_TYPE_ID="METFieldType:ID:CO:4" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:204" FIELD_TYPE_ID="METFieldType:ID:CO:4" COMPARATOR_ID="MASRComparator:ID:CO:15"/>
+        <!--Comparators of FieldType -> MULTI_SELECT-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:250" FIELD_TYPE_ID="METFieldType:ID:CO:5" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:251" FIELD_TYPE_ID="METFieldType:ID:CO:5" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:252" FIELD_TYPE_ID="METFieldType:ID:CO:5" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:253" FIELD_TYPE_ID="METFieldType:ID:CO:5" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:254" FIELD_TYPE_ID="METFieldType:ID:CO:5" COMPARATOR_ID="MASRComparator:ID:CO:9"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:255" FIELD_TYPE_ID="METFieldType:ID:CO:5" COMPARATOR_ID="MASRComparator:ID:CO:10"/>
+        <!--Comparators of FieldType -> OWNER-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:300" FIELD_TYPE_ID="METFieldType:ID:CO:6" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:301" FIELD_TYPE_ID="METFieldType:ID:CO:6" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:302" FIELD_TYPE_ID="METFieldType:ID:CO:6" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:303" FIELD_TYPE_ID="METFieldType:ID:CO:6" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:304" FIELD_TYPE_ID="METFieldType:ID:CO:6" COMPARATOR_ID="MASRComparator:ID:CO:15"/>
+        <!--Comparators of FieldType -> COMPANY-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:350" FIELD_TYPE_ID="METFieldType:ID:CO:7" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:351" FIELD_TYPE_ID="METFieldType:ID:CO:7" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:352" FIELD_TYPE_ID="METFieldType:ID:CO:7" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:353" FIELD_TYPE_ID="METFieldType:ID:CO:7" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <!--Comparators of FieldType -> CONTACT-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:400" FIELD_TYPE_ID="METFieldType:ID:CO:8" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:401" FIELD_TYPE_ID="METFieldType:ID:CO:8" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:402" FIELD_TYPE_ID="METFieldType:ID:CO:8" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:403" FIELD_TYPE_ID="METFieldType:ID:CO:8" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <!--Comparators of FieldType -> PHONE-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:450" FIELD_TYPE_ID="METFieldType:ID:CO:9" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:451" FIELD_TYPE_ID="METFieldType:ID:CO:9" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:452" FIELD_TYPE_ID="METFieldType:ID:CO:9" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:453" FIELD_TYPE_ID="METFieldType:ID:CO:9" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:454" FIELD_TYPE_ID="METFieldType:ID:CO:9" COMPARATOR_ID="MASRComparator:ID:CO:9"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:455" FIELD_TYPE_ID="METFieldType:ID:CO:9" COMPARATOR_ID="MASRComparator:ID:CO:10"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:456" FIELD_TYPE_ID="METFieldType:ID:CO:9" COMPARATOR_ID="MASRComparator:ID:CO:11"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:457" FIELD_TYPE_ID="METFieldType:ID:CO:9" COMPARATOR_ID="MASRComparator:ID:CO:12"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:458" FIELD_TYPE_ID="METFieldType:ID:CO:9" COMPARATOR_ID="MASRComparator:ID:CO:13"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:459" FIELD_TYPE_ID="METFieldType:ID:CO:9" COMPARATOR_ID="MASRComparator:ID:CO:14"/>
+        <!--Comparators of FieldType -> EMAIL-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:500" FIELD_TYPE_ID="METFieldType:ID:CO:10" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:501" FIELD_TYPE_ID="METFieldType:ID:CO:10" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:502" FIELD_TYPE_ID="METFieldType:ID:CO:10" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:503" FIELD_TYPE_ID="METFieldType:ID:CO:10" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:504" FIELD_TYPE_ID="METFieldType:ID:CO:10" COMPARATOR_ID="MASRComparator:ID:CO:9"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:505" FIELD_TYPE_ID="METFieldType:ID:CO:10" COMPARATOR_ID="MASRComparator:ID:CO:10"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:506" FIELD_TYPE_ID="METFieldType:ID:CO:10" COMPARATOR_ID="MASRComparator:ID:CO:11"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:507" FIELD_TYPE_ID="METFieldType:ID:CO:10" COMPARATOR_ID="MASRComparator:ID:CO:12"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:508" FIELD_TYPE_ID="METFieldType:ID:CO:10" COMPARATOR_ID="MASRComparator:ID:CO:13"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:509" FIELD_TYPE_ID="METFieldType:ID:CO:10" COMPARATOR_ID="MASRComparator:ID:CO:14"/>
+        <!--Comparators of FieldType -> MONETARY-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:525" FIELD_TYPE_ID="METFieldType:ID:CO:11" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:526" FIELD_TYPE_ID="METFieldType:ID:CO:11" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:527" FIELD_TYPE_ID="METFieldType:ID:CO:11" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:528" FIELD_TYPE_ID="METFieldType:ID:CO:11" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:529" FIELD_TYPE_ID="METFieldType:ID:CO:11" COMPARATOR_ID="MASRComparator:ID:CO:5"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:530" FIELD_TYPE_ID="METFieldType:ID:CO:11" COMPARATOR_ID="MASRComparator:ID:CO:6"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:531" FIELD_TYPE_ID="METFieldType:ID:CO:11" COMPARATOR_ID="MASRComparator:ID:CO:7"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:532" FIELD_TYPE_ID="METFieldType:ID:CO:11" COMPARATOR_ID="MASRComparator:ID:CO:8"/>
+        <!--Comparators of FieldType -> TIME-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:550" FIELD_TYPE_ID="METFieldType:ID:CO:12" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:551" FIELD_TYPE_ID="METFieldType:ID:CO:12" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:552" FIELD_TYPE_ID="METFieldType:ID:CO:12" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:553" FIELD_TYPE_ID="METFieldType:ID:CO:12" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:554" FIELD_TYPE_ID="METFieldType:ID:CO:12" COMPARATOR_ID="MASRComparator:ID:CO:16"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:555" FIELD_TYPE_ID="METFieldType:ID:CO:12" COMPARATOR_ID="MASRComparator:ID:CO:17"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:556" FIELD_TYPE_ID="METFieldType:ID:CO:12" COMPARATOR_ID="MASRComparator:ID:CO:18"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:557" FIELD_TYPE_ID="METFieldType:ID:CO:12" COMPARATOR_ID="MASRComparator:ID:CO:19"/>
+        <!--Comparators of FieldType -> DATE-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:570" FIELD_TYPE_ID="METFieldType:ID:CO:14" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:571" FIELD_TYPE_ID="METFieldType:ID:CO:14" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:572" FIELD_TYPE_ID="METFieldType:ID:CO:14" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:573" FIELD_TYPE_ID="METFieldType:ID:CO:14" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:574" FIELD_TYPE_ID="METFieldType:ID:CO:14" COMPARATOR_ID="MASRComparator:ID:CO:16"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:575" FIELD_TYPE_ID="METFieldType:ID:CO:14" COMPARATOR_ID="MASRComparator:ID:CO:17"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:576" FIELD_TYPE_ID="METFieldType:ID:CO:14" COMPARATOR_ID="MASRComparator:ID:CO:18"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:577" FIELD_TYPE_ID="METFieldType:ID:CO:14" COMPARATOR_ID="MASRComparator:ID:CO:19"/>
+        <!--Comparators of FieldType -> ADDRESS-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:600" FIELD_TYPE_ID="METFieldType:ID:CO:17" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:601" FIELD_TYPE_ID="METFieldType:ID:CO:17" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:602" FIELD_TYPE_ID="METFieldType:ID:CO:17" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:603" FIELD_TYPE_ID="METFieldType:ID:CO:17" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:604" FIELD_TYPE_ID="METFieldType:ID:CO:17" COMPARATOR_ID="MASRComparator:ID:CO:9"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:605" FIELD_TYPE_ID="METFieldType:ID:CO:17" COMPARATOR_ID="MASRComparator:ID:CO:10"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:606" FIELD_TYPE_ID="METFieldType:ID:CO:17" COMPARATOR_ID="MASRComparator:ID:CO:11"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:607" FIELD_TYPE_ID="METFieldType:ID:CO:17" COMPARATOR_ID="MASRComparator:ID:CO:12"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:608" FIELD_TYPE_ID="METFieldType:ID:CO:17" COMPARATOR_ID="MASRComparator:ID:CO:13"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:609" FIELD_TYPE_ID="METFieldType:ID:CO:17" COMPARATOR_ID="MASRComparator:ID:CO:14"/>
+        <!--Comparators of FieldType -> CONTACT_ONBOARD-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:650" FIELD_TYPE_ID="METFieldType:ID:CO:18" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:651" FIELD_TYPE_ID="METFieldType:ID:CO:18" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:652" FIELD_TYPE_ID="METFieldType:ID:CO:18" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:653" FIELD_TYPE_ID="METFieldType:ID:CO:18" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <!--Comparators of FieldType -> COMPANY_ONBOARD-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:670" FIELD_TYPE_ID="METFieldType:ID:CO:19" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:671" FIELD_TYPE_ID="METFieldType:ID:CO:19" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:672" FIELD_TYPE_ID="METFieldType:ID:CO:19" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:673" FIELD_TYPE_ID="METFieldType:ID:CO:19" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <!--Comparators of FieldType -> CONTACTS_ONBOARD-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:725" FIELD_TYPE_ID="METFieldType:ID:CO:21" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:726" FIELD_TYPE_ID="METFieldType:ID:CO:21" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <!--Comparators of FieldType -> DEAL_VALUE-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:750" FIELD_TYPE_ID="METFieldType:ID:CO:22" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:751" FIELD_TYPE_ID="METFieldType:ID:CO:22" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:752" FIELD_TYPE_ID="METFieldType:ID:CO:22" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:753" FIELD_TYPE_ID="METFieldType:ID:CO:22" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:754" FIELD_TYPE_ID="METFieldType:ID:CO:22" COMPARATOR_ID="MASRComparator:ID:CO:5"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:755" FIELD_TYPE_ID="METFieldType:ID:CO:22" COMPARATOR_ID="MASRComparator:ID:CO:6"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:756" FIELD_TYPE_ID="METFieldType:ID:CO:22" COMPARATOR_ID="MASRComparator:ID:CO:7"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:757" FIELD_TYPE_ID="METFieldType:ID:CO:22" COMPARATOR_ID="MASRComparator:ID:CO:8"/>
+        <!--Comparators of FieldType -> PHONES-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:800" FIELD_TYPE_ID="METFieldType:ID:CO:23" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:801" FIELD_TYPE_ID="METFieldType:ID:CO:23" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:802" FIELD_TYPE_ID="METFieldType:ID:CO:23" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:803" FIELD_TYPE_ID="METFieldType:ID:CO:23" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:804" FIELD_TYPE_ID="METFieldType:ID:CO:23" COMPARATOR_ID="MASRComparator:ID:CO:9"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:805" FIELD_TYPE_ID="METFieldType:ID:CO:23" COMPARATOR_ID="MASRComparator:ID:CO:10"/>
+        <!--Comparators of FieldType -> EMAILS-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:850" FIELD_TYPE_ID="METFieldType:ID:CO:24" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:851" FIELD_TYPE_ID="METFieldType:ID:CO:24" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:852" FIELD_TYPE_ID="METFieldType:ID:CO:24" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:853" FIELD_TYPE_ID="METFieldType:ID:CO:24" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:854" FIELD_TYPE_ID="METFieldType:ID:CO:24" COMPARATOR_ID="MASRComparator:ID:CO:9"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:855" FIELD_TYPE_ID="METFieldType:ID:CO:24" COMPARATOR_ID="MASRComparator:ID:CO:10"/>
+        <!--Comparators of FieldType -> DEAL-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:900" FIELD_TYPE_ID="METFieldType:ID:CO:25" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:901" FIELD_TYPE_ID="METFieldType:ID:CO:25" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:902" FIELD_TYPE_ID="METFieldType:ID:CO:25" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:903" FIELD_TYPE_ID="METFieldType:ID:CO:25" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:904" FIELD_TYPE_ID="METFieldType:ID:CO:25" COMPARATOR_ID="MASRComparator:ID:CO:5"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:905" FIELD_TYPE_ID="METFieldType:ID:CO:25" COMPARATOR_ID="MASRComparator:ID:CO:6"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:906" FIELD_TYPE_ID="METFieldType:ID:CO:25" COMPARATOR_ID="MASRComparator:ID:CO:7"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:907" FIELD_TYPE_ID="METFieldType:ID:CO:25" COMPARATOR_ID="MASRComparator:ID:CO:8"/>
+        <!--Comparators of FieldType -> PRODUCT-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:925" FIELD_TYPE_ID="METFieldType:ID:CO:26" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:926" FIELD_TYPE_ID="METFieldType:ID:CO:26" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:927" FIELD_TYPE_ID="METFieldType:ID:CO:26" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:928" FIELD_TYPE_ID="METFieldType:ID:CO:26" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:929" FIELD_TYPE_ID="METFieldType:ID:CO:26" COMPARATOR_ID="MASRComparator:ID:CO:5"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:930" FIELD_TYPE_ID="METFieldType:ID:CO:26" COMPARATOR_ID="MASRComparator:ID:CO:6"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:931" FIELD_TYPE_ID="METFieldType:ID:CO:26" COMPARATOR_ID="MASRComparator:ID:CO:7"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:932" FIELD_TYPE_ID="METFieldType:ID:CO:26" COMPARATOR_ID="MASRComparator:ID:CO:8"/>
+        <!--Comparators of FieldType -> TERRITORY-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:950" FIELD_TYPE_ID="METFieldType:ID:CO:27" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:951" FIELD_TYPE_ID="METFieldType:ID:CO:27" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:952" FIELD_TYPE_ID="METFieldType:ID:CO:27" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:953" FIELD_TYPE_ID="METFieldType:ID:CO:27" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <!--Comparators of FieldType -> TAGS-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1000" FIELD_TYPE_ID="METFieldType:ID:CO:28" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1001" FIELD_TYPE_ID="METFieldType:ID:CO:28" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1002" FIELD_TYPE_ID="METFieldType:ID:CO:28" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1003" FIELD_TYPE_ID="METFieldType:ID:CO:28" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1004" FIELD_TYPE_ID="METFieldType:ID:CO:28" COMPARATOR_ID="MASRComparator:ID:CO:9"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1005" FIELD_TYPE_ID="METFieldType:ID:CO:28" COMPARATOR_ID="MASRComparator:ID:CO:10"/>
+        <!--Comparators of FieldType -> IDENTIFIER-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1100" FIELD_TYPE_ID="METFieldType:ID:CO:33" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1101" FIELD_TYPE_ID="METFieldType:ID:CO:33" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1102" FIELD_TYPE_ID="METFieldType:ID:CO:33" COMPARATOR_ID="MASRComparator:ID:CO:9"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1103" FIELD_TYPE_ID="METFieldType:ID:CO:33" COMPARATOR_ID="MASRComparator:ID:CO:10"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1104" FIELD_TYPE_ID="METFieldType:ID:CO:33" COMPARATOR_ID="MASRComparator:ID:CO:11"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1105" FIELD_TYPE_ID="METFieldType:ID:CO:33" COMPARATOR_ID="MASRComparator:ID:CO:12"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1106" FIELD_TYPE_ID="METFieldType:ID:CO:33" COMPARATOR_ID="MASRComparator:ID:CO:13"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1107" FIELD_TYPE_ID="METFieldType:ID:CO:33" COMPARATOR_ID="MASRComparator:ID:CO:14"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1110" FIELD_TYPE_ID="METFieldType:ID:CO:33" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1111" FIELD_TYPE_ID="METFieldType:ID:CO:33" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <!--Comparators of FieldType -> DATE_TIME-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1120" FIELD_TYPE_ID="METFieldType:ID:CO:32" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1121" FIELD_TYPE_ID="METFieldType:ID:CO:32" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1122" FIELD_TYPE_ID="METFieldType:ID:CO:32" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1123" FIELD_TYPE_ID="METFieldType:ID:CO:32" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1124" FIELD_TYPE_ID="METFieldType:ID:CO:32" COMPARATOR_ID="MASRComparator:ID:CO:16"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1125" FIELD_TYPE_ID="METFieldType:ID:CO:32" COMPARATOR_ID="MASRComparator:ID:CO:17"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1126" FIELD_TYPE_ID="METFieldType:ID:CO:32" COMPARATOR_ID="MASRComparator:ID:CO:18"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1127" FIELD_TYPE_ID="METFieldType:ID:CO:32" COMPARATOR_ID="MASRComparator:ID:CO:19"/>
+
+        <!--Comparators of FieldType -> AUTO_NUMBER-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1140" FIELD_TYPE_ID="METFieldType:ID:CO:34" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1141" FIELD_TYPE_ID="METFieldType:ID:CO:34" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1142" FIELD_TYPE_ID="METFieldType:ID:CO:34" COMPARATOR_ID="MASRComparator:ID:CO:9"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1143" FIELD_TYPE_ID="METFieldType:ID:CO:34" COMPARATOR_ID="MASRComparator:ID:CO:10"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1144" FIELD_TYPE_ID="METFieldType:ID:CO:34" COMPARATOR_ID="MASRComparator:ID:CO:11"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1145" FIELD_TYPE_ID="METFieldType:ID:CO:34" COMPARATOR_ID="MASRComparator:ID:CO:12"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1146" FIELD_TYPE_ID="METFieldType:ID:CO:34" COMPARATOR_ID="MASRComparator:ID:CO:13"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1147" FIELD_TYPE_ID="METFieldType:ID:CO:34" COMPARATOR_ID="MASRComparator:ID:CO:14"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1148" FIELD_TYPE_ID="METFieldType:ID:CO:34" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1149" FIELD_TYPE_ID="METFieldType:ID:CO:34" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+
+        <!--Comparators of FieldType -> MARKETING LIST-->
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1200" FIELD_TYPE_ID="METFieldType:ID:CO:35" COMPARATOR_ID="MASRComparator:ID:CO:1"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1201" FIELD_TYPE_ID="METFieldType:ID:CO:35" COMPARATOR_ID="MASRComparator:ID:CO:2"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1202" FIELD_TYPE_ID="METFieldType:ID:CO:35" COMPARATOR_ID="MASRComparator:ID:CO:3"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1203" FIELD_TYPE_ID="METFieldType:ID:CO:35" COMPARATOR_ID="MASRComparator:ID:CO:4"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1204" FIELD_TYPE_ID="METFieldType:ID:CO:35" COMPARATOR_ID="MASRComparator:ID:CO:9"/>
+        <MASRFieldTypeComparator ID="MASRFieldTypeComparator:ID:CO:1205" FIELD_TYPE_ID="METFieldType:ID:CO:35" COMPARATOR_ID="MASRComparator:ID:CO:10"/>
+
+        <!--Templates of Auto-Assignment-->
+        <MASRTemplate ID="MASRTemplate:ID:CO:1" NAME="i18n.auto.assignment.template.uslead.routing.name" DESCRIPTION="i18n.auto.assignment.template.uslead.routing.description" MODULE="1">
+            <MASRTemplateCriteriaSet ID="MASRTemplateCriteriaSet:ID:CO:1" CONNECTOR_ID="1" ORDER="1">
+                <MASRTemplateCriteria ID="MASRTemplateCriteria:ID:CO:1" FIELD_ID="OMETFields:ID:CO:90" COMPARATOR_ID="MASRComparator:ID:CO:1" ORDER="1">
+                    <MASRTemplateCriteriaValue ID="MASRTemplateCriteriaValue:ID:CO:1" VALUE="Lead"/>
+                </MASRTemplateCriteria>
+            </MASRTemplateCriteriaSet>
+
+            <MASRTemplateCriteriaSet ID="MASRTemplateCriteriaSet:ID:CO:2" ORDER="2">
+                <MASRTemplateCriteria ID="MASRTemplateCriteria:ID:CO:2" FIELD_ID="OMETFields:ID:CO:4000" COMPARATOR_ID="MASRComparator:ID:CO:1" ORDER="1">
+                    <MASRTemplateCriteriaValue ID="MASRTemplateCriteriaValue:ID:CO:2" VALUE="USA"/>
+                </MASRTemplateCriteria>
+            </MASRTemplateCriteriaSet>
+        </MASRTemplate>
+
+
+        <MASRTemplate ID="MASRTemplate:ID:CO:2" NAME="i18n.auto.assignment.template.eulead.routing.name" DESCRIPTION="i18n.auto.assignment.template.eulead.routing.description" MODULE="1">
+            <MASRTemplateCriteriaSet ID="MASRTemplateCriteriaSet:ID:CO:10" CONNECTOR_ID="1" ORDER="1">
+                <MASRTemplateCriteria ID="MASRTemplateCriteria:ID:CO:10" FIELD_ID="OMETFields:ID:CO:90" COMPARATOR_ID="MASRComparator:ID:CO:1" ORDER="1">
+                    <MASRTemplateCriteriaValue ID="MASRTemplateCriteriaValue:ID:CO:10" VALUE="Lead"/>
+                </MASRTemplateCriteria>
+            </MASRTemplateCriteriaSet>
+
+            <MASRTemplateCriteriaSet ID="MASRTemplateCriteriaSet:ID:CO:15" ORDER="2">
+                <MASRTemplateCriteria ID="MASRTemplateCriteria:ID:CO:15" FIELD_ID="OMETFields:ID:CO:4000" COMPARATOR_ID="MASRComparator:ID:CO:1" ORDER="1">
+                    <MASRTemplateCriteriaValue ID="MASRTemplateCriteriaValue:ID:CO:15" VALUE="Austria"/>
+                </MASRTemplateCriteria>
+            </MASRTemplateCriteriaSet>
+        </MASRTemplate>
+
+
+        <MASRTemplate ID="MASRTemplate:ID:CO:3" NAME="i18n.auto.assignment.template.web.lead.routing.name" DESCRIPTION="i18n.auto.assignment.template.web.lead.routing.description" MODULE="1">
+            <MASRTemplateCriteriaSet ID="MASRTemplateCriteriaSet:ID:CO:20" CONNECTOR_ID="1" ORDER="1">
+                <MASRTemplateCriteria ID="MASRTemplateCriteria:ID:CO:20" FIELD_ID="OMETFields:ID:CO:90" COMPARATOR_ID="MASRComparator:ID:CO:1" ORDER="1">
+                    <MASRTemplateCriteriaValue ID="MASRTemplateCriteriaValue:ID:CO:20" VALUE="Lead"/>
+                </MASRTemplateCriteria>
+            </MASRTemplateCriteriaSet>
+
+            <MASRTemplateCriteriaSet ID="MASRTemplateCriteriaSet:ID:CO:21" ORDER="2">
+                <MASRTemplateCriteria ID="MASRTemplateCriteria:ID:CO:21" FIELD_ID="OMETFields:ID:CO:80" COMPARATOR_ID="MASRComparator:ID:CO:15" ORDER="1">
+                    <MASRTemplateCriteriaValue ID="MASRTemplateCriteriaValue:ID:CO:21" VALUE="i18n.contact.source.option.web"/>
+                    <MASRTemplateCriteriaValue ID="MASRTemplateCriteriaValue:ID:CO:22" VALUE="i18n.contact.source.option.webForm"/>
+                    <MASRTemplateCriteriaValue ID="MASRTemplateCriteriaValue:ID:CO:23" VALUE="Webinar"/>
+                </MASRTemplateCriteria>
+            </MASRTemplateCriteriaSet>
+        </MASRTemplate>
+
+
+        <MASRTemplate ID="MASRTemplate:ID:CO:4" NAME="i18n.auto.assignment.template.partner.lead.routing.name" DESCRIPTION="i18n.auto.assignment.template.partner.lead.routing.description" MODULE="1">
+            <MASRTemplateCriteriaSet ID="MASRTemplateCriteriaSet:ID:CO:30" CONNECTOR_ID="1" ORDER="1">
+                <MASRTemplateCriteria ID="MASRTemplateCriteria:ID:CO:30" FIELD_ID="OMETFields:ID:CO:90" COMPARATOR_ID="MASRComparator:ID:CO:1" ORDER="1">
+                    <MASRTemplateCriteriaValue ID="MASRTemplateCriteriaValue:ID:CO:30" VALUE="Lead"/>
+                </MASRTemplateCriteria>
+            </MASRTemplateCriteriaSet>
+
+            <MASRTemplateCriteriaSet ID="MASRTemplateCriteriaSet:ID:CO:35" ORDER="2">
+                <MASRTemplateCriteria ID="MASRTemplateCriteria:ID:CO:35" FIELD_ID="OMETFields:ID:CO:80" COMPARATOR_ID="MASRComparator:ID:CO:1" ORDER="1">
+                    <MASRTemplateCriteriaValue ID="MASRTemplateCriteriaValue:ID:CO:35" VALUE="Referral"/>
+                </MASRTemplateCriteria>
+            </MASRTemplateCriteriaSet>
+        </MASRTemplate>
+
+        <MSCHRoundRobinGroup ID="MSCHRoundRobinGroup:ID:CO:1" NAME="autoAssignment" LIMIT_TYPE="4"/>
+
+    </module>
+</dumpdata>

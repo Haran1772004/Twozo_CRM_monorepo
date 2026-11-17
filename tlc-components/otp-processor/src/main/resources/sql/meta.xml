@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_otp">
+
+        <table name="MOTPApplication">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false"/>
+                <primary-key name="MOTPApplication_PK" column="ID" sequence-generator="MOTPApplication.ID"/>
+
+                <unique-keys>
+                    <unique-key name="MOTPApplication_UK">
+                        <unique-key-column>NAME</unique-key-column>
+                    </unique-key>
+                </unique-keys>
+            </columns>
+        </table>
+
+        <table name="MOTPCategory">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false"/>
+                <column name="APPLICATION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONFIG" data-type="TEXT" nullable="false" max-length="600"/>
+                <primary-key name="MOTPCategory_PK" column="ID" sequence-generator="MOTPCategory.ID"/>
+
+                <foreign-keys>
+                    <foreign-key name="MOTPCategory_FK1" reference-table="MOTPApplication"
+                                 local-column="APPLICATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                </foreign-keys>
+
+                <unique-keys>
+                    <unique-key name="MOTPCategory_UK">
+                        <unique-key-column>NAME</unique-key-column>
+                        <unique-key-column>APPLICATION_ID</unique-key-column>
+                    </unique-key>
+                </unique-keys>
+            </columns>
+        </table>
+
+        <table name="OMOTPRequest" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="OTP" data-type="CHAR" nullable="false"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="true"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="true"/>
+                <column name="CHANNEL" data-type="SMALLINT" nullable="false"/>
+                <column name="RECEIVER" data-type="CHAR" nullable="false" max-length="320"/>
+                <column name="CATEGORY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXPIRES_AT" data-type="BIGINT" nullable="false"/>
+                <column name="VERIFIED_AT" data-type="BIGINT" nullable="true"/>
+                <column name="TOTAL_ATTEMPTS" data-type="INTEGER" nullable="false"/>
+                <column name="ADDED_AT" data-type="BIGINT" nullable="false"/>
+                <column name="VERIFICATION_TOKEN" data-type="CHAR" nullable="true" max-length="256"/>
+            </columns>
+            <primary-key name="OMOTPRequest_PK" column="ID" sequence-generator="OMOTPRequest.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="OMOTPRequest_FK1" reference-table="MOTPCategory"
+                             local-column="CATEGORY_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <unique-keys>
+                <unique-key name="OMOTPRequest_UK">
+                    <unique-key-column>CATEGORY_ID</unique-key-column>
+                    <unique-key-column>RECEIVER</unique-key-column>
+                    <unique-key-column>OTP</unique-key-column>
+                </unique-key>
+            </unique-keys>
+
+            <indexes>
+                <index name="OMOTPRequest_Idx1">
+                    <index-column>CHANNEL</index-column>
+                </index>
+                <index name="OMOTPRequest_Idx2">
+                    <index-column>RECEIVER</index-column>
+                </index>
+            </indexes>
+        </table>
+    </module>
+</metadata>

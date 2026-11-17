@@ -1,0 +1,243 @@
+spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          credential:
+            managed-identity-enabled: true
+            client-id: ${SPRING_CLOUD_AZURE_KEYVAULT_SECRET_CREDENTIAL_CLIENT_ID}
+          property-source-enabled: ${SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCE_ENABLED:true}
+          property-sources:
+            - name: storage-config
+              endpoint: ${SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_ENDPOINT}
+              secret-keys:
+                - TLC-CONFIG-DATABASE-NAME
+                - TLC-CONFIG-DATABASE-SERVER
+                - TLC-CONFIG-DATABASE-USERNAME
+                - TLC-CONFIG-DATABASE-PASSWORD
+                - TLC-CONFIG-STORAGE-AZURE-ACCOUNTNAME
+                - TLC-CONFIG-STORAGE-AZURE-ACCOUNTKEY
+                - TLC-CONFIG-STORAGE-AZURE-ENDPOINT
+                - TLC-CONFIG-STORAGE-AWS-SERVER
+                - TLC-CONFIG-STORAGE-AWS-BUCKET
+                - TLC-CONFIG-STORAGE-AWS-ACCESSKEY
+                - TLC-CONFIG-STORAGE-AWS-SECRETKEY
+                - TLC-CONFIG-STORAGE-AWS-REGION
+                - TLC-CONFIG-CACHE-SERVER
+                - TLC-CONFIG-CACHE-PASSWORD
+                - TLC-CONFIG-ZOOKEEPER-SERVER
+                - TLC-CONFIG-QUEUE-KAFKA-SELFMANAGED-SERVER
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-SERVER
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-MECHANISM
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-JAAS-CONFIG
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-CLIENT-CALLBACK-HANDLER-CLASS
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-MECHANISM
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-JAAS-CONFIG
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-LOGIN-CALLBACK-HANDLER-CLASS
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-OAUTHBEARER-TOKEN-ENDPOINT-URL
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-AUTH-CALLBACK-SCOPE
+                - TLC-CONFIG-WEB-CLIENT-VERTX-CLUSTER-HAZELCAST-HOST
+                - TLC-CONFIG-WEB-DEFAULT-DOMAIN
+                - TLC-CONFIG-WEB-ALLOWEDORIGINS
+                - TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-0
+                - TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-1
+                - TLC-CONFIG-STORAGE-AZURE-AZURITE-ENDPOINT
+                - TLC-CONFIG-STORAGE-AZURE-AUTHTYPE
+                - TLC-CONFIG-QUEUE-PROVIDER
+
+  application.name: twozo-file-service
+  profiles.active: ${SPRING_PROFILES_ACTIVE}
+
+logging:
+  level:
+    root: INFO
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger{35} - %msg%n"
+  file:
+    name: logs/twozo-file-service.log
+
+tlc.config:
+  storage:
+    client: ${TLC_CONFIG_STORAGE_CLIENT}
+    azure:
+      accountName: ${TLC-CONFIG-STORAGE-AZURE-ACCOUNTNAME}
+      accountKey: ${TLC-CONFIG-STORAGE-AZURE-ACCOUNTKEY}
+      endpoint: ${TLC-CONFIG-STORAGE-AZURE-ENDPOINT}
+      authType: ${TLC-CONFIG-STORAGE-AZURE-AUTHTYPE}
+      containers:
+        - ${TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-0}
+        - ${TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-1}
+      azurite:
+        enabled: ${TLC_CONFIG_STORAGE_AZURE_AZURITE_ENABLED}
+        endpoint: ${TLC-CONFIG-STORAGE-AZURE-AZURITE-ENDPOINT}
+    aws:
+      server: ${TLC-CONFIG-STORAGE-AWS-SERVER}
+      accessKey: ${TLC-CONFIG-STORAGE-AWS-ACCESSKEY}
+      secretKey: ${TLC-CONFIG-STORAGE-AWS-SECRETKEY}
+      bucket: ${TLC-CONFIG-STORAGE-AWS-BUCKET}
+      region: ${TLC-CONFIG-STORAGE-AWS-REGION}
+      authMethod: ${TLC_CONFIG_STORAGE_AWS_AUTHMETHOD}
+
+  cache:
+    type: ${TLC_CONFIG_CACHE_TYPE}
+    scheme: ${TLC_CONFIG_CACHE_SCHEME}
+    server: ${TLC-CONFIG-CACHE-SERVER}
+    password: ${TLC-CONFIG-CACHE-PASSWORD}
+    test-enabled: ${TLC_CONFIG_CACHE_TEST_ENABLED}
+
+  zookeeper:
+    server: ${TLC-CONFIG-ZOOKEEPER-SERVER}
+    maxRetry: 3
+    retryWait: 1000
+    connectionTimeout: 5000
+    sessionTimeout: 500000
+
+  database:
+    oltp:
+      name: ${TLC-CONFIG-DATABASE-NAME}
+      server: ${TLC-CONFIG-DATABASE-SERVER}
+      username: ${TLC-CONFIG-DATABASE-USERNAME}
+      password: ${TLC-CONFIG-DATABASE-PASSWORD}
+      developmentModeEnabled: ${TLC_CONFIG_DATABASE_DEVELOPMENTMODEENABLED}
+      connectionPool:
+        name: storage-oltp-pool
+        max: 5
+        idle: 2
+        idle.timeout: 300000
+        maxLifetime: 1800000
+        connectionTimeout: 30000
+        leakDetectionThreshold: 60000
+
+  database-resource:
+    snapshotPath: sql/snapshot
+    home: ${TLC_CONFIG_DATABASE_RESOURCE_HOME:twozo}
+    storeType: ${TLC_CONFIG_DATABASE_RESOURCE_STORETYPE:remote}
+    serverMode: ${TLC_CONFIG_DATABASE_RESOURCE_SERVERMODE}
+
+  queue:
+    consumerBufferBytes: 5000000
+    heartbeatInterval: 10000
+    sessionTimeout: 30000
+    maxPollInterval: 300000
+    provider: ${TLC-CONFIG-QUEUE-PROVIDER}
+    async:
+      offset:
+        writer:
+          pool: async-offset-writer-pool:3
+    kafka:
+      selfManaged:
+        server: ${TLC-CONFIG-QUEUE-KAFKA-SELFMANAGED-SERVER}
+      managed:
+        server: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-SERVER}
+        security.protocol: ${TLC_CONFIG_QUEUE_KAFKA_MANAGED_SECURITY_PROTOCOL}
+        provider: ${TLC_CONFIG_QUEUE_KAFKA_MANAGED_PROVIDER}
+        aws:
+          sasl:
+            mechanism: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-MECHANISM}
+            jaas.config: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-JAAS-CONFIG}
+            client.callback.handler.class: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-CLIENT-CALLBACK-HANDLER-CLASS}
+        azure:
+          sasl:
+            mechanism: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-MECHANISM}
+            jaas.config: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-JAAS-CONFIG}
+            login.callback.handler.class: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-LOGIN-CALLBACK-HANDLER-CLASS}
+            oauthbearer.token.endpoint.url: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-OAUTHBEARER-TOKEN-ENDPOINT-URL}
+            auth.callback:
+              scope: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-AUTH-CALLBACK-SCOPE}
+              principal: azure-cli
+    topics:
+      - ATTACHMENT_DELETE_LISTENER:1
+      - ATTACHMENT_UPLOAD_LISTENER:1
+
+  scheduler:
+    pool: presigned-url-cleaner-pool:1,attachment-deletion-handler-pool:2,zk-health-checker:1,vertx-cluster-reboot:1
+
+  web:
+    http.port: ${TLC_CONFIG_WEB_HTTP_PORT}
+    path.prefix: /api/storage
+    app.name: STORAGE
+    default.domain: ${TLC-CONFIG-WEB-DEFAULT-DOMAIN}
+    allowedOrigins: ${TLC-CONFIG-WEB-ALLOWEDORIGINS}
+
+  web-client:
+    vertx:
+      cluster:
+        manager: ${TLC_CONFIG_WEB_CLIENT_VERTX_CLUSTER_MANAGER}
+        hazelcast:
+          host: ${TLC-CONFIG-WEB-CLIENT-VERTX-CLUSTER-HAZELCAST-HOST}
+          port: ${TLC_CONFIG_WEB_CLIENT_VERTX_CLUSTER_HAZELCAST_PORT}
+        zookeeper:
+          host: ${TLC-CONFIG-ZOOKEEPER-SERVER}
+          rootPath: io.vertx
+          initialSleepTime: 1000
+          maxTimes: 5
+
+  file-service:
+    storageType: object
+    request.handler.pool: file-request-handler-pool:5
+
+  file-validation-policy:
+    crm:
+      category:
+        - name: contact
+          value: 1
+          allowed-extension: docx, doc, pdf, ppt, pptx, xls, csv, xlsx, txt, html, gif, jpg, jpeg, png, heic, zip
+
+        - name: company
+          value: 2
+          allowed-extension: docx, doc, pdf, ppt, pptx, xls, csv, xlsx, txt, html, gif, jpg, jpeg, png, heic, zip
+
+        - name: deal
+          value: 3
+          allowed-extension: docx, doc, pdf, ppt, pptx, xls, csv, xlsx, txt, html, gif, jpg, jpeg, png, heic, zip
+
+        - name: import
+          value: 4
+          allowed-extension: csv, xlsx, xls
+
+        - name: source-profile
+          value: 5
+          allowed-extension: jpg:2, jpeg:2, png:2, heic:2
+
+        - name: user-profile
+          value: 6
+          allowed-extension: jpg:2, jpeg:2, png:2, heic:2
+
+        - name: email
+          value: 7
+          allowed-extension: docx, doc, pdf, ppt, pptx, xls, csv, xlsx, txt, html, gif, jpg, jpeg, png, heic, zip
+
+        - name: facebook
+          value: 9
+          allowed-extension: png:8, jpg:8, jpeg:8, gif:8, pdf:25, ppt:25, pptx:25, txt:25, xls:25, xlsx:25, doc:25, docx:25, mp4:25, mov:25, avi:25, webm:25, mp3:25, ogg:25, m4a:25, aac:25, wav:25
+
+        - name: whatsapp
+          value: 10
+          allowed-extension: png:5, jpg:5, jpeg:5, pdf:50, ppt:50, pptx:50, txt:50, xls:50, xlsx:50, doc:50, docx:50, zip:50, mp4:16, mp3:16, m4a:16, aac:16
+
+        - name: instagram
+          value: 11
+          allowed-extension: png:8, jpg:8, jpeg:8, gif:8, mp4:25, mov:25, avi:25, webm:25, m4a:25, aac:25, wav:25
+
+        - name: quote
+          value: 12
+          allowed-extension: png:5, jpg:5, jpeg:5
+
+        - name: webform-image
+          value: 13
+          allowed-extension: jpg:5, jpeg:5, png:5
+          default-max-size-mb: 5
+    default-max-size-mb: 50
+
+  services:
+    enabled:
+      - storage
+      - cache
+      - database
+      - database-resource
+      - zookeeper
+      - scheduler
+      - queue
+      - web
+      - web-client
+      - file-service

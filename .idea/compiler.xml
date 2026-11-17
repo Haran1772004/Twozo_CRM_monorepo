@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <excludeFromCompile>
+      <directory url="file://$PROJECT_DIR$/tlc-components/resilience/src/main/resources/archetype-resources" includeSubdirectories="true" />
+    </excludeFromCompile>
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="entity (1) (com.tlc.crm)" />
+        <module name="iam-starter" />
+        <module name="email-starter" />
+        <module name="ui-client" />
+        <module name="server-starter" />
+        <module name="social-starter" />
+        <module name="components-starter" />
+        <module name="file-starter" />
+        <module name="entity" />
+      </profile>
+      <profile name="Annotation profile for email-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.48/lombok-1.18.48.jar" />
+        </processorPath>
+        <module name="cluster" />
+        <module name="validator" />
+        <module name="plan-and-billing" />
+        <module name="analytics" />
+        <module name="notification" />
+        <module name="mcp" />
+        <module name="observability" />
+        <module name="plans-and-billings" />
+        <module name="cache" />
+        <module name="sql-common" />
+        <module name="marketplace" />
+        <module name="workflow" />
+        <module name="ai" />
+        <module name="oltp" />
+        <module name="i18n" />
+        <module name="email-common" />
+        <module name="core" />
+        <module name="product-package" />
+        <module name="zapier" />
+        <module name="fields" />
+        <module name="notifications" />
+        <module name="social-client" />
+        <module name="server" />
+        <module name="email-server" />
+        <module name="file-client" />
+        <module name="sync-service-oauth" />
+        <module name="webclient" />
+        <module name="email-notification" />
+        <module name="iam-common" />
+        <module name="icon" />
+        <module name="entity (1) (com.tlc)" />
+        <module name="tools" />
+        <module name="crm-marketplace" />
+        <module name="commons" />
+        <module name="payment-gateway" />
+        <module name="scheduler" />
+        <module name="exchange-rate" />
+        <module name="search" />
+        <module name="entity (2) (com.tlc.crm)" />
+        <module name="security" />
+        <module name="attachment" />
+        <module name="common" />
+        <module name="web" />
+        <module name="client" />
+        <module name="app-notification" />
+        <module name="file-server" />
+        <module name="social-common" />
+        <module name="email-core" />
+        <module name="identity-provider" />
+        <module name="conversation-handler" />
+        <module name="webform" />
+        <module name="auto-assignment" />
+        <module name="l10n" />
+        <module name="otp-processor" />
+        <module name="messenger" />
+        <module name="cdc-core" />
+        <module name="file-common" />
+        <module name="olap" />
+        <module name="social-server" />
+        <module name="email-client" />
+        <module name="queue" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="goals" target="17" />
+      <module name="reports" target="17" />
+      <module name="resilience" target="17" />
+      <module name="webclient-api" target="25" />
+      <module name="webclient-bom" target="1.5" />
+      <module name="webclient-eventbus-api" target="25" />
+      <module name="webclient-eventbus-nats" target="25" />
+      <module name="webclient-eventbus-vertx" target="25" />
+      <module name="webclient-http" target="25" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="components-starter" options="-parameters" />
+      <module name="email-starter" options="-parameters" />
+      <module name="file-starter" options="-parameters" />
+      <module name="iam-starter" options="-parameters" />
+      <module name="mcp" options="-parameters" />
+      <module name="server-starter" options="-parameters" />
+      <module name="social-starter" options="-parameters" />
+      <module name="ui-client" options="-parameters" />
+    </option>
+  </component>
+</project>

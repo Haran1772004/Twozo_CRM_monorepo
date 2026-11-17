@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+
+    environment {
+        def config = readYaml file: 'ci-cd/jenkins-config.yml'
+
+        PROJECT_NAME="${config.project.name}"
+        GIT_REPO_URL="${config.git.url}"
+        GIT_SECRET_ID="${config.git.secret}"
+        MVN_SETTINGS="${config.maven.settings}"
+        SONAR_SECRET_ID="${config.sonar.secret}"
+    }
+
+    tools {
+        jdk "JDK17"
+        maven "MVN3"
+    }
+
+    stages {
+        stage('Clone Branch Code') {
+            steps {
+                git branch: "${env.BRANCH_NAME}", credentialsId: "${env.GIT_SECRET_ID}", url: "${env.GIT_REPO_URL}"
+            }
+        }
+
+        stage('Quality Gate') {
+
+            when {
+                expression {
+                    return ['pre-prod', 'develop'].contains(env.BRANCH_NAME)
+                }
+            }
+
+            steps {
+                script {
+                    withCredentials([string(credentialsId: env.SONAR_SECRET_ID, variable: 'SONARQUBE_ACCESS_TOKEN')]) {
+                        withMaven(mavenSettingsConfig: env.MVN_SETTINGS, traceability: true) {
+                            sh " mvn clean verify sonar:sonar -Dsonar.token=${SONARQUBE_ACCESS_TOKEN} -Dsonar.projectName=${env.PROJECT_NAME} -Dsonar.projectKey=${env.PROJECT_NAME} -Dsonar.qualitygate.wait=true"
+                        }
+                    }
+
+                }
+            }
+        }
+
+        stage('Maven Build') {
+            steps {
+                withMaven(mavenSettingsConfig: env.MVN_SETTINGS, traceability: true) {
+                    sh "mvn clean install -e"
+                }
+            }
+        }
+
+    }
+}

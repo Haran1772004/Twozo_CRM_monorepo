@@ -1,0 +1,25 @@
+def fieldsToRemove = params.fieldsToRemove;
+      for (String field : fieldsToRemove) {
+        String[] path = field.splitOnToken('.');
+        if (path.length == 0) continue;
+
+        def current = ctx._source;
+        for (int i = 0; i < path.length - 1; i++) {
+          String part = path[i];
+          if (current instanceof Map && current.containsKey(part)) {
+            current = current[part];
+            if (!(current instanceof Map)) {
+              current = null;
+              break;
+            }
+          } else {
+            current = null;
+            break;
+          }
+        }
+
+        if (current instanceof Map) {
+          current.remove(path[path.length - 1]);
+        }
+      }
+

@@ -1,0 +1,1603 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dumpdata>
+
+    <module name="plan_and_billing">
+
+        <MPBCancellationReason ID="MPBCancellationReason:ID:PB:1"
+                               APPLICATION_ID="TZApplication:ID:AM:1"
+                               NAME="i18n.plan.cancellation.reason.1"
+                               ORDER="1"/>
+
+        <MPBCancellationReason ID="MPBCancellationReason:ID:PB:2"
+                               APPLICATION_ID="TZApplication:ID:AM:1"
+                               NAME="i18n.plan.cancellation.reason.2"
+                               ORDER="2"/>
+
+        <MPBCancellationReason ID="MPBCancellationReason:ID:PB:3"
+                               APPLICATION_ID="TZApplication:ID:AM:1"
+                               NAME="i18n.plan.cancellation.reason.3"
+                               ORDER="3"/>
+
+        <MPBCancellationReason ID="MPBCancellationReason:ID:PB:4"
+                               APPLICATION_ID="TZApplication:ID:AM:1"
+                               NAME="i18n.plan.cancellation.reason.4"
+                               ORDER="4"/>
+
+        <MPBCancellationReason ID="MPBCancellationReason:ID:PB:5"
+                               APPLICATION_ID="TZApplication:ID:AM:1"
+                               NAME="i18n.plan.cancellation.reason.5"
+                               ORDER="5"/>
+
+        <MPBCancellationReason ID="MPBCancellationReason:ID:PB:6"
+                               APPLICATION_ID="TZApplication:ID:AM:1"
+                               NAME="i18n.plan.cancellation.reason.6"
+                               ORDER="6"/>
+
+        <MPBCancellationReason ID="MPBCancellationReason:ID:PB:7"
+                               APPLICATION_ID="TZApplication:ID:AM:1"
+                               NAME="i18n.plan.cancellation.reason.7"
+                               ORDER="7"/>
+
+        <MPBCancellationReason ID="MPBCancellationReason:ID:PB:8"
+                               APPLICATION_ID="TZApplication:ID:AM:1"
+                               NAME="i18n.plan.cancellation.reason.8"
+                               ORDER="8"/>
+
+        <MPBCancellationReason ID="MPBCancellationReason:ID:PB:9"
+                               APPLICATION_ID="TZApplication:ID:AM:1"
+                               NAME="i18n.plan.cancellation.reason.9"
+                               ORDER="9"/>
+
+        <MPBCancellationReason ID="MPBCancellationReason:ID:PB:10"
+                               APPLICATION_ID="TZApplication:ID:AM:1"
+                               NAME="i18n.plan.cancellation.reason.10"
+                               ORDER="10"/>
+
+        <MPBCancellationReason ID="MPBCancellationReason:ID:PB:11"
+                               APPLICATION_ID="TZApplication:ID:AM:1"
+                               NAME="i18n.plan.cancellation.reason.11"
+                               ORDER="11"/>
+
+        <MPBDiscounts ID="MPBDiscounts:ID:PB:1"
+                      NAME="i18n.plan.discount.yearly.plan.discount"
+                      DESCRIPTION="i18n.plan.discount.description.yearly.plan.discount"
+                      REFERENCE_ID="SAVE20"
+                      VALUE="0.20"
+                      TYPE="2"/>
+
+        <MPBDiscounts ID="MPBDiscounts:ID:PB:2"
+                      NAME="i18n.plan.discount.cancellation.discount"
+                      DESCRIPTION="i18n.plan.discount.description.cancellation.discount"
+                      SIMPLIFIED_DESCRIPTION="i18n.plan.discount.simplified.description.cancellation.discount"
+                      REFERENCE_ID="30OFF"
+                      VALUE="0.30"
+                      EXPIRATION_PERIOD="3 months"
+                      TYPE="3"/>
+
+                                            <!--Ordinary plans-->
+        <MPBSubscriptionPlans ID="MPBSubscriptionPlans:ID:PB:1"
+                              NAME="i18n.plan.name.essential"
+                              DESCRIPTION="i18n.plan.description.essential"
+                              KEY_FEATURES="[&quot;i18n.plan.key.features.essential.1&quot;,
+                                             &quot;i18n.plan.key.features.essential.2&quot;,
+                                             &quot;i18n.plan.key.features.essential.3&quot;]"
+                              APPLICATION_ID="TZApplication:ID:AM:1"
+                              PLAN_TYPE="1"
+                              ORDER="1">
+
+            <MPBPricingSchemes ID="MPBPricingSchemes:ID:PB:101"
+                               VALUE="9.90"
+                               PRICING_BASIS="1"
+                               BILLING_CYCLE="1">
+
+                <MPBPricingSchemeDiscounts ID="MPBPricingSchemeDiscounts:ID:PB:102"
+                                           DISCOUNT_ID="MPBDiscounts:ID:PB:2"/>
+            </MPBPricingSchemes>
+
+            <MPBPricingSchemes ID="MPBPricingSchemes:ID:PB:102"
+                               VALUE="118.8"
+                               PRICING_BASIS="1"
+                               BILLING_CYCLE="2">
+
+                <MPBPricingSchemeDiscounts ID="MPBPricingSchemeDiscounts:ID:PB:101"
+                                           DISCOUNT_ID="MPBDiscounts:ID:PB:1"/>
+            </MPBPricingSchemes>
+        </MPBSubscriptionPlans>
+
+        <MPBSubscriptionPlans ID="MPBSubscriptionPlans:ID:PB:2"
+                              NAME="i18n.plan.name.professional"
+                              DESCRIPTION="i18n.plan.description.professional"
+                              KEY_FEATURES="[&quot;i18n.plan.key.features.professional.1&quot;,
+                                             &quot;i18n.plan.key.features.professional.2&quot;,
+                                             &quot;i18n.plan.key.features.professional.3&quot;]"
+                              IS_DEFAULT_TRIAL_PLAN="true"
+                              APPLICATION_ID="TZApplication:ID:AM:1"
+                              PLAN_TYPE="1"
+                              ORDER="2">
+
+            <MPBPricingSchemes ID="MPBPricingSchemes:ID:PB:201"
+                               VALUE="39.90"
+                               PRICING_BASIS="1"
+                               BILLING_CYCLE="1">
+
+                <MPBPricingSchemeDiscounts ID="MPBPricingSchemeDiscounts:ID:PB:202"
+                                           DISCOUNT_ID="MPBDiscounts:ID:PB:2"/>
+            </MPBPricingSchemes>
+
+            <MPBPricingSchemes ID="MPBPricingSchemes:ID:PB:202"
+                               VALUE="478.8"
+                               PRICING_BASIS="1"
+                               BILLING_CYCLE="2">
+
+                <MPBPricingSchemeDiscounts ID="MPBPricingSchemeDiscounts:ID:PB:201"
+                                           DISCOUNT_ID="MPBDiscounts:ID:PB:1"/>
+            </MPBPricingSchemes>
+        </MPBSubscriptionPlans>
+
+        <MPBSubscriptionPlans ID="MPBSubscriptionPlans:ID:PB:3"
+                              NAME="i18n.plan.name.enterprise"
+                              DESCRIPTION="i18n.plan.description.enterprise"
+                              KEY_FEATURES="[&quot;i18n.plan.key.features.professional.1&quot;,
+                                             &quot;i18n.plan.key.features.professional.2&quot;,
+                                             &quot;i18n.plan.key.features.professional.3&quot;]"
+                              APPLICATION_ID="TZApplication:ID:AM:1"
+                              PLAN_TYPE="1"
+                              ORDER="3">
+
+            <MPBPricingSchemes ID="MPBPricingSchemes:ID:PB:301"
+                               VALUE="59.90"
+                               PRICING_BASIS="1"
+                               BILLING_CYCLE="1">
+
+                <MPBPricingSchemeDiscounts ID="MPBPricingSchemeDiscounts:ID:PB:302"
+                                           DISCOUNT_ID="MPBDiscounts:ID:PB:2"/>
+            </MPBPricingSchemes>
+
+            <MPBPricingSchemes ID="MPBPricingSchemes:ID:PB:302"
+                               VALUE="718.8"
+                               PRICING_BASIS="1"
+                               BILLING_CYCLE="2">
+
+                <MPBPricingSchemeDiscounts ID="MPBPricingSchemeDiscounts:ID:PB:301"
+                                           DISCOUNT_ID="MPBDiscounts:ID:PB:1"/>
+            </MPBPricingSchemes>
+        </MPBSubscriptionPlans>
+
+                                            <!--ADD-ON plans-->
+        <MPBSubscriptionPlans ID="MPBSubscriptionPlans:ID:PB:4"
+                              NAME="i18n.plan.name.buildIn.phone"
+                              DESCRIPTION="i18n.plan.description.buildIn.phone"
+                              SIMPLIFIED_DESCRIPTION="i18n.plan.simplified.description.buildIn.phone"
+                              APPLICATION_ID="TZApplication:ID:AM:1"
+                              PLAN_TYPE="2"
+                              ORDER="1">
+
+            <MPBPricingSchemes ID="MPBPricingSchemes:ID:PB:401"
+                               VALUE="19.90"
+                               PRICING_BASIS="2"
+                               BILLING_CYCLE="1"/>
+        </MPBSubscriptionPlans>
+
+        <MPBSubscriptionPlans ID="MPBSubscriptionPlans:ID:PB:5"
+                              NAME="i18n.plan.name.workflows"
+                              DESCRIPTION="i18n.plan.description.workflows"
+                              SIMPLIFIED_DESCRIPTION="i18n.plan.simplified.description.workflows"
+                              APPLICATION_ID="TZApplication:ID:AM:1"
+                              PLAN_TYPE="2"
+                              ORDER="2">
+
+            <MPBPricingSchemes ID="MPBPricingSchemes:ID:PB:501"
+                               VALUE="20"
+                               PRICING_BASIS="2"
+                               BILLING_CYCLE="1"/>
+        </MPBSubscriptionPlans>
+
+        <MPBSubscriptionPlans ID="MPBSubscriptionPlans:ID:PB:6"
+                              NAME="i18n.plan.name.reports"
+                              DESCRIPTION="i18n.plan.description.reports"
+                              SIMPLIFIED_DESCRIPTION="i18n.plan.simplified.description.reports"
+                              APPLICATION_ID="TZApplication:ID:AM:1"
+                              PLAN_TYPE="2"
+                              ORDER="3">
+
+            <MPBPricingSchemes ID="MPBPricingSchemes:ID:PB:601"
+                               VALUE="20"
+                               PRICING_BASIS="2"
+                               BILLING_CYCLE="1"/>
+        </MPBSubscriptionPlans>
+
+                                                <!--Features and plan features-->
+        <MPBFeatureGroups ID="MPBFeatureGroups:ID:PB:1" NAME="i18n.plan.feature.group.deal" ORDER="1">
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:101"
+                         NAME="i18n.plan.feature.deal.management"
+                         DESCRIPTION="i18n.plan.feature.description.deal.management"
+                         ORDER="1"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10101"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10102"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10103"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:10101"
+                                  MODULE_ID="TZApplicationModules:ID:AM:3"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:102"
+                         NAME="i18n.plan.feature.deal.pipeline"
+                         DESCRIPTION="i18n.plan.feature.description.deal.pipeline"
+                         ORDER="2"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10201"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10202"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10203"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:10201"
+                                  MODULE_ID="TZApplicationModules:ID:AM:3"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:103"
+                         NAME="i18n.plan.feature.deal.products"
+                         DESCRIPTION="i18n.plan.feature.description.deal.products"
+                         ORDER="3"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10301"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10302"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10303"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:10301"
+                                  MODULE_ID="TZApplicationModules:ID:AM:4"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:104"
+                         NAME="i18n.plan.feature.deal.rotting"
+                         DESCRIPTION="i18n.plan.feature.description.deal.rotting"
+                         ORDER="4"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10401"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10402"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10403"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:10401"
+                                  MODULE_ID="TZApplicationModules:ID:AM:3"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:105"
+                         NAME="i18n.plan.feature.deal.merge.duplicates"
+                         DESCRIPTION="i18n.plan.feature.description.deal.merge.duplicates"
+                         ORDER="5"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10501"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10502"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10503"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:10501"
+                                  MODULE_ID="TZApplicationModules:ID:AM:3"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:106"
+                         NAME="i18n.plan.feature.deal.custom.fields"
+                         DESCRIPTION="i18n.plan.feature.description.deal.custom.fields"
+                         ORDER="6"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10601"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10602"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10603"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:10601"
+                                  MODULE_ID="TZApplicationModules:ID:AM:15"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:107"
+                         NAME="i18n.plan.feature.deal.required.fields"
+                         DESCRIPTION="i18n.plan.feature.description.deal.required.fields"
+                         ORDER="7"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: false
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10701"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10702"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:10701"
+                                  MODULE_ID="TZApplicationModules:ID:AM:15"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:108"
+                         NAME="i18n.plan.feature.deal.timeline"
+                         DESCRIPTION="i18n.plan.feature.description.deal.timeline"
+                         ORDER="8"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10801"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10802"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10803"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:10801"
+                                  MODULE_ID="TZApplicationModules:ID:AM:3"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:109"
+                         NAME="i18n.plan.feature.deal.sales.goals"
+                         DESCRIPTION="i18n.plan.feature.description.deal.sales.goals"
+                         ORDER="9"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: false
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10901"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:10902"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:10901"
+                                  MODULE_ID="TZApplicationModules:ID:AM:3"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:110"
+                         NAME="i18n.plan.feature.deal.card.customization"
+                         DESCRIPTION="i18n.plan.feature.description.deal.card.customization"
+                         ORDER="10"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: false
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:11001"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:11002"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:11001"
+                                  MODULE_ID="TZApplicationModules:ID:AM:3"/>
+            </MPBFeatures>
+        </MPBFeatureGroups>
+
+        <MPBFeatureGroups ID="MPBFeatureGroups:ID:PB:2" NAME="i18n.plan.feature.group.contact" ORDER="2">
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:201"
+                         NAME="i18n.plan.feature.contact.management"
+                         DESCRIPTION="i18n.plan.feature.description.contact.management"
+                         ORDER="1"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20101"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20102"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20103"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:20101"
+                                  MODULE_ID="TZApplicationModules:ID:AM:1"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:202"
+                         NAME="i18n.plan.feature.contact.company.management"
+                         DESCRIPTION="i18n.plan.feature.description.contact.company.management"
+                         ORDER="2"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20201"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20202"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20203"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:20201"
+                                  MODULE_ID="TZApplicationModules:ID:AM:2"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:203"
+                         NAME="i18n.plan.feature.contact.attachments"
+                         DESCRIPTION="i18n.plan.feature.description.contact.attachments"
+                         ORDER="3"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20301"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20302"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20303"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:20301"
+                                  MODULE_ID="TZApplicationModules:ID:AM:1"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:20302"
+                                  MODULE_ID="TZApplicationModules:ID:AM:2"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:204"
+                         NAME="i18n.plan.feature.contact.lifecycle"
+                         DESCRIPTION="i18n.plan.feature.description.contact.lifecycle"
+                         ORDER="4"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20401"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20402"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20403"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:20401"
+                                  MODULE_ID="TZApplicationModules:ID:AM:1"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:205"
+                         NAME="i18n.plan.feature.contact.merge.duplicates"
+                         DESCRIPTION="i18n.plan.feature.description.contact.merge.duplicates"
+                         ORDER="5"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20501"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20502"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20503"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:20501"
+                                  MODULE_ID="TZApplicationModules:ID:AM:1"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:20502"
+                                  MODULE_ID="TZApplicationModules:ID:AM:2"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:206"
+                         NAME="i18n.plan.feature.contact.timeline"
+                         DESCRIPTION="i18n.plan.feature.description.contact.timeline"
+                         ORDER="6"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: false
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20601"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:20602"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:20601"
+                                  MODULE_ID="TZApplicationModules:ID:AM:1"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:20602"
+                                  MODULE_ID="TZApplicationModules:ID:AM:2"/>
+            </MPBFeatures>
+        </MPBFeatureGroups>
+
+        <MPBFeatureGroups ID="MPBFeatureGroups:ID:PB:3" NAME="i18n.plan.feature.group.activity" ORDER="3">
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:301"
+                         NAME="i18n.plan.feature.activity.management"
+                         DESCRIPTION="i18n.plan.feature.description.activity.management"
+                         ORDER="1"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:30101"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:30102"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:30103"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:30101"
+                                  MODULE_ID="TZApplicationModules:ID:AM:5"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:302"
+                         NAME="i18n.plan.feature.activity.calendar"
+                         DESCRIPTION="i18n.plan.feature.description.activity.calendar"
+                         ORDER="2"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:30201"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:30202"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:30203"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:30201"
+                                  MODULE_ID="TZApplicationModules:ID:AM:5"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:303"
+                         NAME="i18n.plan.feature.activity.remainder"
+                         DESCRIPTION="i18n.plan.feature.description.activity.remainder"
+                         ORDER="3"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:30301"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:30302"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:30303"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:30301"
+                                  MODULE_ID="TZApplicationModules:ID:AM:5"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:304"
+                         NAME="i18n.plan.feature.activity.timeline"
+                         DESCRIPTION="i18n.plan.feature.description.activity.timeline"
+                         ORDER="4"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: false
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:30401"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:30402"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:30401"
+                                  MODULE_ID="TZApplicationModules:ID:AM:5"/>
+            </MPBFeatures>
+        </MPBFeatureGroups>
+
+        <MPBFeatureGroups ID="MPBFeatureGroups:ID:PB:4" NAME="i18n.plan.feature.group.settings" ORDER="4">
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:401"
+                         NAME="i18n.plan.feature.settings.module.rename"
+                         DESCRIPTION="i18n.plan.feature.description.settings.module.rename"
+                         ORDER="1"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:40101"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:40102"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:40103"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:40101"
+                                  MODULE_ID="TZApplicationModules:ID:AM:15"/>
+            </MPBFeatures>
+        </MPBFeatureGroups>
+
+        <MPBFeatureGroups ID="MPBFeatureGroups:ID:PB:5" NAME="i18n.plan.feature.group.data.administration" ORDER="5">
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:501"
+                         NAME="i18n.plan.feature.data.administration.import.export"
+                         DESCRIPTION="i18n.plan.feature.description.data.administration.import.export"
+                         ORDER="1"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:50101"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:50102"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:50103"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:50101"
+                                  MODULE_ID="TZApplicationModules:ID:AM:8"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:50102"
+                                  MODULE_ID="TZApplicationModules:ID:AM:9"/>
+            </MPBFeatures>
+        </MPBFeatureGroups>
+
+        <MPBFeatureGroups ID="MPBFeatureGroups:ID:PB:6" NAME="i18n.plan.feature.group.lead" ORDER="6">
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:601"
+                         NAME="i18n.plan.feature.lead.webforms"
+                         DESCRIPTION="i18n.plan.feature.description.lead.webforms"
+                         ORDER="1"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: false
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:60101"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:60102"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:60101"
+                                  MODULE_ID="TZApplicationModules:ID:AM:6"/>
+            </MPBFeatures>
+        </MPBFeatureGroups>
+
+        <MPBFeatureGroups ID="MPBFeatureGroups:ID:PB:7" NAME="i18n.plan.feature.group.communication.tracking" ORDER="7">
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:701"
+                         NAME="i18n.plan.feature.communication.tracking.contact.company"
+                         DESCRIPTION="i18n.plan.feature.description.communication.tracking.contact.company"
+                         ORDER="1"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:70101"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:70102"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:70103"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:70101"
+                                  MODULE_ID="TZApplicationModules:ID:AM:1"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:70102"
+                                  MODULE_ID="TZApplicationModules:ID:AM:2"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:702"
+                         NAME="i18n.plan.feature.communication.tracking.email.inbox"
+                         DESCRIPTION="i18n.plan.feature.description.communication.tracking.email.inbox"
+                         ORDER="2"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:70201"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:70202"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:70203"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:70201"
+                                  MODULE_ID="TZApplicationModules:ID:AM:10"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:703"
+                         NAME="i18n.plan.feature.communication.tracking.email.templates"
+                         DESCRIPTION="i18n.plan.feature.description.communication.tracking.email.templates"
+                         ORDER="3"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: false
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:70301"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:70302"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:70301"
+                                  MODULE_ID="TZApplicationModules:ID:AM:10"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:704"
+                         NAME="i18n.plan.feature.communication.tracking.email.tracking"
+                         DESCRIPTION="i18n.plan.feature.description.communication.tracking.email.tracking"
+                         ORDER="4"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:70401"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:70402"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:70403"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:70401"
+                                  MODULE_ID="TZApplicationModules:ID:AM:10"/>
+            </MPBFeatures>
+        </MPBFeatureGroups>
+
+        <MPBFeatureGroups ID="MPBFeatureGroups:ID:PB:8" NAME="i18n.plan.feature.group.reports" ORDER="8">
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:801"
+                         NAME="i18n.plan.feature.reports.curated.dashboards"
+                         DESCRIPTION="i18n.plan.feature.description.reports.curated.dashboards"
+                         ORDER="1"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:80101"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:80102"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:80103"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:80101"
+                                  MODULE_ID="TZApplicationModules:ID:AM:12"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:802"
+                         NAME="i18n.plan.feature.reports.custom.dashboards"
+                         DESCRIPTION="i18n.plan.feature.description.reports.custom.dashboards"
+                         ORDER="2"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true,
+                                             &quot;accessibleCount&quot;: 20
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true,
+                                             &quot;accessibleCount&quot;: 50
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true,
+                                             &quot;accessibleCount&quot;: 100
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:6&quot;,
+                                             &quot;isEnabled&quot;: true,
+                                             &quot;accessibleCount&quot;: 10
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:80201"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:80202"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:80203"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:80204"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:6"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:80201"
+                                  MODULE_ID="TZApplicationModules:ID:AM:12"/>
+            </MPBFeatures>
+        </MPBFeatureGroups>
+
+        <MPBFeatureGroups ID="MPBFeatureGroups:ID:PB:9" NAME="i18n.plan.feature.group.privacy.security" ORDER="9">
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:901"
+                         NAME="i18n.plan.feature.privacy.security.permission.set"
+                         DESCRIPTION="i18n.plan.feature.description.privacy.security.permission.set"
+                         ORDER="1"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:90101"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:90102"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:90103"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:90101"
+                                  MODULE_ID="TZApplicationModules:ID:AM:16"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:902"
+                         NAME="i18n.plan.feature.privacy.security.custom.permission.set"
+                         DESCRIPTION="i18n.plan.feature.description.privacy.security.custom.permission.set"
+                         ORDER="2"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:90201"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:90202"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:90203"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:90201"
+                                  MODULE_ID="TZApplicationModules:ID:AM:16"/>
+            </MPBFeatures>
+        </MPBFeatureGroups>
+
+        <MPBFeatureGroups ID="MPBFeatureGroups:ID:PB:10" NAME="i18n.plan.feature.group.automations" ORDER="10">
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:1001"
+                         NAME="i18n.plan.feature.automations"
+                         DESCRIPTION="i18n.plan.feature.description.automations"
+                         ORDER="1"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: false
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:5&quot;,
+                                             &quot;isEnabled&quot;: true,
+                                             &quot;accessibleCount&quot;: 10
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:100101"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:100102"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:100103"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:5"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:100101"
+                                  MODULE_ID="TZApplicationModules:ID:AM:7"/>
+            </MPBFeatures>
+        </MPBFeatureGroups>
+
+        <MPBFeatureGroups ID="MPBFeatureGroups:ID:PB:11" NAME="i18n.plan.feature.group.mobile.and.integrations" ORDER="11">
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:1101"
+                         NAME="i18n.plan.feature.mobile.application"
+                         DESCRIPTION="i18n.plan.feature.description.mobile.application"
+                         ORDER="1"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:110101"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:110102"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:110103"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:1102"
+                         NAME="i18n.plan.feature.contact.sync"
+                         DESCRIPTION="i18n.plan.feature.description.contact.sync"
+                         ORDER="2"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:110201"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:110202"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:110203"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:110201"
+                                  MODULE_ID="TZApplicationModules:ID:AM:13"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:1103"
+                         NAME="i18n.plan.feature.calendar.sync"
+                         DESCRIPTION="i18n.plan.feature.description.calendar.sync"
+                         ORDER="3"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:110301"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:110302"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:110303"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:110301"
+                                  MODULE_ID="TZApplicationModules:ID:AM:14"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:1104"
+                         NAME="i18n.plan.feature.voice.call.integrations"
+                         DESCRIPTION="i18n.plan.feature.description.voice.call.integrations"
+                         ORDER="4"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: false
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:4&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:110401"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:110402"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:110403"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:4"/>
+
+                <MPBFeatureModule ID="MPBFeatureModule:ID:PB:110401"
+                                  MODULE_ID="TZApplicationModules:ID:AM:11"/>
+            </MPBFeatures>
+        </MPBFeatureGroups>
+
+        <MPBFeatureGroups ID="MPBFeatureGroups:ID:PB:12" NAME="i18n.plan.feature.group.supports" ORDER="12">
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:1201"
+                         NAME="i18n.plan.feature.supports.languages"
+                         DESCRIPTION="i18n.plan.feature.supports.languages"
+                         ORDER="1"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:120101"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:120102"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:120103"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:1202"
+                         NAME="i18n.plan.feature.supports.help.center"
+                         DESCRIPTION="i18n.plan.feature.description.supports.help.center"
+                         ORDER="2"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:120201"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:1"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:120202"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:120203"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:1203"
+                         NAME="i18n.plan.feature.supports.chat"
+                         DESCRIPTION="i18n.plan.feature.description.supports.chat"
+                         ORDER="3"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: false
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true,
+                                             &quot;supportingHours&quot;: 24,
+                                             &quot;supportingDays&quot;: 5
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true,
+                                             &quot;supportingHours&quot;: 24,
+                                             &quot;supportingDays&quot;: 7
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:120301"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:120302"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+            </MPBFeatures>
+
+            <MPBFeatures ID="MPBFeatures:ID:PB:1204"
+                         NAME="i18n.plan.feature.supports.phone"
+                         DESCRIPTION="i18n.plan.feature.description.supports.phone"
+                         ORDER="4"
+                         CONFIG="{
+                                     &quot;planConfig&quot;: [
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:1&quot;,
+                                             &quot;isEnabled&quot;: false
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:2&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         },
+                                         {
+                                             &quot;planId&quot;: &quot;MPBSubscriptionPlans:ID:PB:3&quot;,
+                                             &quot;isEnabled&quot;: true
+                                         }
+                                     ]
+                                 }">
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:120401"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:2"/>
+
+                <MPBPlanFeatures ID="MPBPlanFeatures:ID:PB:120402"
+                                 PLAN_ID="MPBSubscriptionPlans:ID:PB:3"/>
+            </MPBFeatures>
+        </MPBFeatureGroups>
+    </module>
+</dumpdata>

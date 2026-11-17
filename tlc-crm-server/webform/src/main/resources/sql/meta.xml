@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_crm_web_form">
+
+        <table name="MWFFormStyle">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="BACKGROUND_COLOR" data-type="CHAR" nullable="false" max-length="15"/>
+                <column name="HEADER_TEXT_COLOR" data-type="CHAR" nullable="false" max-length="15"/>
+                <column name="SUB_HEADER_TEXT_COLOR" data-type="CHAR" nullable="false" max-length="15"/>
+                <column name="HEADER_FONT_SIZE" data-type="INTEGER" nullable="false" max-length="8"/>
+                <column name="SUB_HEADER_FONT_SIZE" data-type="INTEGER" nullable="false" max-length="8"/>
+                <column name="ALIGNMENT_ID" data-type="INTEGER" nullable="false"/>
+                <column name="FONT_ID" data-type="INTEGER" nullable="false"/>
+                <column name="DESCRIPTION_TEXT_COLOR" data-type="CHAR" nullable="false" max-length="15"/>
+                <column name="TEXT_COLOR" data-type="CHAR" nullable="false" max-length="15"/>
+                <column name="DESCRIPTION_FONT_SIZE" data-type="INTEGER" nullable="false" max-length="8"/>
+                <column name="TEXT_FONT_SIZE" data-type="INTEGER" nullable="false" max-length="8"/>
+            </columns>
+            <primary-key name="MWFFormStyle_PK" column="ID" sequence-generator="MWFFormStyle.ID"/>
+        </table>
+
+        <table name="MWFFieldStyle">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="LABEL_COLOR" data-type="CHAR" nullable="false" max-length="15"/>
+                <column name="INPUT_TEXT_COLOR" data-type="CHAR" nullable="false" max-length="15"/>
+                <column name="INPUT_BACKGROUND_COLOR" data-type="CHAR" nullable="false" max-length="15"/>
+                <column name="LABEL_FONT_SIZE" data-type="INTEGER" nullable="false" max-length="8"/>
+                <column name="INPUT_FONT_SIZE" data-type="INTEGER" nullable="false" max-length="8"/>
+            </columns>
+            <primary-key name="MWFFieldStyle_PK" column="ID" sequence-generator="MWFFieldStyle.ID"/>
+        </table>
+
+        <table name="MWFSubmitButtonStyle">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="BACKGROUND_COLOR" data-type="CHAR" nullable="false" max-length="20"/>
+                <column name="TEXT_COLOR" data-type="CHAR" nullable="false" max-length="20"/>
+                <column name="ALIGNMENT_ID" data-type="INTEGER" nullable="false"/>
+                <column name="WIDTH" data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="MWFSubmitButtonStyle_PK" column="ID" sequence-generator="MWFSubmitButtonStyle.ID"/>
+        </table>
+
+        <table name="MWFStyle">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="FORM_STYLE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_STYLE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SUBMIT_BUTTON_STYLE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFStyle_PK" column="ID" sequence-generator="MWFStyle.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFStyle_FK1" reference-table="MWFFormStyle" local-column="FORM_STYLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFStyle_FK2" reference-table="MWFFieldStyle" local-column="FIELD_STYLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFStyle_FK3" reference-table="MWFSubmitButtonStyle" local-column="SUBMIT_BUTTON_STYLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFStyle_UK1">
+                    <unique-key-column>FORM_STYLE_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MWFStyle_UK2">
+                    <unique-key-column>FIELD_STYLE_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MWFStyle_UK3">
+                    <unique-key-column>SUBMIT_BUTTON_STYLE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFSubmitAction">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="THANK_YOU_MESSAGE" data-type="KCHAR" nullable="true" max-length="100"/>
+                <column name="REDIRECT_URL" data-type="CHAR" nullable="true" max-length="1000"/>
+                <column name="IS_EMAIL_NOTIFICATION_ENABLED" data-type="BOOLEAN" default-value="false"/>
+                <column name="IS_CONTACT_CREATION_ENABLED" data-type="BOOLEAN" default-value="true"/>
+                <column name="IS_DEAL_CREATION_WITH_CONTACT_ENABLED" data-type="BOOLEAN" default-value="false"/>
+            </columns>
+            <primary-key name="MWFSubmitAction_PK" column="ID" sequence-generator="MWFSubmitAction.ID"/>
+        </table>
+
+        <table name="MWFTemplate">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="KCHAR" nullable="false" max-length="100"/>
+                <column name="DESCRIPTION" data-type="KCHAR" nullable="false" max-length="150"/>
+                <column name="SUBMIT_BUTTON_NAME" data-type="KCHAR" nullable="false" max-length="70"/>
+                <column name="SUBMIT_ACTION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STYLE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFTemplate_PK" column="ID" sequence-generator="MWFTemplate.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFTemplate_FK1" reference-table="MWFStyle" local-column="STYLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="MWFTemplate_FK2" reference-table="MWFSubmitAction" local-column="SUBMIT_ACTION_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFTemplate_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                    <unique-key-column>SUBMIT_ACTION_ID</unique-key-column>
+                    <unique-key-column>STYLE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFTemplateFields">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="LABEL" data-type="KCHAR" nullable="false" max-length="100"/>
+                <column name="TEMPLATE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONFIG" data-type="CHAR" nullable="false"/>
+            </columns>
+            <primary-key name="MWFTemplateFields_PK" column="ID" sequence-generator="MWFTemplateFields.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFTemplateFields_FK1" reference-table="OMETFields" local-column="FIELD_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFTemplateFields_FK2" reference-table="MWFTemplate" local-column="TEMPLATE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFTemplateFields_FK3" reference-table="METFieldType" local-column="FIELD_TYPE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFTemplateFields_UK1">
+                    <unique-key-column>TEMPLATE_ID</unique-key-column>
+                    <unique-key-column>FIELD_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MWFTemplateFields_UK2">
+                    <unique-key-column>LABEL</unique-key-column>
+                    <unique-key-column>TEMPLATE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFTemplateElements">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="LABEL" data-type="KCHAR" nullable="false" max-length="100"/>
+                <column name="TEMPLATE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="15"/>
+                <column name="CONFIG" data-type="CHAR" nullable="false"/>
+            </columns>
+            <primary-key name="MWFTemplateElements_PK" column="ID" sequence-generator="MWFTemplateElements.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFTemplateElements_FK1" reference-table="MWFTemplate" local-column="TEMPLATE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFTemplateElements_UK1">
+                    <unique-key-column>LABEL</unique-key-column>
+                    <unique-key-column>TEMPLATE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMWFWebForm" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="DESCRIPTION" data-type="CHAR" nullable="true" max-length="150"/>
+                <column name="SUBMIT_BUTTON_NAME" data-type="CHAR" nullable="false" max-length="70"/>
+                <column name="ATTACHMENT_ID" data-type="BIGINT" nullable="true"/>
+                <column name="VISITS" data-type="BIGINT" nullable="false" default-value="0"/>
+                <column name="SUBMISSIONS" data-type="BIGINT" nullable="false" default-value="0"/>
+                <column name="CONVERSIONS" data-type="DECIMAL" nullable="false" default-value="0.0" precision="4" scale="1"/>
+                <column name="IS_ACTIVE" data-type="BOOLEAN" nullable="false" default-value="true"/>
+                <column name="OWNER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STYLE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SUBMIT_ACTION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="LANGUAGE_ID" data-type="INTEGER" nullable="false"/>
+                <column name="TEMPLATE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CREATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="MODIFIED_TIME" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFWebForm_PK" column="ID" sequence-generator="OMWFWebForm.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFWebForm_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFWebForm_FK2" reference-table="MWFTemplate" local-column="TEMPLATE_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMWFWebForm_FK3" reference-table="MWFStyle" local-column="STYLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMWFWebForm_FK4" reference-table="MWFSubmitAction" local-column="SUBMIT_ACTION_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMWFWebForm_FK5" reference-table="OMCRMUser" local-column="OWNER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMWFWebForm_UK1">
+                    <unique-key-column>STYLE_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="OMWFWebForm_UK2">
+                    <unique-key-column>SUBMIT_ACTION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFFormFields">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="LABEL" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="FIELD_ID" data-type="BIGINT" nullable="false"/>
+                <column name="WEB_FORM_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONFIG" data-type="CHAR" nullable="false"/>
+            </columns>
+            <primary-key name="MWFFormFields_PK" column="ID" sequence-generator="MWFFormFields.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFFormFields_FK1" reference-table="OMWFWebForm" local-column="WEB_FORM_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFFormFields_FK2" reference-table="OMETFields" local-column="FIELD_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFFormFields_UK1">
+                    <unique-key-column>WEB_FORM_ID</unique-key-column>
+                    <unique-key-column>FIELD_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MWFFormFields_UK2">
+                    <unique-key-column>LABEL</unique-key-column>
+                    <unique-key-column>WEB_FORM_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFFormElements">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="10"/>
+                <column name="LABEL" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="WEB_FORM_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONFIG" data-type="CHAR" nullable="false"/>
+            </columns>
+            <primary-key name="MWFFormElements_PK" column="ID" sequence-generator="MWFFormElements.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFFormElements_FK1" reference-table="OMWFWebForm" local-column="WEB_FORM_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFFormElements_UK1">
+                    <unique-key-column>LABEL</unique-key-column>
+                    <unique-key-column>WEB_FORM_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFEmail">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="EMAIL" data-type="CHAR" nullable="false"/>
+                <column name="WEB_FORM_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFEmail_PK" column="ID" sequence-generator="MWFEmail.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFEmail_FK2" reference-table="OMWFWebForm" local-column="WEB_FORM_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFEmail_UK1">
+                    <unique-key-column>WEB_FORM_ID</unique-key-column>
+                    <unique-key-column>EMAIL</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+
+</metadata>

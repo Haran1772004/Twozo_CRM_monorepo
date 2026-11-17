@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dumpdata>
+    <module name="email-server">
+
+        <!-- Zoho -->
+        <MEMServer ID="MEMServer:ID:CO:1" HOST="imap.zoho.in" PORT="993" PROTOCOL="2" SECURITY_MODE="3" />
+        <MEMServer ID="MEMServer:ID:CO:2" HOST="smtp.zoho.in" PORT="465" PROTOCOL="1" SECURITY_MODE="3" />
+        <MEMServer ID="MEMServer:ID:CO:3" HOST="smtp.zoho.in" PORT="587" PROTOCOL="1" SECURITY_MODE="2" />
+        <MEMServer ID="MEMServer:ID:CO:4" HOST="imap.zoho.com" PORT="993" PROTOCOL="2" SECURITY_MODE="3" />
+        <MEMServer ID="MEMServer:ID:CO:5" HOST="imappro.zoho.in" PORT="993" PROTOCOL="2" SECURITY_MODE="3" />
+        <MEMServer ID="MEMServer:ID:CO:6" HOST="smtp.zoho.com" PORT="465" PROTOCOL="1" SECURITY_MODE="3" />
+        <MEMServer ID="MEMServer:ID:CO:7" HOST="smtp.zoho.com" PORT="587" PROTOCOL="1" SECURITY_MODE="2" />
+        <MEMServer ID="MEMServer:ID:CO:8" HOST="smtppro.zoho.com" PORT="465" PROTOCOL="1" SECURITY_MODE="3" />
+        <MEMServer ID="MEMServer:ID:CO:9" HOST="smtppro.zoho.com" PORT="587" PROTOCOL="1" SECURITY_MODE="2" />
+
+        <!-- Yahoo -->
+        <MEMServer ID="MEMServer:ID:CO:10" HOST="imap.mail.yahoo.com" PORT="993" PROTOCOL="2" SECURITY_MODE="3" />
+        <MEMServer ID="MEMServer:ID:CO:11" HOST="smtp.mail.yahoo.com" PORT="465" PROTOCOL="1" SECURITY_MODE="3" />
+        <MEMServer ID="MEMServer:ID:CO:12" HOST="smtp.mail.yahoo.com" PORT="587" PROTOCOL="1" SECURITY_MODE="2" />
+
+        <!-- iCloud -->
+        <MEMServer ID="MEMServer:ID:CO:13" HOST="imap.mail.me.com" PORT="993" PROTOCOL="2" SECURITY_MODE="3" />
+        <MEMServer ID="MEMServer:ID:CO:14" HOST="smtp.mail.me.com" PORT="465" PROTOCOL="1" SECURITY_MODE="3" />
+        <MEMServer ID="MEMServer:ID:CO:15" HOST="smtp.mail.me.com" PORT="587" PROTOCOL="1" SECURITY_MODE="2" />
+
+        <!-- AOL -->
+        <MEMServer ID="MEMServer:ID:CO:16" HOST="imap.aol.com" PORT="993" PROTOCOL="2" SECURITY_MODE="3" />
+        <MEMServer ID="MEMServer:ID:CO:17" HOST="smtp.aol.com" PORT="465" PROTOCOL="1" SECURITY_MODE="3" />
+        <MEMServer ID="MEMServer:ID:CO:18" HOST="smtp.aol.com" PORT="587" PROTOCOL="1" SECURITY_MODE="2" />
+
+        <!-- Zoho -->
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:1"  SERVER_ID="MEMServer:ID:CO:1"  AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:2"  SERVER_ID="MEMServer:ID:CO:1"  AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:3"  SERVER_ID="MEMServer:ID:CO:2"  AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:4"  SERVER_ID="MEMServer:ID:CO:2"  AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:5"  SERVER_ID="MEMServer:ID:CO:3"  AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:6"  SERVER_ID="MEMServer:ID:CO:3"  AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:7"  SERVER_ID="MEMServer:ID:CO:4"  AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:8"  SERVER_ID="MEMServer:ID:CO:4"  AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:9"  SERVER_ID="MEMServer:ID:CO:5"  AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:10" SERVER_ID="MEMServer:ID:CO:5"  AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:11" SERVER_ID="MEMServer:ID:CO:6"  AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:12" SERVER_ID="MEMServer:ID:CO:6"  AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:13" SERVER_ID="MEMServer:ID:CO:7"  AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:14" SERVER_ID="MEMServer:ID:CO:7"  AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:15" SERVER_ID="MEMServer:ID:CO:8"  AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:16" SERVER_ID="MEMServer:ID:CO:8"  AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:17" SERVER_ID="MEMServer:ID:CO:9"  AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:18" SERVER_ID="MEMServer:ID:CO:9"  AUTH_TYPE="2" />
+
+        <!-- Yahoo -->
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:19" SERVER_ID="MEMServer:ID:CO:10" AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:20" SERVER_ID="MEMServer:ID:CO:10" AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:21" SERVER_ID="MEMServer:ID:CO:11" AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:22" SERVER_ID="MEMServer:ID:CO:11" AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:23" SERVER_ID="MEMServer:ID:CO:12" AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:24" SERVER_ID="MEMServer:ID:CO:12" AUTH_TYPE="2" />
+
+        <!-- iCloud -->
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:25" SERVER_ID="MEMServer:ID:CO:13" AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:26" SERVER_ID="MEMServer:ID:CO:13" AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:27" SERVER_ID="MEMServer:ID:CO:14" AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:28" SERVER_ID="MEMServer:ID:CO:14" AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:29" SERVER_ID="MEMServer:ID:CO:15" AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:30" SERVER_ID="MEMServer:ID:CO:15" AUTH_TYPE="2" />
+
+        <!-- AOL -->
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:31" SERVER_ID="MEMServer:ID:CO:16" AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:32" SERVER_ID="MEMServer:ID:CO:16" AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:33" SERVER_ID="MEMServer:ID:CO:17" AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:34" SERVER_ID="MEMServer:ID:CO:17" AUTH_TYPE="2" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:35" SERVER_ID="MEMServer:ID:CO:18" AUTH_TYPE="1" />
+        <MEMServerAuthType ID="MEMServerAuthType:ID:CO:36" SERVER_ID="MEMServer:ID:CO:18" AUTH_TYPE="2" />
+    </module>
+</dumpdata>

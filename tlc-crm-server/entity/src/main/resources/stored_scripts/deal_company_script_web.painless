@@ -1,0 +1,48 @@
+def territoryIds = params.territoryIds;
+def ownerId = params.ownerId;
+Map results = new HashMap();
+def sourceContact = params._source.contact;
+def sourceCompany = params._source.company;
+def isCompanyTerritorial = "territory".equals(params.companyPermission);
+def isCompanyFollower = params.isCompanyFollower;
+
+if ("global".equals(params.contactPermission) && null != sourceContact) {
+  def contactCompany = sourceContact.company;
+
+  if (null != contactCompany) {
+    def companyFollowers = contactCompany.followerIds;
+
+    if ((isCompanyTerritorial && territoryIds.contains(contactCompany.territoryId)) ||
+        ownerId == contactCompany.ownerId || (isCompanyFollower && null != companyFollowers && companyFollowers.contains(ownerId))) {
+      Map contactFields = new HashMap();
+      Map contactCompanyMap = new HashMap();
+
+      contactCompanyMap.put("name", contactCompany.name);
+      contactCompanyMap.put("id", contactCompany.id);
+      contactFields.put("company", contactCompanyMap);
+      results.put("contact", contactFields);
+    }
+  }
+}
+
+if (null != sourceCompany) {
+  def companyFollowers = sourceCompany.followerIds;
+
+  if ((isCompanyTerritorial && territoryIds.contains(sourceCompany.territoryId)) ||
+      ownerId == sourceCompany.ownerId || (isCompanyFollower && null != companyFollowers && companyFollowers.contains(ownerId))) {
+    Map companyFields = new HashMap();
+
+    companyFields.put("name", sourceCompany.name);
+    companyFields.put("website", sourceCompany.website);
+    companyFields.put("address", sourceCompany.address);
+    companyFields.put("id", sourceCompany.id);
+    results.put("company", companyFields);
+  }
+}
+
+if (results.isEmpty()) {
+  return null;
+} else {
+  return results;
+}
+

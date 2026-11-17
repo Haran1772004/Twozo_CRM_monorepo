@@ -1,0 +1,373 @@
+logging:
+  level:
+    root: INFO
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger{35} - %msg%n"
+  file:
+    name: logs/twozo-email-service.log
+
+tlc.config:
+  storage:
+    client: azure
+    streamUploadMaxBytes: 52428800
+    aws:
+      server: ${SERVER}
+      accessKey: AKIA4FY5AWKYIZY3WTNA
+      secretKey: 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
+      bucket: twozo-prod-email-inbound
+      region: ap-south-1
+      authMethod: CUSTOM
+      localstack:
+        enabled: false
+        server: http://localstack:4566
+      httpClient:
+        maxConnection: 120
+        connectionTimeout: 10
+        acquisitionTimeout: 30
+    azure:
+      accountName: crmuistorage49933
+      accountKey: ${ACCOUNT_KEY}
+      authType: CONNECTION_STRING
+      endpoint: DefaultEndpointsProtocol=https;AccountName=crmuistorage49933;AccountKey=EP73eCSJAWbrIXitcCinEqmRl1D9O1tIAKniog3sQgsmYcEVOq/Av3XLyQemt3sLdgm1AdLg+0no+AStLcaheQ==;EndpointSuffix=core.windows.net
+      containers:
+        - twozo-crm-test-storage:GENERAL
+        - twozo-crm-test-metadata:SCHEMA
+      azurite:
+        enabled: false
+        endpoint: "http://azurite:10000/devstoreaccount1"
+        server: http://localstack:4566
+      httpClient:
+        maxConnection: 120
+        connectionTimeout: 10
+        acquisitionTimeout: 30
+    inbound:
+      server: ${TLC-CONFIG-STORAGE-AWS-SERVER}
+      accessKey: AKIA4FY5AWKYIZY3WTNA
+      secretKey: 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
+      bucket: twozo-prod-email-inbound
+      region: ap-south-1
+      authMethod: CUSTOM
+      httpClient:
+        maxConnection: 120
+        connectionTimeout: 10
+        acquisitionTimeout: 30
+
+  cache:
+    type: SINGLE
+    server: redis:6379
+    test-enabled: true
+
+  zookeeper:
+    server: zookeeper:2181
+    maxRetry: 3
+    retryWait: 1000
+    connectionTimeout: 5000
+    sessionTimeout: 500000
+
+  database-resource:
+    home: /opt/data
+    serverMode: container
+    snapshotPath: sql/snapshot
+    storeType: local
+
+  database:
+    oltp:
+      name: TLC
+      server: postgres:5432
+      username: postgres
+      password: Twozo@123
+      developmentModeEnabled: true
+      connectionPool:
+        name: crm-oltp-pool
+        max: 15
+        idle: 5
+        idle.timeout: 300000
+        maxLifetime: 1800000
+        connectionTimeout: 30000
+        leakDetectionThreshold: 60000
+
+  notification:
+    call:
+      account.service.id: AC0dd077984a62cb18622a81bd89156d62
+      auth.token: cbe51804f612a0314752d42f77a048ef
+      record:
+        url.domain: https://api.twilio.com
+        extension: mp3
+
+    email:
+      smtp.gmail:
+        port: 465
+        host: smtp.gmail.com
+      imap.gmail:
+        port: 993
+        host: imap.gmail.com
+      sender:
+        address: testing@thelaunchclub.in
+        id: 76af0c70-a271-45a6-8e70-da99c88fa5ff
+      outlook:
+        tenant.id: 85f6c59e-93c9-4dea-8235-6170a11e5044
+
+    mailService:
+      client: sendGrid
+      from: billgates@twozo.live
+      ses:
+        accessKey: AKIA52M4ISOYENMMNPPF
+        secretKey: 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
+        region: ap-southeast-1
+        to: kishore@thelaunchclub.in
+      sendGrid:
+        apiKey: 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
+
+  sync-service:
+    webhook:
+      renewal:
+        limit: 100
+    gmail:
+      name: Twozo
+      authority: https://accounts.google.com/o/oauth2/v2/auth
+      responseType: code
+      grantType: authorization_code
+      client:
+        id: 180451721138-2tvqi5co5to98qr3j70ab4dt9fj48sia.apps.googleusercontent.com
+        secret: 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
+      scope:
+        email: https://mail.google.com/ https://www.googleapis.com/auth/userinfo.email
+        calendar: https://www.googleapis.com/auth/calendar.events openid email
+        contact: https://www.googleapis.com/auth/contacts openid email
+      accessTokenUrl: https://accounts.google.com/o/oauth2/token
+      tokenInfoUrl: https://oauth2.googleapis.com/tokeninfo
+      redirectUrl:
+        email: http://localhost:8085/api/oauth/user/consent/google
+        calendar: http://localhost:8085/api/oauth/calendar/sync/google
+        contact: ${DOMAIN}/oauth/contact/sync/gmail
+      batch:
+        size:
+          message: 10
+          history: 10
+      pubSubTopic: projects/twozo-406110/topics/LocalV1
+
+      alias.createAlias:
+        prefix: emailvalidate2022+
+        suffix: '@gmail.com'
+
+    outlook:
+      authority: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+      responseType: code
+      grantType: authorization_code
+      client:
+        id: 07146aef-4bc8-46c1-82b3-8ece38e95393
+        secret: Hv18Q~3rZ_SXwZXo7N0-brcUyTS687~JSnTO0b2s
+      accessTokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+      defaultScope: https://graph.microsoft.com/.default
+      tokenRotationScope: https://graph.microsoft.com/.default offline_access
+      commonAuthority: https://login.microsoftonline.com/common
+      tenantAuthority: https://login.microsoftonline.com/85f6c59e-93c9-4dea-8235-6170a11e5044
+      scope:
+        email: openid Mail.Send Mail.Read offline_access Mail.ReadWrite User.Read
+        calendar: openid Calendars.Read Calendars.Read.Shared Calendars.ReadWrite Calendars.ReadWrite.Shared User.Read offline_access
+        contact: Contacts.Read Contacts.ReadWrite openid offline_access
+      redirectUrl:
+        email: http://localhost:8085/api/oauth/user/consent/outlook
+        calendar: /api/oauth/calendar/sync/outlook
+        contact: /api/oauth/contact/sync/outlook
+      batch:
+        size:
+          message: 10
+      refreshTokenExpiryDays: 89
+
+      webhook:
+        changeType: 'created,updated,deleted'
+        resource: 'me/messages?$select=conversationId,internetMessageHeaders,parentFolderId,id,internetMessageId,subject,importance,flag,createdDateTime,receivedDateTime,sentDateTime,lastModifiedDateTime,from,sender,toRecipients,ccRecipients,bccRecipients,replyTo,hasAttachments,isDraft,isRead'
+        latestSupportedTlsVersion: 'v1_2'
+        certificate:
+          id: 'v1'
+          key:
+            public: '/resources/local/certs/email/outlook/public_key.txt'
+            private: '/resources/local/certs/email/outlook/private_key.pem'
+        notificationUrl: https://6d19-2402-3a80-4589-8cfa-3d46-8f2f-e01b-22d2.ngrok-free.app/api/email-service/webhook/outlook/notification
+
+      alias:
+        client:
+          id: a793d9da-d4f7-4f45-a353-2427d29dd798
+          secret: L2_8Q~6q4ZY8dgt1T08emkdR.wE1afMM4XEmQa5_
+        createAlias:
+          prefix: smartbcc+
+          suffix: '@thelaunchclub.in'
+        id: a17e95a6-f90c-4272-88c1-cade6225f5f7
+
+    server:
+      redirectUrl:
+        unsubscribe: ${LOCAL_DOMAIN}
+        sync: http://localhost:8085/settings/email?type=email_sync
+        tracking: http://localhost:8085/notifications/email/tracker
+
+    local.navigateUrl:
+      sync: http://localhost:8085/settings/email?type=email_sync
+      error: ${CLIENT_LOCAL_DOMAIN}/settings/email?type=email_sync&syncStatus=syncedInSameOrg
+
+  email:
+    domain:
+      name: 'twozo.net'
+      node: mail
+    addOnServices:
+      includeEnvDomainInSharedAddress: true
+      domain: '@twozo.net'
+      smartBcc:
+        alias:
+          prefix: smartbcc+
+      teamInbox:
+        alias:
+          prefix: teaminbox+
+        verification:
+          verifiedFromAddresses:
+            gmail: forwarding-noreply@google.com
+            outlook: no-reply@outlook.com, no-reply@microsoft.com, outlook-noreply@microsoft.com
+
+    executor:
+      auto-sync:
+        retrieve:
+          thread:
+            name: email-auto-sync-handler
+            pool.size: 10
+            daemon: false
+          consumer:
+            name: tlc-email-server-auto-sync-consumer
+            max.records: 10
+            poll.duration: 1000
+            max.queue.size: 10
+
+      request-state:
+        thread:
+          name: email-request-state-handler
+          pool.size: 1
+          daemon: false
+        consumer:
+          name: tlc-email-server-email-state-request-handler-consumer
+          max.records: 10
+          pool.duration: 1000
+          max.queue.size: 10
+      sync:
+        retrieve:
+          thread:
+            name: email-retrieve-sync-handler
+            pool.size: 1
+            daemon: false
+          consumer:
+            name: tlc-email-serversync-retrieve-consumer
+            max.records: 10
+            poll.duration: 1000
+            max.queue.size: 10
+
+      inbound:
+        retrieve:
+          thread:
+            name: inbound-email-retrieve-handler
+            pool.size: 1
+            daemon: false
+          consumer:
+            name: tlc-email-server-inbound-email-retrieve-consumer
+            max.records: 10
+            poll.duration: 1000
+            max.queue.size: 10
+        retry:
+          schedule:
+            delay: 3600000
+          object:
+            prefix:
+
+      webhook:
+        receiver:
+          thread:
+            name: email-webhook-sync-handler
+            pool.size: 1
+            daemon: false
+          consumer:
+            name: tlc-email-server-webhook-sync-consumer
+            max.records: 10
+            poll.duration: 1000
+            max.queue.size: 10
+
+        renewal:
+          schedule:
+            delay: 120000 #in milliseconds
+
+  queue:
+    consumerBufferBytes: 5000000
+    heartbeatInterval: 10000
+    sessionTimeout: 30000
+    maxPollInterval: 300000
+    provider: SelfManagedKafka
+    async:
+      offset:
+        writer:
+          pool: async-offset-writer-pool:3
+    kafka:
+      selfManaged:
+        server: PLAINTEXT://kafka:9092
+      managed:
+        server: ${MANAGED_KAFKA_SERVER_ENDPOINT}
+        security.protocol: SASL_SSL
+        sasl.mechanism: AWS_MSK_IAM
+        sasl.jaas.config: software.amazon.msk.auth.iam.IAMLoginModule required;
+        sasl.client.callback.handler.class: software.amazon.msk.auth.iam.IAMClientCallbackHandler
+
+    topics:
+      - EMAIL_SEND_REQUESTED:1
+      - SYNC_STATUS_UPDATE_REQUEST:1
+      - EMAIL_SYNC_RETRIEVED:2
+      - AUTO_SYNC_RETRIEVED:3
+      - SMART_BCC_RETRIEVED:1
+      - SYNC_DATA_LOADER:1
+      - AUTO_SYNC_DATA_LOADER:1
+      - SMART_BCC_DATA_LOADER:1
+      - TRANSACTIONAL_MAIL_SEND_REQUESTED:1
+      - SEND_REQUEST_TO_PROVIDER:1
+      - DELETE_REQUEST_TO_PROVIDER:1
+      - UPDATE_REQUEST_TO_PROVIDER:1
+      - EMAIL_STATE_MODIFIED:1
+      - WEBHOOK_NOTIFICATION_RECEIVED:3
+      - INBOUND-EMAIL-RECEIVED:1
+      - AUTO_SYNC_DATA_LOADER:1
+      - DOMAIN_REQUEST_TO_PROVIDER:1
+      - DOMAIN_ACTION_REQUESTED:1
+
+  scheduler:
+    pool: zk-health-checker:1,session-cleaner-pool:1,scheduled-email-pool:1,user-sync-email-pool:1,email-trash-pool:1,email-sync-thread-pool:2,email-sync-pool:1,email-retrieve-thread-pool:1,sync-retrieve-pool:2,inbound-retrieve-pool:1,transactional-email-sender-pool:1,provider-send-request-pool:1,provider-delete-request-pool:1,provider-update-request-pool:1,webhook-receiver-pool:1,webhook-receiver-renewal-pool:1,token-refresh-pool:1,auto-sync-retrieve-pool:1,background-sync-pool:1,inbound-retrieve-pool:1,provider-domain-request-pool:1,inbound-email-retry-pool:1,vertx-cluster-reboot:1
+
+  web:
+    http.port: 8080
+    appDomain: ${LOCAL_DOMAIN}
+    allowedOrigins: app.twozo.live, dev.twozo.live
+    path.prefix: /api/email-service
+    app.name: EMAIL
+    default.domain: https://crm.twozo.io
+
+  crm-common:
+    file.preview.redirect.url: http://localhost:8085/api/file/preview/
+
+  web-client:
+    vertx:
+      cluster:
+        manager: zookeeper
+        hazelcast:
+          host: hazelcast
+          port: 5701
+        zookeeper:
+          host: zookeeper:2181
+          rootPath: io.vertx
+          initialSleepTime: 1000
+          maxTimes: 5
+
+  services:
+    enabled:
+      - storage
+      - cache
+      - database
+      - database-resource
+      - notification
+      - email-app
+      - queue
+      - scheduler
+      - web
+      - sync-service
+      - token-refresh

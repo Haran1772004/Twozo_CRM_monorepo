@@ -1,0 +1,89 @@
+package com.tlc.commons.code;
+
+/**
+ * @author Abishek
+ * @version 1.0
+ */
+
+public enum ErrorCodes implements ErrorCodeProvider
+{
+    NO_ERROR(0x0),
+    INVALID_ACCESS(0x1),
+    INVALID_FORMAT(0x2),
+    INVALID_DATA(0x3),
+    INVALID_PARAMETER(0x4),
+    ACCESS_DENIED(0x5),
+    NOT_SUPPORTED(0x6),
+    UNKNOWN_ERROR(0x7),
+    REQUEST_FAILED(0x8),
+    UNKNOWN_INPUT(0xA),
+    ALREADY_INITIALIZED(0xB),
+    NOT_INITIALIZED(0xC),
+    VERSION_MISMATCH(0xD),
+    INVALID_STATE(0xE),
+    DATA_OVERFLOW(0xF),
+    CONNECTION_NOT_AVAILABLE(0x10),
+    FILE_NOT_FOUND(0x11),
+    WEB_ACTION_ALREADY_REGISTERED(0x12),
+    INVALID_TIMEZONE(0X13),
+    AUTHORIZATION_FAILED(0x14),
+    PARSE_FAILED(0X15),
+    DIRECTORY_CREATION_FAILED(0x16),
+    FILE_CREATION_FAILED(0x17),
+    INVALID_COUNTRY_NAME(0x18),
+    INVALID_CURRENCY(0x19),
+    INVALID_COUNTRY(0x20),
+    BEAN_REPLICATION_FAILED(0x21),
+    UNABLE_TO_LOAD_CLASS(0x22),
+    CONFIG_NOT_FOUND(0x23),
+    INVALID_CONFIG_FORMAT(0x24),
+    UNSUPPORTED_OPERATION_EXCEPTION( 0x25 ),
+    DATA_ENCRYPTION_FAILED(0x26),
+    CORRUPTED_STRING_CAN_NOT_BE_DECRYPTED(0x27),
+    DATA_DECRYPTION_FAILED(0x28),
+    HASH_GENERATION_FAILED(0x29),
+    HASH_GENERATOR_INIT_ACTION_FAILED(0x30),
+    HASH_VALIDATION_FAILED(0x31),
+    RANDOM_UNIQUE_ID_GENERATION_FAILED(0x32),
+    INVALID_MIME_TYPE(0X33),
+    INVALID_JWT_GROUP(0x34),
+    INVALID_JWT_HEADER(0x35),
+    INVALID_PRIVATE_KEY(0x36),
+    NO_SIGNING_KEY_FOUND(0x37),
+    INVALID_PUBLIC_KEY(0x38),
+    CORRUPTED_JWT_TOKEN_IDENTIFIED(0x39),
+    TOKEN_ISSUER_NOT_FOUND(0x40),
+    DATA_PROCESSOR_ALREADY_REGISTERED(0x41),
+    DATA_PROCESSOR_NOT_FOUND(0x42),
+    FAILED_TO_REGISTER_RDATA_PROCESSOR(0x43),
+    APPLICATION_NOT_FOUND(0x44),
+    UNSUPPORTED_LANGUAGE(0x45),
+    INSTANCE_METHOD_RETRIEVAL_FAILED(0x46),
+    FAILED_TO_REGISTER_WEB_ACTION(0x47),
+    READ_ACTION_FAILED(0x48),
+    TEMPLATE_REGISTRATION_FAILED(0x49),
+    INVALID_COLOR(0X50),
+    ;
+
+    private final int code;
+    ErrorCodes(int localCode)
+    {
+        this.code = Group.GROUP.getConvertedCode(localCode);
+    }
+
+    @Override
+    public int getCode()
+    {
+        return code;
+    }
+
+    private static class Group implements ErrorCodeGroup
+    {
+        private static final ErrorCodeGroup GROUP = new Group();
+        @Override
+        public int getPrefix()
+        {
+            return 0;
+        }
+    }
+}

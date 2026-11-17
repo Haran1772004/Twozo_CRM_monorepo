@@ -1,0 +1,22 @@
+Map results = new HashMap();
+def sourceCompany = params._source.company;
+
+if (null != sourceCompany) {
+  def territoryIds = params.territoryIds;
+  def ownerId = params.ownerId;
+  def companyFollowers = sourceCompany.followerIds;
+
+  if (("territory".equals(params.companyPermission) && territoryIds.contains(sourceCompany.territoryId)) ||
+      ownerId == sourceCompany.ownerId || (params.isCompanyFollower && null != companyFollowers && companyFollowers.contains(ownerId))) {
+    Map companyFields = new HashMap();
+
+    companyFields.put("name", sourceCompany.name);
+    companyFields.put("id", sourceCompany.id);
+    results.put("company", companyFields);
+
+    return companyFields;
+  }
+}
+
+return null;
+

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_crm_zapier">
+
+        <table name="OMZAPEventWebhook" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ZAP_ID" data-type="CHAR" nullable="false" max-length="500"/>
+                <column name="URL" data-type="CHAR" nullable="false"/>
+                <column name="EVENT" data-type="SMALLINT" nullable="false"/>
+                <column name="IS_SUBSCRIBED" data-type="BOOLEAN" nullable="false" default="true"/>
+                <column name="CREATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="MODIFIED_TIME" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMZAPEventWebhook_PK" column="ID" sequence-generator="OMZAPEventWebhook.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMZAPEventWebhook_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMZAPEventWebhook_FK2" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMZAPEventWebhook_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>ZAP_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MZAPFields">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="KCHAR" nullable="false" max-length="100"/>
+                <column name="ALIAS_NAME" data-type="CHAR" nullable="false" max-length="30"/>
+                <column name="FIELD_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONFIG" data-type="CHAR" nullable="true"/>
+            </columns>
+            <primary-key name="MZAPFields_PK" column="ID" sequence-generator="MZAPFields.ID"/>
+            <foreign-keys>
+                <foreign-key name="MZAPFields_FK1" reference-table="METFieldType"
+                             local-column="FIELD_TYPE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MZAPActionFields">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ZAP_FIELD_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ACTION_ID" data-type="SMALLINT" nullable="false"/>  <!-- Action ID refers to the ZapAction enum-->
+            </columns>
+            <primary-key name="MZAPActionFields_PK" column="ID" sequence-generator="MZAPActionFields.ID"/>
+            <foreign-keys>
+                <foreign-key name="MZAPActionFields_FK1" reference-table="MZAPFields"
+                             local-column="ZAP_FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MZAPActionFields_UK1">
+                    <unique-key-column>ZAP_FIELD_ID</unique-key-column>
+                    <unique-key-column>ACTION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+
+</metadata>

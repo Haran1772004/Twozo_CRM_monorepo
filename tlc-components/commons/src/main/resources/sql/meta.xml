@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="twozo_app_details">
+
+        <table name="TZApplication">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+            </columns>
+            <primary-key name="TZApplication_PK" column="ID" sequence-generator="TZApplication.ID"/>
+            <unique-keys>
+                <unique-key name="TZApplication_UK">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="TZApplicationModules">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="APPLICATION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="BASE_PATH" data-type="CHAR" nullable="false" max-length="20"/>
+            </columns>
+            <primary-key name="TZApplicationModules_PK" column="ID" sequence-generator="TZApplicationModules.ID"/>
+            <foreign-keys>
+                <foreign-key name="TZApplicationModules_AppId_FK" reference-table="TZApplication"
+                             local-column="APPLICATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="TZApplicationModules_UK">
+                    <unique-key-column>APPLICATION_ID</unique-key-column>
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="TZAEndpoints">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="MODULE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ENDPOINT" data-type="CHAR" nullable="false" max-length="250"/>
+            </columns>
+            <primary-key name="TZAEndpoints_PK" column="ID" sequence-generator="TZAEndpoints.ID"/>
+            <foreign-keys>
+                <foreign-key name="TZAEndpoints_ModuleId_FK" reference-table="TZApplicationModules"
+                             local-column="MODULE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="TZAEndpoints_UK">
+                    <unique-key-column>MODULE_ID</unique-key-column>
+                    <unique-key-column>ENDPOINT</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+    </module>
+</metadata>

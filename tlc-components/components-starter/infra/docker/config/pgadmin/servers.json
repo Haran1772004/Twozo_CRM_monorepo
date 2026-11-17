@@ -1,0 +1,15 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "TWOZO CRM - Local",
+      "Group": "Servers",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "TLC",
+      "Username": "postgres",
+      "PassFile": "/tmp/pgpass",
+      "SSLMode": "prefer"
+    }
+  }
+}
+

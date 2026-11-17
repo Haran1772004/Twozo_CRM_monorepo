@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_crm_market_place">
+
+        <table name="MKPCRMApps">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="APPLICATION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="MARKETPLACE_APP_ID" data-type="BIGINT" nullable="false"/>
+                <column name="DESCRIPTION" data-type="KCHAR" nullable="false" max-length="1000"/>
+                <column name="PUBLISHED_DATE" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="LATEST_RELEASED_DATE" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="DEVELOPED_BY" data-type="CHAR" nullable="false" max-length="100" default-value="Twozo"/>
+                <column name="VERSION" data-type="DECIMAL" precision="5" scale="2" nullable="false" default-value="1.0"/>
+                <column name="PRICING" data-type="SMALLINT" nullable="false"/>
+                <column name="CATEGORY" data-type="SMALLINT" nullable="false"/>
+                <column name="INSTALLS" data-type="BIGINT" nullable="false" default-value="0"/>
+                <column name="RATING" data-type="DECIMAL" precision="2" scale="1" nullable="false" default-value="0.0"/>
+                <column name="TOTAL_RATINGS" data-type="BIGINT" nullable="false" default-value="0"/>
+                <column name="PERMISSION" data-type="TEXT" nullable="false"/>
+                <column name="APPLICATION_SCOPE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MKPCRMApps_PK" column="ID" sequence-generator="MKPCRMApps.ID"/>
+            <foreign-keys>
+                <foreign-key name="MKPCRMApps_FK1" reference-table="TZApplication"
+                             local-column="APPLICATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MKPCRMApps_FK2" reference-table="MKPApps"
+                             local-column="MARKETPLACE_APP_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MKPCRMApps_UK1">
+                    <unique-key-column>APPLICATION_ID</unique-key-column>
+                    <unique-key-column>MARKETPLACE_APP_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMKPAppConsent" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="APP_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_GRANTED" data-type="BOOLEAN" nullable="false"/>
+                <column name="MODIFIED_AT" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="OMKPAppConsent_PK" column="ID" sequence-generator="OMKPAppConsent.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMKPAppConsent_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKPAppConsent_FK2" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKPAppConsent_FK3" reference-table="MKPCRMApps" local-column="APP_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMKPAppConsent_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>APP_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMKPInstalledApps" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="INSTALLED_BY" data-type="BIGINT" nullable="false"/>
+                <column name="APP_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STATE" data-type="SMALLINT" nullable="false"/>
+                <column name="INSTALLED_TIME" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMKPInstalledApps_PK" column="ID" sequence-generator="OMKPInstalledApps.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMKPInstalledApps_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKPInstalledApps_FK2" reference-table="OMCRMUser" local-column="INSTALLED_BY"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKPInstalledApps_FK3" reference-table="MKPCRMApps" local-column="APP_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMKPInstalledApps_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>INSTALLED_BY</unique-key-column>
+                    <unique-key-column>APP_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMKPOrgInstallationConfig" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="INSTALLED_APP_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONFIG_JSON" data-type="TEXT" max-length="500" nullable="false"/>
+            </columns>
+            <primary-key name="OMKPOrgInstallationConfig_PK" column="ID" sequence-generator="OMKPOrgInstallationConfig.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMKPOrgInstallationConfig_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKPOrgInstallationConfig_FK2" reference-table="OMKPInstalledApps" local-column="INSTALLED_APP_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMKPOrgInstallationConfig_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>INSTALLED_APP_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMKPUserInstallationConfig" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="INSTALLED_APP_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONFIG_JSON" data-type="TEXT" max-length="500" nullable="false"/>
+            </columns>
+            <primary-key name="OMKPUserInstallationConfig_PK" column="ID" sequence-generator="OMKPUserInstallationConfig.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMKPUserInstallationConfig_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKPUserInstallationConfig_FK2" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKPUserInstallationConfig_FK3" reference-table="OMKPInstalledApps" local-column="INSTALLED_APP_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMKPUserInstallationConfig_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>INSTALLED_APP_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMKPAppRatings" type="11">  <!-- TODO Need to alter this table schema-->
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="APP_ID" data-type="BIGINT" nullable="false"/>
+                <column name="COMMENT" data-type="TEXT" nullable="false"/>
+                <column name="RATING" data-type="SMALLINT" nullable="false"/>
+                <column name="POSTED_ON" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMKPAppRatings_PK" column="ID" sequence-generator="OMKPAppRatings.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMKPAppRatings_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKPAppRatings_FK2" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKPAppRatings_FK3" reference-table="MKPCRMApps" local-column="APP_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMKPAppRatings_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>APP_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMKPInstalledAppUserConfig" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="INSTALLED_APP_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONFIG" data-type="TEXT" max-length="500" nullable="false"/>
+            </columns>
+            <primary-key name="OMKPInstalledAppUserConfig_PK" column="ID" sequence-generator="OMKPInstalledAppUserConfig.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMKPInstalledAppUserConfig_Org_FK" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKPInstalledAppUserConfig_User_FK" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKPInstalledAppUserConfig_InstalledApp_FK" reference-table="OMKPOrgInstallationConfig" local-column="INSTALLED_APP_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMKPInstalledAppUserConfig_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>INSTALLED_APP_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+
+</metadata>

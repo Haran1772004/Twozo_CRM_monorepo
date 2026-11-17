@@ -1,0 +1,909 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+
+    <title>Quote Preview</title>
+
+    <style>
+        :root {
+            --color-primary: #000;
+            --color-secondary: rgba(0,0,0,0.6);
+            --color-border: #0000001a;
+            --color-success: #33bc7e;
+
+            --bg-page: rgb(236, 238, 238);
+            --bg-card: #fff;
+
+            --radius-sm: 4px;
+            --radius-md: 8px;
+
+            --font-xs: 10px;
+            --font-sm: 13px;
+            --font-md: 16px;
+
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 24px;
+            --spacing-2xl: 32px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            font-family: "Lexend",
+            "Segoe UI",
+            Roboto,
+            Arial,
+            sans-serif;
+        }
+
+        body {
+            background: var(--bg-page);
+        }
+
+        /* Utilities */
+
+        .text-secondary {
+            color: var(--color-secondary);
+        }
+
+        .text-bold {
+            font-weight: 500;
+            color: var(--color-primary);
+        }
+
+        .no-border {
+            border: none !important;
+        }
+
+        .amount {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .section-title,
+        .payments-title,
+        .acceptance-title,
+        .party-title,
+        .quote-title,
+        .company-name {
+            font-size: var(--font-md);
+            font-weight: 600;
+        }
+
+        /* Header */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 20px 30px;
+            background: var(--bg-card);
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xl);
+        }
+
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: var(--font-md);
+            font-weight: 500;
+        }
+
+        .profile-email {
+            margin-top: var(--spacing-xs);
+            font-size: var(--font-md);
+            font-weight: 400;
+        }
+
+        .actions {
+            display: flex;
+            gap: var(--spacing-lg);
+        }
+
+        .actions button {
+            padding: 8px 18px;
+
+            border: 1px solid var(--color-success);
+            border-radius: var(--radius-sm);
+
+            background: #fff;
+            color: #2ea871;
+
+            font-size: var(--font-sm);
+            font-weight: 600;
+
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .actions button:hover {
+            background: var(--color-success);
+            color: #fff;
+        }
+
+        /* Page */
+
+        .page {
+            padding: var(--spacing-xl);
+        }
+
+        /* Card */
+
+        .quote-card {
+            width: 100%;
+            max-width: 800px;
+
+            margin: 20px auto;
+            padding: var(--spacing-xl);
+
+            background: var(--bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+        }
+
+        /* Quote Header */
+
+        .quote-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .company-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .company-logo {
+            max-width: 120px;
+            max-height: 120px;
+            object-fit: contain;
+
+            margin-bottom: var(--spacing-md);
+        }
+
+        .quote-info {
+            width: 45%;
+        }
+
+        .info-table {
+            border-collapse: collapse;
+        }
+
+        .info-table td {
+            padding: 4px 20px 4px 0;
+            font-size: var(--font-sm);
+            color: var(--color-secondary);
+        }
+
+        /* Parties */
+
+        .party-section {
+            display: flex;
+            justify-content: space-between;
+
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .party {
+            width: 45%;
+        }
+
+        .party-title {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .party strong {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .party p {
+            margin-top: var(--spacing-sm);
+
+            color: var(--color-secondary);
+            font-size: var(--font-sm);
+            line-height: 24px;
+        }
+
+        .party-contact {
+            margin-top: var(--spacing-xl);
+        }
+
+        /* Summary */
+
+        .summary {
+            display: flex;
+            justify-content: space-between;
+
+            padding: var(--spacing-lg) 0;
+            margin-bottom: var(--spacing-2xl);
+
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .summary-item {
+            flex: 1;
+        }
+
+        .summary-item:last-child {
+            text-align: right;
+        }
+
+        .summary-label {
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-sm);
+            font-weight: 500;
+        }
+
+        .summary-value {
+            font-size: var(--font-sm);
+            color: var(--color-secondary);
+        }
+
+        /* Line Items */
+
+        .line-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .line-items th {
+            padding: 12px 0;
+
+            text-align: left;
+            font-size: var(--font-sm);
+            font-weight: 500;
+
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .line-items td {
+            padding: 12px 0;
+
+            font-size: var(--font-sm);
+            color: var(--color-secondary);
+
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .line-items .bold-text {
+            font-weight: 500;
+            color: var(--color-primary);
+        }
+
+        .description {
+            max-width: 240px;
+            margin-top: 4px;
+
+            font-size: var(--font-xs);
+            font-weight: 400;
+            color: var(--color-secondary);
+        }
+
+        /* Payments */
+
+        .payments {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .payments-description,
+        .acceptance-description {
+            margin-top: var(--spacing-md);
+
+            color: var(--color-secondary);
+            font-size: var(--font-sm);
+            line-height: 20px;
+        }
+
+        /* Signature */
+
+        .signature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: var(--spacing-lg);
+            padding-top: var(--spacing-lg);
+        }
+
+        .signature-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .signature-card {
+            padding: var(--spacing-lg);
+
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+        }
+
+        .signature-line,
+        .person-name-signature-line {
+            border-bottom: 1px solid var(--color-primary);
+        }
+
+        .signature-line {
+            margin-top: var(--spacing-lg);
+        }
+
+        .label {
+            margin-top: var(--spacing-sm);
+
+            color: var(--color-secondary);
+            font-size: var(--font-sm);
+        }
+
+        .person-name {
+            margin: 16px 0 8px;
+
+            font-size: var(--font-sm);
+            font-weight: 500;
+        }
+
+        .custom-section {
+            margin-top: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .custom-section-title {
+            font-size: var(--font-md);
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .custom-section-content {
+            color: var(--color-secondary);
+            font-size: var(--font-sm);
+            line-height: 24px;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .header,
+            .quote-header,
+            .party-section,
+            .summary {
+                flex-direction: column;
+                gap: var(--spacing-xl);
+            }
+
+            .quote-info,
+            .party {
+                width: 100%;
+            }
+
+            .summary-item:last-child {
+                text-align: left;
+            }
+
+            .signature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                width: 100%;
+            }
+
+            .actions button {
+                flex: 1;
+            }
+        }
+
+        @media print {
+
+            /* Hide screen-only components cleanly */
+            #section-top-banner,
+            .header,
+            .actions,
+            button {
+                display: none !important;
+            }
+
+            /* Target physical page rules uniformly */
+            @page {
+                size: A4 portrait;
+                margin: 1.5cm !important;
+            }
+
+            /* Standardize document body for print context */
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                margin: 0 !important;
+                font-size: 12pt;
+                line-height: 1.5;
+                width: 100% !important;
+                background-color: white !important;
+                -webkit-print-color-adjust: exact;
+            }
+
+            /* Clear screen dropshadows, borders, and margins on the wrapper */
+            .quote-card {
+                margin: 0 auto !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                /*display: flex !important;*/
+                /*flex-direction: column !important;*/
+            }
+
+            /* ==================== EXACT HEADER ALIGNMENT ==================== */
+
+            /* Re-establishing perfect flex distribution mirroring the web layout */
+            .quote-header {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: flex-start !important;
+                width: 100% !important;
+                margin-bottom: 2rem !important;
+            }
+
+            .quote-title {
+                /* Ensure this matches the width and alignment of your Ref block */
+                width: 100% !important;
+                display: block !important;
+            }
+
+            .company-info {
+                width: 48% !important;
+                text-align: left !important;
+            }
+
+            .quote-info {
+                width: 48% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: flex-end !important; /* Forces layout inner components rightward */
+                text-align: left !important;
+            }
+
+            /* Forces structural table component rightward */
+            .info-table {
+                margin-left: auto !important;
+                margin-right: 0 !important;
+                width: 100% !important;
+                display: block !important;
+            }
+
+            /* ==================== STRUCTURAL BREAK PROTECTION ==================== */
+
+            /* Clean row splits for the items grid */
+            table, tr {
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+            }
+
+            /* Avoid orphaned section headers at page bottoms */
+            .section-title,
+            .payments-title,
+            .acceptance-title {
+                break-after: avoid !important;
+                page-break-after: avoid !important;
+            }
+
+            /* Assuming these are the parent container classes for your rows */
+            .party-section,
+            .signature-grid,
+            .summary,
+            .payments {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: flex-start !important;
+                width: 100% !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            /* 3. GIVE PAYMENTS BREATHING ROOM FROM THE TABLE */
+            .payments {
+                margin-top: 2rem !important;
+                width: 100% !important;
+                display: block !important;
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+            }
+
+            /* Force the individual blocks inside those containers to sit side-by-side */
+            .party-section > div,
+            .signature-grid > div,
+            .summary > div {
+                width: 48% !important;
+                /* 48% provides enough breathing room to prevent wrap-arounds */
+            }
+
+            /* Prevent signature blocks from splitting across pages */
+            .signature-card,
+            .signature-item {
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+            }
+
+            /* =========================================================
+            6. DYNAMIC ACCEPTANCE SECTION (Allow long grids to split)
+            ========================================================= */
+
+            /* 1. Lock the section title and main description so they don't get orphaned at the bottom of a page */
+            .acceptance-title,
+            .acceptance > .acceptance-description {
+                break-after: avoid !important;
+                page-break-after: avoid !important;
+            }
+
+            /* 2. Keep the "On behalf of..." text locked to at least the first signature box below it */
+            .signature-item > .acceptance-description {
+                break-after: avoid !important;
+                page-break-after: avoid !important;
+            }
+
+            /* 3. ALLOW the main wrapper and columns to split across multiple pages if they get too long */
+            .acceptance,
+            .signature-grid,
+            .signature-item {
+                break-inside: auto !important;
+                page-break-inside: auto !important;
+            }
+
+            /* 4. PREVENT individual signature boxes from being sliced in half horizontally */
+            .signature-card {
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+                margin-bottom: 1.5rem !important; /* Ensures clean vertical spacing between cards */
+            }
+
+            /* =========================================================
+            7. CUSTOM SECTIONS BREAK PROTECTION
+            ========================================================= */
+
+            .custom-section {
+                width: 100% !important;
+                margin-bottom: 2rem !important; /* Ensures breathing room between multiple custom sections */
+                break-inside: auto !important;
+                page-break-inside: auto !important;
+            }
+
+            .custom-section-title {
+                /* Prevents the title from printing at the bottom of Page 1 while content starts on Page 2 */
+                break-after: avoid !important;
+                page-break-after: avoid !important;
+
+                /* If it has bottom margins, sometimes browsers ignore break-after.
+                   Keeping the margin tight to the content helps lock them together. */
+                margin-bottom: 0.5rem !important;
+            }
+
+            .custom-section-content {
+                /* Allows long paragraphs or tables inside the custom section to flow smoothly across multiple pages */
+                break-inside: auto !important;
+                page-break-inside: auto !important;
+            }
+
+            /* If your custom sections contain images or tables, protect them from being sliced in half */
+            .custom-section-content table,
+            .custom-section-content img {
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    #set($model = $template.get("quotation"))
+    #set($currency = $model.get("currency"))
+    #set($header = $model.get("header"))
+    #set($parties = $model.get("parties"))
+    #set($summary = $model.get("summary"))
+    #set($lineItems = $model.get("lineItems"))
+    #set($payment = $model.get("payment"))
+    #set($acceptance = $model.get("acceptance"))
+
+    <header id="section-top-banner" class="header">
+        <div class="profile">
+            <img src="$model.salesPersonProfileUrl" alt="Profile"/>
+
+            <div>
+                <div class="profile-name">$model.get("salesPersonName")</div>
+                <div class="profile-email">$model.get("salesPersonEmail")</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button onclick="window.print()">Print</button>
+            <button onclick="location.href='$model.downloadUrl'">Download PDF</button>
+        </div>
+    </header>
+
+    <div class="page">
+        <div id="section-quote-card" class="quote-card">
+
+            <div id="section-1" class="quote-header">
+                <div class="company-info">
+                    #set($companyLogo = $header.get("companyLogo"))
+
+                    #if($companyLogo != "")
+                        <img id="section-1.7" src="$companyLogo" alt="Company Logo" class="company-logo"/>
+                    #end
+
+                    <div id="section-1.6" class="company-name">$header.get("companyName")</div>
+                </div>
+
+                <div class="quote-info">
+                    <div id="section-1.1" class="quote-title">$header.get("title")</div>
+
+                    <table class="info-table">
+                        <tr id="section-1.2">
+                            <td>$header.get("referenceTitle")</td>
+                            <td>$header.get("referenceValue")</td>
+                        </tr>
+
+                        <tr id="section-1.3">
+                            <td>$header.get("issueDateTitle")</td>
+                            <td>$header.get("issueDateValue")</td>
+                        </tr>
+
+                        <tr id="section-1.4">
+                            <td>$header.get("expiryDateTitle")</td>
+                            <td>$header.get("expiryDateValue")</td>
+                        </tr>
+
+                        <tr id="section-1.5">
+                            <td>$header.get("currencyTitle")</td>
+                            <td>$header.get("currencyValue")</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div id="section-2" class="party-section">
+                <div class="party">
+                    <div id="section-2.1" class="party-title">$parties.get("sellerTitle")</div>
+
+                    <strong>$parties.get("sellerCompanyName")</strong>
+                    <p>$parties.get("sellerCompanyAddress")</p>
+
+                    <strong>$parties.get("sellerContactTitle")</strong>
+
+                    #set($sellerContactName = $parties.get("sellerContactName"))
+                    #set($sellerContactEmail = $parties.get("sellerContactEmail"))
+                    #set($sellerContactWithEmail = $sellerContactName)
+
+                    #if($sellerContactEmail != "")
+                        #set($sellerContactWithEmail = $sellerContactName + " (" + $sellerContactEmail + ")")
+                    #end
+
+                    <p>$sellerContactWithEmail</p>
+                </div>
+
+                <div class="party">
+                    <div class="party-title">$parties.get("buyerTitle")</div>
+
+                    <strong>$parties.get("buyerCompanyName")</strong>
+                    <p>$parties.get("buyerCompanyAddress")</p>
+
+                    <strong>$parties.get("buyerContactsTitle")</strong>
+
+                    #if($parties.get("buyerContacts"))
+                        #foreach($contact in $parties.get("buyerContacts"))
+                            #set($buyerContactName = $contact.get("name"))
+                            #set($buyerContactEmail = $contact.get("email"))
+                            #set($buyerContactWithEmail = $buyerContactName)
+
+                            #if($buyerContactEmail != "")
+                                #set($buyerContactWithEmail = $buyerContactName + " (" + $buyerContactEmail + ")")
+                            #end
+
+                            <p class="buyer-contact">$buyerContactWithEmail</p>
+                        #end
+                    #end
+                </div>
+            </div>
+
+            <div id="section-3" class="summary">
+                <div id="section-3.1" class="summary-item">
+                    <div class="summary-label">$summary.get("effectiveDateTitle")</div>
+                    <div class="summary-value">$summary.get("effectiveDateValue")</div>
+                </div>
+
+                #set($termLengthValue = $summary.get("termLengthValue"))
+
+                #if($termLengthValue != "")
+                    <div id="section-3.2" class="summary-item">
+                        <div class="summary-label">$summary.get("termLengthTitle")</div>
+                        <div class="summary-value">$termLengthValue</div>
+                    </div>
+                #end
+
+                <div id="section-3.3" class="summary-item">
+                    <div class="summary-label">$summary.get("totalDiscountTitle")</div>
+                    <div class="summary-value">$summary.get("totalDiscountValue")</div>
+                </div>
+
+                <div id="section-3.4" class="summary-item" style="text-align: right">
+                    <div class="summary-label">$summary.get("totalValueTitle")</div>
+                    <div class="summary-value">$currency$summary.get("totalValue")</div>
+                </div>
+            </div>
+
+            <div id="section-4" class="section-title">$lineItems.get("title")</div>
+
+            <table id="section-4.1" class="line-items">
+                <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Unit Discount</th>
+                    <th>Term Total</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                #if($lineItems.get("items"))
+                    #foreach($lineItem in $lineItems.get("items"))
+                        <tr id="section-4.1.$foreach.count">
+                            <td>$lineItem.get("name")</td>
+                            <td>$lineItem.get("quantity")</td>
+                            <td>$currency$lineItem.get("unitPrice")</td>
+                            <td>$lineItem.get("discount")%</td>
+                            <td>$currency$lineItem.get("totalValue")</td>
+                        </tr>
+                    #end
+                #end
+
+                <!-- Summary Rows -->
+                <tr id="section-4.3" class="summary-row">
+                    <td class="no-border"></td>
+                    <td colspan="3" class="bold-text">$lineItems.get("subTotalTitle")</td>
+                    <td class="bold-text">$lineItems.get("subTotalValue")</td>
+                </tr>
+
+                <tr id="section-4.4">
+                    <td class="no-border"></td>
+                    <td colspan="3">$lineItems.get("totalDiscountTitle")</td>
+                    <td>$lineItems.get("totalDiscountValue")</td>
+                </tr>
+
+                <tr id="section-4.5">
+                    <td class="no-border"></td>
+                    <td colspan="3" class="bold-text">$lineItems.get("taxTitle")</td>
+                    <td class="bold-text">$currency$lineItems.get("taxValue")</td>
+                </tr>
+
+                <tr id="section-4.6">
+                    <td class="no-border"></td>
+                    <td colspan="3" class="bold-text">$lineItems.get("dueTitle")
+                        <p class="description">$lineItems.get("dueDescription")</p>
+                    </td>
+                    <td class="bold-text">$currency$lineItems.get("dueValue")</td>
+                </tr>
+
+                <tr id="section-4.7">
+                    <td class="no-border"></td>
+                    <td colspan="3" class="bold-text">$lineItems.get("totalValueTitle")</td>
+                    <td class="bold-text">$currency$lineItems.get("totalValue")</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div id="section-5" class="payments">
+                <div id="section-5.1" class="payments-title">$payment.get("title")</div>
+
+                <p id="section-5.2" class="payments-description">$payment.get("description")  $payment.get("value")</p>
+            </div>
+
+            <div id="section-6" class="acceptance">
+                <div id="section-6.1" class="acceptance-title">$acceptance.get("title")</div>
+
+                <p class="acceptance-description">$acceptance.get("description")</p>
+
+                <div class="signature-grid">
+                    <div class="signature-item">
+
+                        <div id="section-6.3" class="acceptance-description">$acceptance.get("buyerTitle")</div>
+
+                        #if($acceptance.get("buyers"))
+                            #foreach($buyer in $acceptance.get("buyers"))
+                                <div id="section-6.4.$foreach.count" class="signature-card">
+
+                                    <div class="signature-line"></div>
+                                    <div class="label">Signature</div>
+
+                                    <div class="person-name">$buyer</div>
+                                    <div class="person-name-signature-line"></div>
+                                    <div class="label">Printed name</div>
+
+                                    <div class="signature-line date-line"></div>
+                                    <div class="label">Date</div>
+
+                                </div>
+                            #end
+                        #end
+
+                    </div>
+
+                    <div class="signature-item">
+
+                        <div id="section-6.5" class="acceptance-description">$acceptance.get("sellerTitle")</div>
+
+                        #if($acceptance.get("sellers"))
+                            #foreach($seller in $acceptance.get("sellers"))
+                                <div id="section-6.6.$foreach.count" class="signature-card">
+
+                                    <div class="signature-line"></div>
+                                    <div class="label">Signature</div>
+
+                                    <div class="person-name">$seller</div>
+                                    <div class="person-name-signature-line"></div>
+                                    <div class="label">Printed name</div>
+
+                                    <div class="signature-line date-line"></div>
+                                    <div class="label">Date</div>
+
+                                </div>
+                            #end
+                        #end
+
+                    </div>
+                </div>
+            </div>
+
+            #if($model.get("customSections"))
+                #foreach($customSection in $model.get("customSections"))
+                    #set($customSectionId = $customSection.get("id"))
+
+                    <div id="section-$customSectionId" class="custom-section">
+                        <div class="custom-section-title">$customSection.get("title")</div>
+                        <div class="custom-section-content">$customSection.get("content")</div>
+                    </div>
+                #end
+            #end
+
+        </div>
+    </div>
+</body>
+
+</html>

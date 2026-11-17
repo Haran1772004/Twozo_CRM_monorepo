@@ -1,0 +1,3341 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Re-naming or Adding Or Deleting a Column Here should also reflect in "reports_meta_object.yaml" -->
+<metadata>
+    <module name="tlc_reports" type="oltp">
+
+        <table name="ANADataType">
+            <columns>
+                <column name="ID"   data-type="BIGINT"/>
+                <column name="TYPE" data-type="CHAR"    nullable="false"  max-length="100"/>
+            </columns>
+            <primary-key name="ANADataType_PK" column="ID" sequence-generator="ANADataType.ID"/>
+            <unique-key name="ANADataType_UK1">
+                <unique-key-column>TYPE</unique-key-column>
+            </unique-key>
+        </table>
+
+        <table name="ANATableDetails">
+            <columns>
+                <column name="ID"            data-type="BIGINT"/>
+                <column name="DISPLAY_NAME"  data-type="CHAR"    nullable="true"  max-length="100"/>
+                <column name="TABLE_NAME"    data-type="CHAR"    nullable="true"  max-length="100"/>
+                <column name="IS_DELETED"    data-type="BOOLEAN" nullable="true"/>
+                <column name="CREATED_BY"    data-type="BIGINT"  nullable="true"/>
+                <column name="CREATED_TIME"  data-type="BIGINT"  nullable="true"/>
+                <column name="MODIFIED_BY"   data-type="BIGINT"  nullable="true"/>
+                <column name="MODIFIED_TIME" data-type="BIGINT"  nullable="true"/>
+                <column name="ALIAS_NAME"    data-type="CHAR"    nullable="true" max-length="100"/>
+            </columns>
+            <primary-key name="ANATableDetails_PK" column="ID" sequence-generator="ANATableDetails.ID"/>
+        </table>
+
+        <table name="ANAColumnDetails">
+            <columns>
+                <column name="ID"            data-type="BIGINT"/>
+                <column name="TABLE_ID"      data-type="BIGINT"  nullable="false"/>
+                <column name="DATA_TYPE_ID"  data-type="BIGINT"  nullable="true"/>
+                <column name="DATA_TYPE_ID_V2"  data-type="INTEGER"  nullable="true"/>
+                <column name="DISPLAY_NAME"  data-type="CHAR"    nullable="true"  max-length="100"/>
+                <column name="COLUMN_NAME"   data-type="CHAR"    nullable="true"  max-length="100"/>
+                <column name="IS_DELETED"    data-type="BOOLEAN" nullable="true"/>
+                <column name="MODIFIED_TIME" data-type="BIGINT"  nullable="true"/>
+                <column name="IS_DYNAMIC"    data-type="BOOLEAN" nullable="true"/>
+            </columns>
+            <primary-key name="ANAColumnDetails_PK" column="ID" sequence-generator="ANAColumnDetails.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAColumnDetails_FK1" reference-table="ANATableDetails" local-column="TABLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANAColumnDetails_FK2" reference-table="ANADataType"     local-column="DATA_TYPE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <!--   Join Types    -->
+        <table name="ANAJoinType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="JOIN_TYPE" data-type="CHAR" nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="ANAJoinType_PK" column="ID" sequence-generator="ANAJoinType.ID"/>
+            <unique-key name="ANAJoinType_UK1">
+                <unique-key-column>JOIN_TYPE</unique-key-column>
+            </unique-key>
+        </table>
+
+        <!--   Relation Types   -->
+        <table name="ANARelationType">
+            <columns>
+                <column name="ID"       data-type="BIGINT" />
+                <column name="REL_TYPE" data-type="CHAR" nullable="false" />
+            </columns>
+            <primary-key name="ANARelationType_PK1" column="ID" sequence-generator="ANARelationType.ID" />
+            <unique-key name="ANARelationType_UK1">
+                <unique-key-column>REL_TYPE</unique-key-column>
+            </unique-key>
+        </table>
+
+        <!--   Join Conditions   -->
+        <table name="ANAJoinCondition">
+            <columns>
+                <column name="ID"            data-type="BIGINT" />
+                <column name="REL_CONDITION" data-type="CHAR" nullable="false"/>
+            </columns>
+            <primary-key name="ANAJoinCondition_PK1" column="ID" sequence-generator="ANAJoinCondition.ID" />
+            <unique-key name="ANAJoinCondition_UK1">
+                <unique-key-column>REL_CONDITION</unique-key-column>
+            </unique-key>
+        </table>
+
+        <table name="ANATableRelation">
+            <columns>
+                <column name="ID"              data-type="BIGINT"/>
+                <column name="PARENT_TABLE_ID" data-type="BIGINT"  nullable="true"/>
+                <column name="CHILD_TABLE_ID"  data-type="BIGINT"  nullable="true"/>
+                <column name="REL_TYPE"        data-type="BIGINT"  nullable="true"/>
+                <column name="REL_TYPE_V2"        data-type="INTEGER"  nullable="true"/>
+                <column name="DISPLAY_NAME"    data-type="CHAR"    nullable="true"/>
+                <column name="IS_DELETED"      data-type="BOOLEAN" nullable="true"/>
+                <column name="MODIFIED_TIME"   data-type="BIGINT"  nullable="true"/>
+            </columns>
+            <primary-key name="ANATableRelation_PK" column="ID" sequence-generator="ANATableRelation.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANATableRelation_FK1" reference-table="ANATableDetails" local-column="PARENT_TABLE_ID" reference-column="ID"  constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="ANATableRelation_FK2" reference-table="ANATableDetails" local-column="CHILD_TABLE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="ANATableRelation_FK3" reference-table="ANARelationType" local-column="REL_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANARelatedColumnInfo">
+            <columns>
+                <column name="ID"            data-type="BIGINT" />
+                <column name="REL_ID"        data-type="BIGINT" nullable="true"/>
+                <column name="PARENT_COL_ID" data-type="BIGINT" nullable="true" />
+                <column name="CHILD_COL_ID"  data-type="BIGINT" nullable="true" />
+                <column name="REL_CONDITION" data-type="BIGINT" nullable="true" />
+                <column name="REL_CONDITION_V2" data-type="INTEGER" nullable="true" />
+            </columns>
+            <primary-key name="ANARelatedColumnInfo_PK" column="ID" sequence-generator="ANARelatedColumnInfo.ID" />
+            <foreign-keys>
+                <foreign-key name="ANARelatedColumnInfo_FK1" reference-table="ANATableRelation"
+                             local-column="REL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="ANARelatedColumnInfo_FK2" reference-table="ANAColumnDetails" local-column="PARENT_COL_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT" />
+                <foreign-key name="ANARelatedColumnInfo_FK3" reference-table="ANAColumnDetails" local-column="CHILD_COL_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT" />
+                <foreign-key name="ANARelatedColumnInfo_FK4" reference-table="ANAJoinCondition" local-column="REL_CONDITION"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT" />
+            </foreign-keys>
+        </table>
+
+        <table name="ANAColumnRelation">
+            <columns>
+                <column name="ID"            data-type="BIGINT" />
+                <column name="REL_ID"        data-type="BIGINT" nullable="true"/>
+                <column name="PARENT_COL_ID" data-type="BIGINT" nullable="true" />
+                <column name="CHILD_COL_ID"  data-type="BIGINT" nullable="true" />
+                <column name="REL_CONDITION" data-type="INTEGER" nullable="true" />
+            </columns>
+            <primary-key name="ANAColumnRelation_PK" column="ID" sequence-generator="ANAColumnRelation.ID" />
+            <foreign-keys>
+                <foreign-key name="ANAColumnRelation_FK1" reference-table="ANATableRelation"
+                             local-column="REL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="ANAColumnRelation_FK2" reference-table="ANAColumnDetails" local-column="PARENT_COL_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT" />
+                <foreign-key name="ANAColumnRelation_FK3" reference-table="ANAColumnDetails" local-column="CHILD_COL_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT" />
+            </foreign-keys>
+        </table>
+
+        <table name="CHDataType">
+            <columns>
+                <column name="ID"   data-type="BIGINT"/>
+                <column name="TYPE" data-type="CHAR"    nullable="false"  max-length="100"/>
+            </columns>
+            <primary-key name="CHDataType_PK" column="ID" sequence-generator="CHDataType.ID"/>
+        </table>
+
+        <table name="CHTableDetails">
+            <columns>
+                <column name="ID"            data-type="BIGINT"/>
+                <column name="TABLE_NAME"    data-type="CHAR"   nullable="false"  max-length="100"/>
+                <column name="ALIAS_NAME"    data-type="CHAR"   nullable="true"   max-length="100"/>
+            </columns>
+            <primary-key name="CHTableDetails_PK" column="ID" sequence-generator="CHTableDetails.ID"/>
+        </table>
+
+        <table name="CHColumnDetails">
+            <columns>
+                <column name="ID"            data-type="BIGINT"/>
+                <column name="TABLE_ID"      data-type="BIGINT"  nullable="false"/>
+                <column name="DATA_TYPE_ID"  data-type="BIGINT"  nullable="false"/>
+                <column name="COLUMN_NAME"   data-type="CHAR"    nullable="false"  max-length="100"/>
+            </columns>
+            <primary-key name="CHColumnDetails_PK" column="ID" sequence-generator="CHColumnDetails.ID"/>
+            <foreign-keys>
+                <foreign-key name="CHColumnDetails_FK1" reference-table="CHTableDetails"    local-column="TABLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="CHColumnDetails_FK2" reference-table="CHDataType"    local-column="DATA_TYPE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <!--    Table JoinRelation    -->
+        <table name="CHTableRelation">
+            <columns>
+                <column name="ID"              data-type="BIGINT"/>
+                <column name="PARENT_TABLE_ID" data-type="BIGINT"  nullable="true"/>
+                <column name="CHILD_TABLE_ID"  data-type="BIGINT"  nullable="true"/>
+                <column name="REL_TYPE"        data-type="BIGINT"  nullable="true"/>
+                <column name="DISPLAY_NAME"    data-type="CHAR"    nullable="true"/>
+                <column name="IS_DELETED"      data-type="BOOLEAN" nullable="true"/>
+                <column name="MODIFIED_TIME"   data-type="BIGINT"  nullable="true"/>
+            </columns>
+            <primary-key name="CHTableRelation_PK" column="ID" sequence-generator="CHTableRelation.ID"/>
+            <foreign-keys>
+                <foreign-key name="CHTableRelation_FK1" reference-table="CHTableDetails" local-column="PARENT_TABLE_ID" reference-column="ID"  constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="CHTableRelation_FK2" reference-table="CHTableDetails" local-column="CHILD_TABLE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="CHTableRelation_FK3" reference-table="ANARelationType" local-column="REL_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="CHRelatedColumnInfo">
+            <columns>
+                <column name="ID"            data-type="BIGINT" />
+                <column name="REL_ID"        data-type="BIGINT" nullable="false"/>
+                <column name="PARENT_COL_ID" data-type="BIGINT" nullable="false" />
+                <column name="CHILD_COL_ID"  data-type="BIGINT" nullable="false" />
+                <column name="REL_CONDITION" data-type="BIGINT" nullable="false" />
+            </columns>
+            <primary-key name="CHRelatedColumnInfo_PK" column="ID" sequence-generator="CHRelatedColumnInfo.ID" />
+            <foreign-keys>
+                <foreign-key name="CHRelatedColumnInfo_FK1" reference-table="CHTableRelation"
+                             local-column="REL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="CHRelatedColumnInfo_FK2" reference-table="CHColumnDetails" local-column="PARENT_COL_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT" />
+                <foreign-key name="CHRelatedColumnInfo_FK3" reference-table="CHColumnDetails" local-column="CHILD_COL_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT" />
+                <foreign-key name="CHRelatedColumnInfo_FK4" reference-table="ANAJoinCondition" local-column="REL_CONDITION"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT" />
+            </foreign-keys>
+        </table>
+
+        <table name="ANAtoCHSelectorColumnMapper">
+            <columns>
+                <column name="ID"           data-type="BIGINT"/>
+                <column name="ANA_COL_ID"   data-type="BIGINT" nullable="false"/>
+                <column name="CH_COL_ID"    data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="ANAtoCHSelectorColumnMapper_PK" column="ID" sequence-generator="ANAtoCHSelectorColumnMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAtoCHSelectorColumnMapper_FK1" reference-table="ANAColumnDetails" local-column="ANA_COL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANAtoCHSelectorColumnMapper_FK2" reference-table="CHColumnDetails" local-column="CH_COL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+
+        <table name="ANAPath">
+            <columns>
+                <column name="ID"         data-type="BIGINT" />
+<!--                <column name="FROM_TABLE" data-type="BIGINT" />-->
+<!--                <column name="TO_TABLE"   data-type="BIGINT" />-->
+            </columns>
+            <primary-key name="ANAPath_PK1" column="ID" sequence-generator="ANAPath.ID"/>
+<!--            <foreign-keys>-->
+<!--                <foreign-key name="ANAPath_FK1" reference-table="ANATableDetails" local-column="FROM_TABLE" reference-column="ID" constraint="ON-DELETE-RESTRICT" />-->
+<!--                <foreign-key name="ANAPath_FK2" reference-table="ANATableDetails" local-column="TO_TABLE" reference-column="ID" constraint="ON-DELETE-RESTRICT" />-->
+<!--            </foreign-keys>-->
+        </table>
+
+        <table name="ANARelationsInPath">
+            <columns>
+                <column name="ID"               data-type="BIGINT"/>
+                <column name="PATH_ID"          data-type="BIGINT"  nullable="false"/>
+                <column name="RELATION_ID"      data-type="BIGINT"  nullable="false"/>
+                <column name="RELATION_INDEX"   data-type="INTEGER" nullable="false" />
+                <column name="IS_REVERSE_JOIN"  data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+            <primary-key name="ANARelationsInPath_PK1" column="ID" sequence-generator="ANARelationsInPath.ID" />
+            <foreign-keys>
+                <foreign-key name="ANARelationsInPath_FK1" reference-table="ANAPath" local-column="PATH_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+<!--                <foreign-key name="ANARelationsInPath_FK3" reference-table="ANATableRelation" local-column="RELATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>-->
+            </foreign-keys>
+        </table>
+
+        <!-- Reports Related Meta Tables -->
+        <!-- ANAViewType TABLE -->
+        <table name="ANAViewType">
+            <columns>
+                <!-- VIEW_TYPE  -->
+                <column name="ID"         data-type="BIGINT"/>
+                <column name="TYPE"       data-type="CHAR"    nullable="false" max-length="50"/>
+                <column name="IS_ENABLED" data-type="BOOLEAN" nullable="false" default-value="true"/>
+            </columns>
+            <primary-key name="ANAViewType_PK" column="ID" sequence-generator="ANAViewType.ID"/>
+            <unique-key name="ANAViewType_UK1">
+                <unique-key-column>TYPE</unique-key-column>
+            </unique-key>
+        </table>
+
+        <table name="ANAViewDetails">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="VIEW_TYPE" data-type="BIGINT" nullable="true"/>
+                <column name="VIEW_TYPE_V2" data-type="INTEGER" nullable="true"/>
+                <column name="DISPLAY_NAME" data-type="CHAR" nullable="true" max-length="100"/>
+                <column name="CREATED_BY" data-type="BIGINT" nullable="false"/>
+                <column name="MODIFIED_BY" data-type="BIGINT" nullable="false"/>
+                <column name="CREATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="MODIFIED_TIME" data-type="BIGINT" nullable="true"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="IS_CUSTOM_VIEW" data-type="BOOLEAN" nullable="true" default-value="false"/>
+                <column name="IS_HIDDEN" data-type="BOOLEAN" nullable="true" default-value="false"/>
+                <column name="DESCRIPTION" data-type="CHAR" nullable="true" max-length="255"/>
+                <column name="MOVE_TO_TRASH" data-type="BOOLEAN" nullable="false" default-value="true"/>
+            </columns>
+            <primary-key name="ANAViewDetails_PK" column="ID" sequence-generator="ANAViewDetails.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAViewDetails_FK1" reference-table="ANAViewType" local-column="VIEW_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAGraphType">
+            <columns>
+                <!-- VIEW_TYPE  -->
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TYPE" data-type="CHAR" nullable="false" max-length="50"/>
+                <column name="IS_ENABLED" data-type="BOOLEAN" nullable="true" default-value="true"/>
+                <column name="IS_ACTIVE" data-type="BOOLEAN" nullable="true" default-value="false"/>
+            </columns>
+            <primary-key name="ANAGraphType_PK" column="ID" sequence-generator="ANAGraphType.ID"/>
+            <unique-keys>
+                <unique-key name="ANAGraphType_UK1">
+                    <unique-key-column>TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="ANAGraphSubType">
+            <columns>
+                <!-- VIEW_TYPE  -->
+                <column name="ID" data-type="BIGINT"/>
+                <column name="GRAPH_TYPE" data-type="BIGINT" nullable="false"/>
+                <column name="TYPE" data-type="CHAR" nullable="false" max-length="50"/>
+                <column name="IS_ENABLED" data-type="BOOLEAN" nullable="true" default-value="true"/>
+            </columns>
+            <primary-key name="ANAGraphSubType_PK" column="ID" sequence-generator="ANAGraphSubType.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAGraphSubType_FK1" reference-table="ANAGraphType" local-column="GRAPH_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-key name="ANAGraphSubType_UK1">
+                <unique-key-column>TYPE</unique-key-column>
+            </unique-key>
+        </table>
+
+        <!-- ANAOperationType -->
+        <table name="ANAOperationType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="OPERATION_TYPE" data-type="CHAR" nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="ANAOperationType_PK" column="ID" sequence-generator="ANAOperationType.ID"/>
+            <unique-key name="ANAOperationType_UK1">
+                <unique-key-column>OPERATION_TYPE</unique-key-column>
+            </unique-key>
+        </table>
+
+        <table name="OperationTypeToEnumMapper">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="OPERATION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ENUM_VALUE"   data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="OperationTypeToEnumMapper_PK" column="ID" sequence-generator="OperationTypeToEnumMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="OperationTypeToEnumMapper_FK1" reference-table="ANAOperationType" local-column="OPERATION_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAColorPaletteType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="COLOUR_PALETTE_TYPE" data-type="CHAR" nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="ANAColorPaletteType_PK" column="ID" sequence-generator="ANAColorPaletteType.ID"/>
+            <unique-key name="ANAColorPaletteType_UK1">
+                <unique-key-column>COLOUR_PALETTE_TYPE</unique-key-column>
+            </unique-key>
+        </table>
+
+        <table name="ANAPositionType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="POSITION_TYPE" data-type="CHAR" nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="ANAPositionType_PK" column="ID" sequence-generator="ANAPositionType.ID"/>
+            <unique-key name="ANAPositionType_UK1">
+                <unique-key-column>POSITION_TYPE</unique-key-column>
+            </unique-key>
+        </table>
+
+        <table name="ANAAxisType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="AXIS_TYPE" data-type="CHAR" nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="ANAAxisType_PK" column="ID" sequence-generator="ANAAxisType.ID"/>
+            <unique-key name="ANAAxisType_UK1">
+                <unique-key-column>AXIS_TYPE</unique-key-column>
+            </unique-key>
+        </table>
+
+        <table name="ANAKPIComparatorSide">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="COMPARATOR_SIDE" data-type="CHAR" nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="ANAKPIComparatorSide_PK" column="ID" sequence-generator="ANAKPIComparatorSide.ID"/>
+            <unique-key name="ANAKPIComparatorSide_UK1">
+                <unique-key-column>COMPARATOR_SIDE</unique-key-column>
+            </unique-key>
+        </table>
+
+        <table name="ANAKPIComparatorType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="COMPARATOR_TYPE" data-type="CHAR" nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="ANAKPIComparatorType_PK" column="ID" sequence-generator="ANAKPIComparatorType.ID"/>
+            <unique-key name="ANAKPIComparatorType_UK1">
+                <unique-key-column>COMPARATOR_TYPE</unique-key-column>
+            </unique-key>
+        </table>
+
+        <table name="ANAFieldType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="FIELD_TYPE" data-type="CHAR" nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="ANAFieldType_PK" column="ID" sequence-generator="ANAFieldType.ID"/>
+            <unique-key name="ANAFieldType_UK1">
+                <unique-key-column>FIELD_TYPE</unique-key-column>
+            </unique-key>
+        </table>
+
+        <table name="ANAPermissionType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="PERMISSION_TYPE" data-type="CHAR" nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="ANAPermissionType_PK" column="ID" sequence-generator="ANAPermissionType.ID"/>
+            <unique-key name="ANAPermissionType_UK1">
+                <unique-key-column>PERMISSION_TYPE</unique-key-column>
+            </unique-key>
+        </table>
+
+        <!-- ANAChartProperty TABLE -->
+        <table name="ANAChartProperty">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="GRAPH_TYPE" data-type="BIGINT" nullable="true"/>
+                <column name="GRAPH_TYPE_V2" data-type="INTEGER" nullable="true"/>
+                <column name="HAS_LEGEND" data-type="BOOLEAN" nullable="true" default-value="false"/>
+                <column name="HAS_AXIS" data-type="BOOLEAN" nullable="true" default-value="false"/>
+            </columns>
+            <primary-key name="ANAChartProperty_PK" column="ID" sequence-generator="ANAChartProperty.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAChartProperty_FK1" reference-table="ANAGraphType" local-column="GRAPH_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="ANAChartProperty_UK1">
+                    <unique-key-column>GRAPH_TYPE</unique-key-column>
+                    <unique-key-column>GRAPH_TYPE_V2</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <!-- ANAReport Table -->
+        <table name="ANAReport">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="VIEW_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ROOT_TABLE" data-type="BIGINT" nullable="false"/>
+                <column name="TITLE" data-type="CHAR" nullable="true" max-length="100"/>
+                <column name="GRAPH_TYPE" data-type="BIGINT" nullable="true"/>
+                <column name="GRAPH_TYPE_V2" data-type="INTEGER" nullable="true" default-value="0"/>
+            </columns>
+            <primary-key name="ANAReport_PK" column="ID" sequence-generator="ANAReport.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAReport_FK1" reference-table="ANAViewDetails" local-column="VIEW_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANAReport_FK3" reference-table="ANAGraphType" local-column="GRAPH_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <!-- ANAReportField -->
+        <table name="ANAReportField">
+            <columns>
+                <column name="ID"            data-type="BIGINT"/>
+                <column name="VIEW_ID"       data-type="BIGINT"  nullable="false"/>
+                <column name="COLUMN_ID"     data-type="BIGINT"  nullable="false"/>
+                <column name="OPERATION_ID"  data-type="BIGINT"  nullable="true"/>
+                <column name="OPERATION_ID_V2" data-type="INTEGER" nullable="true"/>
+                <column name="AXIS"          data-type="INTEGER" nullable="false"/>
+                <column name="FIELD_TYPE"    data-type="INTEGER" nullable="true"/>
+                <column name="LABEL"         data-type="CHAR"    nullable="true" max-length="255"/>
+                <column name="RANGE_SIZE"    data-type="BIGINT"  nullable="true"/>
+                <column name="CREATED_TIME"  data-type="BIGINT"  nullable="true"/>
+                <column name="MODIFIED_TIME" data-type="BIGINT"  nullable="true"/>
+                <column name="ORDER"         data-type="BIGINT"  nullable="false"/>
+                <column name="GROUP_BY_COLUMN_ID" data-type="BIGINT" nullable="true"/>
+                <column name="FIELD_ID"      data-type="BIGINT"  nullable="true"/>
+                <column name="FUNCTION_NAME"   data-type="CHAR"   nullable="true" max-length="100"/>
+                <column name="TIME_PERIOD_ID"  data-type="BIGINT" nullable="true"/>
+                <column name="MODULE_ID"       data-type="BIGINT" nullable="true"/>
+                <column name="MODULE_ID_V2"       data-type="INTEGER" nullable="true"/>
+                <column name="SUB_MODULE_ID"   data-type="BIGINT" nullable="true"/>
+                <column name="SUB_MODULE_ID_V2"   data-type="INTEGER" nullable="true"/>
+                <column name="CASE_WHEN_CONFIG" data-type="CHAR" nullable="true" max-length="400"/>
+                <column name="FIELD_NAME"    data-type="CHAR"   nullable="true" max-length="255"/>
+                <column name="CUSTOM_FIELD_CONFIG" data-type="CHAR" nullable="true" max-length="200"/>
+                <column name="STORE_TYPE_ID" data-type="INTEGER" nullable="true"/>
+            </columns>
+            <primary-key name="ANAReportField_PK" column="ID" sequence-generator="ANAReportField.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAReportField_FK1" reference-table="ANAReport" local-column="VIEW_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+<!--                <foreign-key name="ANAReportField_FK4" reference-table="ANAColumnDetails" local-column="COLUMN_ID"-->
+<!--                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>-->
+            </foreign-keys>
+        </table>
+
+        <table name="ANAReportPathMapping">
+            <columns>
+                <column name="ID" data-type="BIGINT" />
+                <column name="PATH_ID" data-type="BIGINT" />
+                <column name="VIEW_ID" data-type="BIGINT" nullable="false" />
+            </columns>
+            <primary-key name="ANAReportPathMapping_PK" column="ID" sequence-generator="ANAReportPathMapping.ID" />
+            <foreign-keys>
+                <foreign-key name="ANAReportPathMapping_FK1" reference-table="ANAPath" local-column="PATH_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="ANAReportPathMapping_FK2" reference-table="ANAReport" local-column="VIEW_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAColor">
+            <columns>
+                <column name="ID"            data-type="BIGINT" />
+                <column name="COLOR_HEX"     data-type="CHAR"   nullable="false" max-length="20"/>
+                <column name="DISPLAY_NAME"  data-type="CHAR"   nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="ANAColor_PK" column="ID" sequence-generator="ANAColor.ID"/>
+            <unique-keys>
+                <unique-key name="ANAColor_UK1">
+                    <unique-key-column>COLOR_HEX</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="ANALegenderSettings">
+            <columns>
+                <column name="ID"            data-type="BIGINT" />
+                <column name="POSITION_ID"   data-type="BIGINT" nullable="true"/>
+                <column name="POSITION_ID_V2" data-type="INTEGER" nullable="true"/>
+                <column name="LEGENDER_NAME" data-type="CHAR"   nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="ANALegenderSettings_PK" column="ID" sequence-generator="ANALegenderSettings.ID"/>
+            <unique-keys>
+                <unique-key name="ANALegenderSettings_UK1">
+                    <unique-key-column>LEGENDER_NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="ANALegenderPoints">
+            <columns>
+                <column name="ID"            data-type="BIGINT" />
+                <column name="SETTINGS_ID"   data-type="BIGINT" nullable="false"/>
+                <column name="VALUE"         data-type="CHAR"   nullable="false" max-length="100"/>
+                <column name="COLOR_ID"      data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="ANALegenderPoints_PK" column="ID" sequence-generator="ANALegenderPoints.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANALegenderPoints_FK1" reference-table="ANALegenderSettings" local-column="SETTINGS_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANALegenderPoints_FK2" reference-table="ANAColor" local-column="COLOR_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAFilterType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TYPE" data-type="CHAR" nullable="false" max-length="20"/>
+            </columns>
+            <primary-key name="ANAFilterType_PK" column="ID" sequence-generator="ANAFilterType.ID"/>
+            <unique-keys>
+                <unique-key name="ANAFilterType_UK1">
+                    <unique-key-column>TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="ANAOperator">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="OPERATOR_TYPE" data-type="CHAR"    nullable="false" max-length="50"/>
+                <column name="IS_ENABLED"    data-type="BOOLEAN" nullable="false" default-value="true"/>
+            </columns>
+            <primary-key name="ANAOperator_PK" column="ID" sequence-generator="ANAOperator.ID"/>
+            <unique-keys>
+                <unique-key name="ANAOperator_UK1">
+                    <unique-key-column>OPERATOR_TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="ANAFilterOperatorMapper">
+            <columns>
+                <column name="ID"              data-type="BIGINT"/>
+                <column name="DATA_TYPE"       data-type="BIGINT" nullable="false"/>
+                <column name="FILTER_TYPE"     data-type="BIGINT" nullable="false"/>
+                <column name="OPERATOR_TYPE"   data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="ANAFilterOperatorMapper_PK" column="ID" sequence-generator="ANAFilterOperatorMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAFilterOperatorMapper_FK1" reference-table="ANADataType" local-column="DATA_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANAFilterOperatorMapper_FK2" reference-table="ANAFilterType" local-column="FILTER_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANAFilterOperatorMapper_FK3" reference-table="ANAOperator"   local-column="OPERATOR_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAFilterField">
+            <columns>
+                <column name="ID"              data-type="BIGINT"/>
+                <column name="VIEW_ID"         data-type="BIGINT" nullable="false"/>
+                <column name="COLUMN_ID"       data-type="BIGINT" nullable="false"/>
+                <column name="OPERATION_ID"    data-type="BIGINT" nullable="true"/>
+                <column name="OPERATION_ID_V2" data-type="INTEGER" nullable="true"/>
+                <column name="FILTER_TYPE"     data-type="BIGINT" nullable="true"/>
+                <column name="FILTER_TYPE_V2" data-type="INTEGER" nullable="true"/>
+                <column name="OPERATOR"        data-type="BIGINT" nullable="true"/>
+                <column name="OPERATOR_V2"    data-type="INTEGER" nullable="true"/>
+                <column name="VALUE"           data-type="CHAR"   nullable="true"/>
+                <column name="VALUE_COLUMN_ID" data-type="BIGINT" nullable="true"/>
+                <column name="FROM"            data-type="BIGINT" nullable="true" max-length="100"/>
+                <column name="TO"              data-type="BIGINT" nullable="true" max-length="100"/>
+                <column name="FORMAT"          data-type="CHAR"   nullable="true" max-length="100"/>
+                <column name="CREATED_TIME"    data-type="BIGINT" nullable="true"/>
+                <column name="MODIFIED_TIME"   data-type="BIGINT" nullable="true"/>
+                <column name="ORDER"           data-type="BIGINT" nullable="false"/>
+                <column name="ANA_ACTUAL_COLUMN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_CUSTOM_FILTER" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="HAVING_OPERATION_TYPE" data-type="BIGINT" nullable="true"/>
+                <column name="HAVING_OPERATION_TYPE_V2" data-type="INTEGER" nullable="true"/>
+                <column name="FIELD_ID"        data-type="BIGINT" nullable="true"/>
+                <column name="CASE_WHEN_CONFIG" data-type="CHAR" nullable="true" max-length="400"/>
+                <column name="FIELD_NAME"    data-type="CHAR"   nullable="true" max-length="255"/>
+                <column name="CUSTOM_FIELD_CONFIG" data-type="CHAR" nullable="true" max-length="200"/>
+                <column name="STORE_TYPE_ID" data-type="INTEGER" nullable="true"/>
+            </columns>
+            <primary-key name="ANAFilterField_PK" column="ID" sequence-generator="ANAFilterField.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAFilterField_FK1" reference-table="ANAReport" local-column="VIEW_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANAFilterField_FK6" reference-table="ANAOperator" local-column="OPERATOR"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANAFilterField_FK7" reference-table="ANAFilterType" local-column="FILTER_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAFilterTypeMapper">
+            <columns>
+                <column name="ID"            data-type="BIGINT"/>
+                <column name="DATA_TYPE"     data-type="BIGINT"/>
+                <column name="FILTER_TYPE"   data-type="BIGINT"/>
+                <column name="OPERATOR_TYPE" data-type="BIGINT"/>
+            </columns>
+            <primary-key name="ANAFilterTypeMapper_PK" column="ID" sequence-generator="ANAFilterTypeMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAFilterTypeMapper_FK1" reference-table="ANADataType" local-column="DATA_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANAFilterTypeMapper_FK2" reference-table="ANAFilterType" local-column="FILTER_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANAFilterTypeMapper_FK3" reference-table="ANAOperator" local-column="OPERATOR_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="ANAFilterTypeMapper_UK1">
+                    <unique-key-column>DATA_TYPE</unique-key-column>
+                    <unique-key-column>FILTER_TYPE</unique-key-column>
+                    <unique-key-column>OPERATOR_TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="ANACustomRange">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="REPORT_COLUMN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FROM" data-type="BIGINT" nullable="false" max-length="50"/>
+                <column name="TO" data-type="BIGINT" nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="ANACustomRange_PK" column="ID" sequence-generator="ANACustomRange.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANACustomRange_FK1" reference-table="ANAReportField" local-column="REPORT_COLUMN_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="ANACustomRange_UK1">
+                    <unique-key-column>REPORT_COLUMN_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="ANAWidget">
+            <columns>
+                <column name="ID"         data-type="BIGINT"/>
+                <column name="VIEW_ID"    data-type="BIGINT" nullable="false"/>
+                <column name="ROOT_TABLE" data-type="BIGINT" nullable="false"/>
+                <column name="TITLE"      data-type="CHAR"   nullable="true" max-length="50"/>
+            </columns>
+            <primary-key name="ANAWidget_PK" column="ID" sequence-generator="ANAWidget.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAWidget_FK1" reference-table="ANAViewDetails" local-column="VIEW_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAWidgetComparator">
+            <columns>
+                <column name="ID"              data-type="BIGINT"/>
+                <column name="VIEW_ID"         data-type="BIGINT" nullable="false"/>
+                <column name="COMPARATOR_TYPE" data-type="BIGINT" nullable="true"/>
+                <column name="COMPARATOR_TYPE_V2" data-type="INTEGER" nullable="true"/>
+                <column name="COMPARATOR_SIDE" data-type="BIGINT" nullable="true"/>
+                <column name="COMPARATOR_SIDE_V2" data-type="INTEGER" nullable="true"/>
+                <column name="FROM"            data-type="BIGINT" nullable="true"/>
+                <column name="TO"              data-type="BIGINT" nullable="true"/>
+                <column name="CREATED_TIME"    data-type="BIGINT" nullable="false"/>
+                <column name="MODIFIED_TIME"   data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="ANAWidgetComparator_PK" column="ID" sequence-generator="ANAWidgetComparator.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAWidgetComparator_FK1" reference-table="ANAReport" local-column="VIEW_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <!-- Dashboard -->
+        <table name="ANADashboardLayout">
+            <columns>
+                <column name="ID"  data-type="BIGINT"/>
+                <column name="VIEW_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="ANADashboardLayout_PK" column="ID" sequence-generator="ANADashboardLayout.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANADashboardLayout_FK1" reference-table="ANAViewDetails" local-column="VIEW_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANADashboardParentView">
+            <columns>
+                <column name="ID"        data-type="BIGINT"/>
+                <column name="DASH_ID"   data-type="BIGINT" nullable="false"/>
+                <column name="VIEW_ID"   data-type="BIGINT" nullable="false"/>
+                <column name="TITLE"     data-type="CHAR"   nullable="true" max-length="100"/>
+                <column name="VIEW_TYPE" data-type="BIGINT" nullable="true"/>
+                <column name="VIEW_TYPE_V2" data-type="INTEGER" nullable="true"/>
+                <column name="WIDTH"     data-type="BIGINT" nullable="false"/>
+                <column name="HEIGHT"    data-type="BIGINT" nullable="false"/>
+                <column name="ROW_INDEX" data-type="BIGINT" nullable="false"/>
+                <column name="COL_INDEX" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="ANADashboardParentView_PK" column="ID" sequence-generator="ANADashboardParentView.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANADashboardParentView_FK1" reference-table="ANAViewDetails" local-column="VIEW_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANADashboardParentView_FK2" reference-table="ANADashboardLayout" local-column="DASH_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANADashboardParentView_FK3" reference-table="ANAViewType" local-column="VIEW_TYPE"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <!-- PermissionInfo Table -->
+        <table name="ANAPermanentLink">
+            <columns>
+                <column name="ID"            data-type="BIGINT"/>
+                <column name="VIEW_ID"       data-type="BIGINT" nullable="false"/>
+                <column name="ACCESS_LINK"   data-type="CHAR"   nullable="false" max-length="150"/>
+                <column name="PASSWORD"      data-type="CHAR"   nullable="true" max-length="50"/>
+                <column name="EXPIRY_TIME"   data-type="BIGINT" nullable="true"/>
+                <column name="CREATED_BY"    data-type="BIGINT" nullable="false"/>
+                <column name="CREATED_TIME"  data-type="BIGINT" nullable="false"/>
+                <column name="MODIFIED_BY"   data-type="BIGINT" nullable="false"/>
+                <column name="MODIFIED_TIME" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="ANAPermanentLink_PK" column="ID" sequence-generator="ANAPermanentLink.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAPermanentLink_FK1" reference-table="ANAViewDetails" local-column="VIEW_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="ANAPermanentLink_UK1">
+                    <unique-key-column>VIEW_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <!-- ViewPermissionInfo Table -->
+        <table name="ANAViewAccessPermission">
+            <columns>
+                <column name="ID"            data-type="BIGINT"  nullable="false"/>
+                <column name="VIEW_ID"       data-type="BIGINT"  nullable="false"/>
+                <column name="USER_ID"       data-type="BIGINT"  nullable="false"/>
+                <column name="SHARED_BY"     data-type="BIGINT"  nullable="false"/>
+                <column name="ACCESS_LEVEL"  data-type="INTEGER" nullable="false"/>
+                <column name="SHARED_TIME"   data-type="BIGINT"  nullable="false"/>
+                <column name="MODIFIED_BY"   data-type="BIGINT"  nullable="false"/>
+                <column name="MODIFIED_TIME" data-type="BIGINT"  nullable="true"/>
+                <!--column name="EMAIL_ID"        data-type="CHAR" nullable="true" max-length="255"/-->
+                <!--column name="IS_GROUP_SHARE"  data-type="BOOLEAN" nullable="true" default-value="false"/-->
+            </columns>
+            <primary-key name="ANAViewAccessPermission_PK" column="ID" sequence-generator="ANAViewAccessPermission.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAViewAccessPermission_FK1" reference-table="ANAViewDetails" local-column="VIEW_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="ANAViewAccessPermission_UK1">
+                    <unique-key-column>VIEW_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <!-- ANAFavouriteView TABLE -->
+        <table name="ANAFavouriteView">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="VIEW_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="ANAFavouriteView_PK" column="ID" sequence-generator="ANAFavouriteView.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAFavouriteView_FK1" reference-table="ANAViewDetails" local-column="VIEW_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="ANAFavouriteView_UK1">
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>VIEW_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <!--ANA function-->
+        <table name="ANAFunction">
+            <columns>
+                <column name="ID"   data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" max-length="30" nullable="false"/>
+            </columns>
+            <primary-key name="ANAFunction_PK" column="ID" sequence-generator="ANAFunction.ID"/>
+            <unique-keys>
+                <unique-key name="ANAFunction_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="ANAFunctionType">
+            <columns>
+                <column name="ID"             data-type="BIGINT"/>
+                <column name="FUNCTION_ID"    data-type="BIGINT"  nullable="true"/>
+                <column name="FUNCTION_ID_V2"    data-type="INTEGER"  nullable="true"/>
+                <column name="RETURN_TYPE"    data-type="CHAR"    nullable="false"/>
+                <column name="ARGUMENT_COUNT" data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="ANAFunctionType_PK" column="ID" sequence-generator="ANAFunctionType.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAFunctionType_Fk1" local-column="FUNCTION_ID" reference-table="ANAFunction"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAFunctionArgumentConfig">
+            <columns>
+                <column name="ID"                      data-type="BIGINT"/>
+                <column name="FUNCTION_TYPE_ID"        data-type="BIGINT"  nullable="false"/>
+                <column name="COLUMN_FUNCTION_APPLIED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="VALUE_FUNCTION_APPLIED"  data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="DATA_TYPE"               data-type="CHAR"    nullable="false"/>
+                <column name="INDEX"                   data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="ANAFunctionArgumentConfig_PK" column="ID" sequence-generator="ANAFunctionArgumentConfig.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAFunctionArgumentConfig_FK1" local-column="FUNCTION_TYPE_ID" reference-table="ANAFunctionType"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="ANAFunctionArgumentConfig_UK1">
+                    <unique-key-column>FUNCTION_TYPE_ID</unique-key-column>
+                    <unique-key-column>INDEX</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="ANAConfigurableFunctionDetails">
+            <columns>
+                <column name="ID"               data-type="BIGINT"/>
+                <column name="COLUMN_ID"        data-type="BIGINT" nullable="true"/>
+                <column name="COLUMN_ID_V2"        data-type="BIGINT" nullable="true"/>
+                <column name="FINAL_FUNCTION"   data-type="CHAR"   nullable="false"/>
+                <column name="FUNCTION_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FUNCTION_TYPE_ID_V2" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="ANAConfigurableFunctionDetails_PK" column="ID" sequence-generator="ANAConfigurableFunctionDetails.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAConfigurableFunctionDetails_FK1" local-column="FUNCTION_TYPE_ID" reference-table="ANAFunctionType"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANAConfigurableFunctionDetails_FK3" local-column="COLUMN_ID" reference-table="CHColumnDetails"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANAConfigurableFunctionDetails_FK4" local-column="COLUMN_ID_V2" reference-table="ANAColumnDetails"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAParentConfigurableFunctionDetails">
+            <columns>
+                <column name="ID"                 data-type="BIGINT"/>
+                <column name="COLUMN_FUNCTION_ID" data-type="BIGINT"  nullable="false"/>
+                <column name="INDEX"              data-type="INTEGER" nullable="false"/>
+                <column name="PARENT_COLUMN_ID"   data-type="BIGINT"  nullable="true"/>
+                <column name="PARENT_COLUMN_ID_V2"   data-type="BIGINT"  nullable="true"/>
+            </columns>
+            <primary-key name="ANAParentConfigurableFunctionDetails_PK" column="ID" sequence-generator="ANAParentConfigurableFunctionDetails.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAParentConfigurableFunctionDetails_Fk1" local-column="COLUMN_FUNCTION_ID" reference-table="ANAConfigurableFunctionDetails"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANAParentConfigurableFunctionDetails_FK3" local-column="PARENT_COLUMN_ID" reference-table="CHColumnDetails"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ANAParentConfigurableFunctionDetails_FK4" local-column="PARENT_COLUMN_ID_V2" reference-table="ANAColumnDetails"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="ANAParentConfigurableFunctionDetails_UK1">
+                    <unique-key-column>COLUMN_FUNCTION_ID</unique-key-column>
+                    <unique-key-column>INDEX</unique-key-column>
+                    <unique-key-column>PARENT_COLUMN_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="ANAColumnConfig">
+            <columns>
+                <column name="ID"        data-type="BIGINT"/>
+                <column name="USER_ID"   data-type="BIGINT" nullable="false"/>
+                <column name="VIEW_ID"   data-type="BIGINT" nullable="false"/>
+                <column name="COLUMN_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="ANAColumnConfig_PK" column="ID" sequence-generator="ANAColumnConfig.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAColumnConfig_FK1" reference-table="ANAViewDetails" local-column="VIEW_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="ANAColumnConfig_UK1">
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>VIEW_ID</unique-key-column>
+                    <unique-key-column>COLUMN_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="ANAFilterFunctionMapper">
+            <columns>
+                <column name="ID"              data-type="BIGINT"/>
+                <column name="FILTER_FIELD_ID" data-type="BIGINT"/>
+                <column name="FUNCTION_NAME"   data-type="CHAR"/>
+            </columns>
+            <primary-key name="ANAFilterFunctionMapper_PK" column="ID" sequence-generator="ANAFilterFunctionMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAFilterFunctionMapper_FK1" reference-table="ANAFilterField" local-column="FILTER_FIELD_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="ANAFilterFunctionMapper_UK1">
+                    <unique-key-column>FILTER_FIELD_ID</unique-key-column>
+                    <unique-key-column>FUNCTION_NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="ANAViewTypeMapper">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="VIEW_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ENUM_TYPE_CODE" data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="ANAViewTypeMapper_PK" column="ID" sequence-generator="ANAViewTypeMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAViewTypeMapper_FK1" reference-table="ANAViewType" local-column="VIEW_TYPE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAGraphTypeMapper">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="GRAPH_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ENUM_TYPE_CODE" data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="ANAGraphTypeMapper_PK" column="ID" sequence-generator="ANAGraphTypeMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAGraphTypeMapper_FK1" reference-table="ANAGraphType" local-column="GRAPH_TYPE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+
+        <table name="ANAKPIComparatorSideMapper">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="KPI_COMPARATOR_SIDE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ENUM_TYPE_CODE" data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="ANAKPIComparatorSideMapper_PK" column="ID" sequence-generator="ANAKPIComparatorSideMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAKPIComparatorSideMapper_FK1" reference-table="ANAKPIComparatorSide" local-column="KPI_COMPARATOR_SIDE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAKPIComparatorTypeMapper">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="KPI_COMPARATOR_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ENUM_TYPE_CODE" data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="ANAKPIComparatorTypeMapper_PK" column="ID" sequence-generator="ANAKPIComparatorTypeMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAKPIComparatorTypeMapper_FK1" reference-table="ANAKPIComparatorType" local-column="KPI_COMPARATOR_TYPE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAFilterTypeFilterMapper">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="FILTER_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ENUM_TYPE_CODE" data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="ANAFilterTypeFilterMapper_PK" column="ID" sequence-generator="ANAFilterTypeFilterMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAFilterTypeFilterMapper_FK1" reference-table="ANAFilterType" local-column="FILTER_TYPE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAOperatorTypeMapper">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="OPERATOR_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ENUM_TYPE_CODE" data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="ANAOperatorTypeMapper_PK" column="ID" sequence-generator="ANAOperatorTypeMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAOperatorTypeMapper_FK1" reference-table="ANAOperator" local-column="OPERATOR_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="ANAFieldTypeMapper">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="FIELD_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ENUM_TYPE_CODE" data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="ANAFieldTypeMapper_PK" column="ID" sequence-generator="ANAFieldTypeMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="ANAFieldTypeMapper_FK1" reference-table="ANAFieldType" local-column="FIELD_TYPE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <!-- Schema for Table Details Mapper -->
+        <table name="TableDetailsMapper">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CH_TABLE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ANA_TABLE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="TableDetailsMapper_PK" column="ID" sequence-generator="TableDetailsMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="TableDetailsMapper_FK1" reference-table="CHTableDetails" local-column="CH_TABLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="TableDetailsMapper_FK2" reference-table="ANATableDetails" local-column="ANA_TABLE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <!-- Schema for Column Details Mapper -->
+        <table name="ColumnDetailsMapper">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CH_COLUMN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ANA_COLUMN_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="ColumnDetailsMapper_PK" column="ID" sequence-generator="ColumnDetailsMapper.ID"/>
+            <foreign-keys>
+                <foreign-key name="ColumnDetailsMapper_FK1" reference-table="CHColumnDetails" local-column="CH_COLUMN_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="ColumnDetailsMapper_FK2" reference-table="ANAColumnDetails" local-column="ANA_COLUMN_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+    </module>
+
+    <!--    Partition strategy changed from ORG_ID to quarterly partitioning using toStartOfQuarter(CREATED_AT).-->
+
+    <!--    Since existing tables already use ORG_ID partitions, partition modification is not supported safely.-->
+    <!--    Therefore, a new V2 table is created and old data will be migrated.-->
+    <module name="CH_analytics_V2" database-type="2">
+
+        <!-- ===================================================== -->
+        <!-- dim_user: Sales users -->
+        <table type="11" name="DIM_USER_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Core -->
+                <column name="NAME" data-type="STRING" nullable="false"/>
+                <column name="EMAIL" data-type="STRING" nullable="false"/>
+                <column name="PHONE" data-type="STRING" nullable="false"/>
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="STATE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="DIM_USER_V2.ID"/>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>`
+            </engine-configuration>
+
+            <skip-indexes>
+                <skip-index column="EMAIL" type="PROBABILISTICBLOOMFILTER"
+                            name="skip_idx_email_probabilisticbloomfilter" false-positive-probability="0.01"/>
+            </skip-indexes>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- dim_territory: Territory definitions -->
+        <table type="11" name="DIM_TERRITORY_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Core -->
+                <column name="NAME" data-type="STRING" nullable="false"/>
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="DIM_TERRITORY_V2.ID"/>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+        </table>
+
+        <table type="11" name="DIM_COMPANY_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Core -->
+                <column name="NAME" data-type="STRING" nullable="false"/>
+                <column name="WEBSITE" data-type="STRING" nullable="true"/>
+                <column name="DESCRIPTION" data-type="STRING" nullable="true"/>
+                <column name="SALES_OWNER" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Classification -->
+                <column name="INDUSTRY_TYPE" data-type="STRING" nullable="true"/>
+                <column name="BUSINESS_TYPE" data-type="STRING" nullable="true"/>
+                <column name="ORGANISATION_STATUS" data-type="STRING" nullable="true"/>
+                <column name="SIC_CODE" data-type="STRING" nullable="true"/>
+
+                <!-- Geography -->
+                <column name="CITY" data-type="STRING" nullable="true"/>
+                <column name="STATE" data-type="STRING" nullable="true"/>
+                <column name="COUNTRY" data-type="LOW_CARDINALITY_STRING" nullable="true"/>
+                <column name="PIN_CODE" data-type="STRING" nullable="true"/>
+                <column name="TERRITORY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+
+                <!-- Financial -->
+                <column name="EMPLOYEES" data-type="BIGINT" nullable="false"/>
+                <column name="ANNUAL_REVENUE" data-type="DECIMAL" nullable="true" precision="18" scale="4"/>
+                <column name="PARENT_COMPANY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+
+                <!-- Activity Metrics -->
+                <column name="EMAIL_MESSAGE_COUNT" data-type="BIGINT" nullable="false"/>
+                <column name="TOTAL_ACTIVITIES" data-type="BIGINT" nullable="false"/>
+                <column name="DONE_ACTIVITIES" data-type="BIGINT" nullable="false"/>
+                <column name="UPCOMING_ACTIVITIES" data-type="BIGINT" nullable="false"/>
+                <column name="LAST_ACTIVITY_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="NEXT_ACTIVITY_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="LAST_EMAIL_SENT" data-type="DATETIME" nullable="true"/>
+                <column name="LAST_EMAIL_RECEIVED" data-type="DATETIME" nullable="true"/>
+                <column name="LAST_ACTIVITY_TYPE" data-type="LOW_CARDINALITY_STRING" nullable="true"/>
+
+                <!-- Deal Metrics -->
+                <column name="OPEN_DEALS" data-type="BIGINT" nullable="false"/>
+                <column name="CLOSED_DEALS" data-type="BIGINT" nullable="false"/>
+                <column name="WON_DEALS" data-type="BIGINT" nullable="false"/>
+                <column name="LOST_DEALS" data-type="BIGINT" nullable="false"/>
+
+                <!-- Misc -->
+                <column name="TAGS" data-type="ARRAY" nullable="false" element-type="STRING" max-length="50" default-value="[]"/>
+                <column name="CREATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="UPDATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Custom Fields (JSON) -->
+                <column name="STRING_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="NUMBER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATETIME_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DROPDOWN_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MULTI_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="USER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="CONTACT_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="COMPANY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MONETARY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="ADDRESS_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="PHONE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="EMAIL_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TEXT_FIELDS" data-type="JSON" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="DIM_COMPANY_V2.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="DIM_COMPANY_V2_FK1" reference-table="DIM_TERRITORY_V2" local-column="TERRITORY"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_COMPANY_V2_FK2" reference-table="DIM_USER_V2" local-column="SALES_OWNER"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_COMPANY_V2_FK3" reference-table="DIM_USER_V2" local-column="CREATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_COMPANY_V2_FK4" reference-table="DIM_USER_V2" local-column="UPDATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+            <skip-indexes>
+                <skip-index column="TAGS" type="PROBABILISTICBLOOMFILTER" name="skip_idx_tags_prob_bloom" false-positive-probability="0.01"/>
+            </skip-indexes>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- dim_contact: Individual CRM contacts -->
+        <table type="11" name="DIM_CONTACT_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Basic Info -->
+                <column name="FIRST_NAME" data-type="STRING" nullable="false"/>
+                <column name="LAST_NAME" data-type="STRING" nullable="true"/>
+                <column name="FULL_NAME" data-type="STRING" nullable="false"/>
+                <column name="EMAIL" data-type="STRING" nullable="false"/>
+                <column name="PHONE" data-type="STRING" nullable="false"/>
+                <column name="DATE_OF_BIRTH" data-type="DATE" nullable="true"/>
+                <column name="DESIGNATION" data-type="STRING" nullable="true"/>
+                <column name="DEPARTMENT" data-type="STRING" nullable="true"/>
+
+                <!-- Lifecycle -->
+                <column name="LIFE_CYCLE_STATUS" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="LIFE_CYCLE_STAGE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="LOST_REASON" data-type="STRING" nullable="true"/>
+
+                <!-- Subscription -->
+                <column name="SUBSCRIPTION_STATUS" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="SUBSCRIPTION_TYPES" data-type="ARRAY" nullable="false" element-type="LOW_CARDINALITY_STRING" max-length="30"/>
+                <column name="UNSUBSCRIBE_REASON" data-type="LOW_CARDINALITY_STRING" nullable="true"/>
+                <column name="OTHER_UNSUBSCRIBE_REASON" data-type="STRING" nullable="true"/>
+
+                <!-- Ownership -->
+                <column name="SALES_OWNER" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="TERRITORY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+
+                <!-- Engagement -->
+                <column name="EMAIL_MESSAGE_COUNT" data-type="BIGINT" nullable="false"/>
+                <column name="LAST_ACTIVITY_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="NEXT_ACTIVITY_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="LAST_ACTIVITY_TYPE" data-type="LOW_CARDINALITY_STRING" nullable="true"/>
+                <column name="LAST_EMAIL_SENT" data-type="DATETIME" nullable="true"/>
+                <column name="LAST_EMAIL_RECEIVED" data-type="DATETIME" nullable="true"/>
+
+                <!-- Deal Metrics -->
+                <column name="OPEN_DEALS" data-type="BIGINT" nullable="false"/>
+                <column name="CLOSED_DEALS" data-type="BIGINT" nullable="false"/>
+                <column name="WON_DEALS" data-type="BIGINT" nullable="false"/>
+                <column name="LOST_DEALS" data-type="BIGINT" nullable="false"/>
+
+                <!-- Company Link -->
+                <column name="COMPANY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+
+                <!-- Misc -->
+                <column name="TAGS" data-type="ARRAY" nullable="false" element-type="STRING" max-length="30" default-value="[]"/>
+                <column name="TIMEZONE" data-type="LOW_CARDINALITY_STRING" nullable="true"/>
+                <column name="CITY" data-type="STRING" nullable="true"/>
+                <column name="STATE" data-type="STRING" nullable="true"/>
+                <column name="COUNTRY" data-type="LOW_CARDINALITY_STRING" nullable="true"/>
+                <column name="PIN_CODE" data-type="STRING" nullable="true"/>
+                <column name="SOURCE" data-type="STRING" nullable="true"/>
+                <column name="WEBFORM" data-type="STRING" nullable="true"/>
+
+                <!-- Activity Summary -->
+                <column name="TOTAL_ACTIVITIES" data-type="BIGINT" nullable="false"/>
+                <column name="DONE_ACTIVITIES" data-type="BIGINT" nullable="false"/>
+                <column name="UPCOMING_ACTIVITIES" data-type="BIGINT" nullable="false"/>
+
+                <!-- Metadata -->
+                <column name="CREATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="UPDATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Custom Fields (JSON) -->
+                <column name="STRING_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="NUMBER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DROPDOWN_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MULTI_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="USER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="CONTACT_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="COMPANY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MONETARY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="ADDRESS_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="PHONE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="EMAIL_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TEXT_FIELDS" data-type="JSON" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="DIM_CONTACT_V2.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="DIM_CONTACT_V2_FK1" reference-table="DIM_TERRITORY_V2" local-column="TERRITORY"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_CONTACT_V2_FK2" reference-table="DIM_USER_V2" local-column="SALES_OWNER"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_CONTACT_V2_FK3" reference-table="DIM_USER_V2" local-column="CREATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_CONTACT_V2_FK4" reference-table="DIM_USER_V2" local-column="UPDATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+            <skip-indexes>
+                <skip-index column="TAGS" type="PROBABILISTICBLOOMFILTER" name="skip_idx_tags_prob_bloom" false-positive-probability="0.01"/>
+            </skip-indexes>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- dim_deal: Sales pipeline lifecycle tracking -->
+        <table type="11" name="DIM_DEAL_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="TITLE" data-type="STRING" nullable="false"/>
+                <column name="SALES_OWNER" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Financial -->
+                <column name="DEAL_VALUE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="DEAL_VALUE_IN_BASE_CURRENCY" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="WEIGHTED_VALUE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="STAGE_PROBABILITY" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="EXPECTED_DEAL_VALUE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+
+                <!-- Pipeline -->
+                <column name="PIPELINE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="PIPELINE_STAGE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="STATE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+
+                <!-- Lifecycle -->
+                <column name="DEAL_CLOSED_ON" data-type="DATETIME" nullable="true"/>
+                <column name="EXPECTED_CLOSED_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="WON_TIME" data-type="DATETIME" nullable="true"/>
+                <column name="LOST_TIME" data-type="DATETIME" nullable="true"/>
+                <column name="ROTTING_DAYS" data-type="BIGINT" nullable="false"/>
+                <column name="AGE" data-type="BIGINT" nullable="false"/>
+                <column name="DEAL_STAGE_UPDATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="WON_REASON" data-type="STRING" nullable="true"/>
+                <column name="LOST_REASON" data-type="STRING" nullable="true"/>
+                <column name="SOURCE" data-type="STRING" nullable="true"/>
+                <column name="TAGS" data-type="ARRAY" nullable="false" element-type="STRING" max-length="30" default-value="[]"/>
+                <column name="TYPE" data-type="STRING" nullable="true"/>
+                <column name="PAYMENT_STATUS" data-type="STRING" nullable="true"/>
+                <column name="DESCRIPTION" data-type="STRING" nullable="true"/>
+
+                <!-- Relationship Fields -->
+                <column name="PRIMARY_CONTACT" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="RELATED_CONTACT" data-type="ARRAY" nullable="false" element-type="UNSIGNED_BIGINT" max-length="100"/>
+                <column name="COMPANY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+                <column name="TERRITORY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+                <column name="WEBFORM" data-type="STRING" nullable="true"/>
+
+                <!-- Activity Summary -->
+                <column name="LAST_ACTIVITY_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="NEXT_ACTIVITY_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="TOTAL_ACTIVITIES" data-type="BIGINT" nullable="false"/>
+                <column name="DONE_ACTIVITIES" data-type="BIGINT" nullable="false"/>
+                <column name="UPCOMING_ACTIVITIES" data-type="BIGINT" nullable="false"/>
+                <column name="LAST_EMAIL_SENT" data-type="DATETIME" nullable="true"/>
+                <column name="LAST_EMAIL_RECEIVED" data-type="DATETIME" nullable="true"/>
+                <column name="EMAIL_MESSAGE_COUNT" data-type="BIGINT" nullable="false"/>
+                <column name="LAST_ACTIVITY_TYPE" data-type="STRING" nullable="true"/>
+                <column name="PRODUCT_AMOUNT" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="PRODUCT_QUANTITY" data-type="BIGINT" nullable="false"/>
+
+                <!-- Metadata -->
+                <column name="CREATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="UPDATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Custom Fields (JSON) -->
+                <column name="STRING_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="NUMBER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DROPDOWN_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MULTI_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="USER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="CONTACT_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="COMPANY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MONETARY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="ADDRESS_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="PHONE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="EMAIL_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TEXT_FIELDS" data-type="JSON" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="DIM_DEAL_V2.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="DIM_DEAL_V2_FK1" reference-table="DIM_CONTACT_V2" local-column="PRIMARY_CONTACT"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_DEAL_V2_FK2" reference-table="DIM_COMPANY_V2" local-column="COMPANY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_DEAL_V2_FK3" reference-table="DIM_TERRITORY_V2" local-column="TERRITORY"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_DEAL_V2_FK4" reference-table="DIM_USER_V2" local-column="SALES_OWNER"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_DEAL_V2_FK5" reference-table="DIM_USER_V2" local-column="CREATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_DEAL_V2_FK6" reference-table="DIM_USER_V2" local-column="UPDATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+            <skip-indexes>
+                <skip-index column="TAGS" type="PROBABILISTICBLOOMFILTER" name="skip_idx_tags_prob_bloom" false-positive-probability="0.01"/>
+            </skip-indexes>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- dim_product: Product catalog linked to deals -->
+        <table type="11" name="DIM_PRODUCT_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Core -->
+                <column name="NAME" data-type="STRING" nullable="false"/>
+                <column name="VALID_TILL" data-type="DATETIME" nullable="true"/>
+                <column name="SALES_OWNER" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Metadata -->
+                <column name="CREATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="UPDATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+
+                <!-- Custom Fields (JSON) -->
+                <column name="STRING_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="NUMBER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DROPDOWN_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MULTI_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="USER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="CONTACT_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="COMPANY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MONETARY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="ADDRESS_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="PHONE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="EMAIL_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TEXT_FIELDS" data-type="JSON" nullable="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="DIM_PRODUCT_V2.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="DIM_PRODUCT_V2_FK1" reference-table="DIM_USER_V2" local-column="SALES_OWNER"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_PRODUCT_V2_FK2" reference-table="DIM_USER_V2" local-column="CREATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_PRODUCT_V2_FK3" reference-table="DIM_USER_V2" local-column="UPDATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+            <skip-indexes>
+                <skip-index column="CREATED_AT" type="MINMAX" name="skip_idx_created_at_minmax"/>
+            </skip-indexes>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- dim_activity: Task/Call/Meeting entity -->
+        <table type="11" name="DIM_ACTIVITY_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Core -->
+                <column name="TITLE" data-type="STRING" nullable="false"/>
+                <column name="TYPE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="STATUS" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="PRIORITY" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+
+                <!-- Assignment -->
+                <column name="ASSIGN_TO_USER" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="COLLABORATORS" data-type="ARRAY" nullable="true" element-type="UNSIGNED_BIGINT" max-length="50"/>
+                <column name="AVAILABILITY" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="CREATOR" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="LOCATION" data-type="STRING" nullable="true"/>
+                <column name="DESCRIPTION" data-type="STRING" nullable="true"/>
+
+                <!-- Related Entities -->
+                <column name="DEAL" data-type="UNSIGNED_BIGINT" nullable="true"/>
+                <column name="CONTACT" data-type="ARRAY" nullable="true" element-type="BIGINT" max-length="50"/>
+                <column name="COMPANY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+
+                <!-- Status -->
+                <column name="MARK_AS_DONE_TIME" data-type="DATETIME" nullable="true"/>
+
+                <!-- Time Details -->
+                <column name="START_DATE_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="END_DATE_TIME" data-type="DATETIME" nullable="false"/>
+
+                <!-- Metadata -->
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="SALES_OWNER" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="DIM_ACTIVITY_V2.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="DIM_ACTIVITY_V2_FK1" reference-table="DIM_COMPANY_V2" local-column="COMPANY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_ACTIVITY_V2_FK2" reference-table="DIM_DEAL_V2" local-column="DEAL"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_ACTIVITY_V2_FK3" reference-table="DIM_USER_V2" local-column="SALES_OWNER"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+            <skip-indexes>
+                <skip-index column="CREATED_AT" type="MINMAX" name="skip_idx_created_at_minmax"/>
+            </skip-indexes>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- dim_deal_line_items: Line items inside deals -->
+        <table type="11" name="DIM_DEAL_LINE_ITEMS_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Foreign Keys -->
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="PRODUCT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Product Details -->
+                <column name="PRODUCT_NAME" data-type="STRING" nullable="false"/>
+                <column name="UNIT_PRICE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="QUANTITY" data-type="BIGINT" nullable="true"/>
+                <column name="DISCOUNT" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="TOTAL_PRICE_WITHOUT_TAX" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="TOTAL_PRICE_IN_BASE_CURRENCY_WITHOUT_TAX" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="ACTIVE_STATUS" data-type="LOW_CARDINALITY_STRING" nullable="true"/>
+                <column name="PRODUCT_CATEGORY" data-type="STRING" nullable="true"/>
+
+                <!-- Metadata -->
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="DIM_DEAL_LINE_ITEMS_V2.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="DIM_DEAL_LINE_ITEMS_V2_FK1" reference-table="DIM_PRODUCT_V2" local-column="PRODUCT_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="DIM_DEAL_LINE_ITEMS_V2_FK2" reference-table="DIM_DEAL_V2" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+            <skip-indexes>
+                <skip-index column="CREATED_AT" type="MINMAX" name="skip_idx_created_at_minmax"/>
+            </skip-indexes>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- FACT/BRIDGE TABLES -->
+        <!-- ===================================================== -->
+
+        <!-- fact_company_deal: Bridge between company and deal -->
+        <table type="11" name="FACT_COMPANY_DEAL_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="COMPANY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Deal Context -->
+                <column name="DEAL_VALUE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="CURRENCY" data-type="STRING" nullable="false"/>
+                <column name="STATE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="FACT_COMPANY_DEAL_V2_FK1" reference-table="DIM_COMPANY_V2" local-column="COMPANY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="FACT_COMPANY_DEAL_V2_FK2" reference-table="DIM_DEAL_V2" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>COMPANY_ID</order-by-column>
+                <order-by-column>DEAL_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_contact_deal: Contact ↔ Deal relationship -->
+        <table type="11" name="FACT_CONTACT_DEAL_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CONTACT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <column name="DEAL_VALUE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="CURRENCY" data-type="STRING" nullable="false"/>
+                <column name="STATE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="FACT_CONTACT_DEAL_V2_FK1" reference-table="DIM_CONTACT_V2" local-column="CONTACT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="FACT_CONTACT_DEAL_V2_FK2" reference-table="DIM_DEAL_V2" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>CONTACT_ID</order-by-column>
+                <order-by-column>DEAL_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_deal_product: Deal ↔ Product mapping -->
+        <table type="11" name="FACT_DEAL_PRODUCT_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="PRODUCT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="FACT_DEAL_PRODUCT_V2_FK1" reference-table="DIM_DEAL_V2" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="FACT_DEAL_PRODUCT_V2_FK2" reference-table="DIM_PRODUCT_V2" local-column="PRODUCT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>DEAL_ID</order-by-column>
+                <order-by-column>PRODUCT_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_deal_activity: Deal ↔ Activity mapping -->
+        <table type="11" name="FACT_DEAL_ACTIVITY_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ACTIVITY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+
+            <foreign-keys>
+                <foreign-key name="FACT_DEAL_ACTIVITY_V2_FK1" reference-table="DIM_DEAL_V2" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="FACT_DEAL_ACTIVITY_V2_FK2" reference-table="DIM_ACTIVITY_V2" local-column="ACTIVITY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>DEAL_ID</order-by-column>
+                <order-by-column>ACTIVITY_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_contact_activity: Contact ↔ Activity mapping -->
+        <table type="11" name="FACT_CONTACT_ACTIVITY_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CONTACT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ACTIVITY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="FACT_CONTACT_ACTIVITY_V2_FK1" reference-table="DIM_CONTACT_V2" local-column="CONTACT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="FACT_CONTACT_ACTIVITY_V2_FK2" reference-table="DIM_ACTIVITY_V2" local-column="ACTIVITY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>CONTACT_ID</order-by-column>
+                <order-by-column>ACTIVITY_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_company_activity: Company ↔ Activity mapping -->
+        <table type="11" name="FACT_COMPANY_ACTIVITY_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="COMPANY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ACTIVITY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="FACT_COMPANY_ACTIVITY_V2_FK1" reference-table="DIM_COMPANY_V2" local-column="COMPANY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="FACT_COMPANY_ACTIVITY_V2_FK2" reference-table="DIM_ACTIVITY_V2" local-column="ACTIVITY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>COMPANY_ID</order-by-column>
+                <order-by-column>ACTIVITY_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_contact_company: Historical contact-company relationship -->
+        <table type="11" name="FACT_CONTACT_COMPANY_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CONTACT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="COMPANY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="FACT_CONTACT_COMPANY_V2_FK1" reference-table="DIM_CONTACT_V2" local-column="CONTACT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="FACT_CONTACT_COMPANY_V2_FK2" reference-table="DIM_COMPANY_V2" local-column="COMPANY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>CONTACT_ID</order-by-column>
+                <order-by-column>COMPANY_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+    </module>
+
+    <module name="CH_analytics_V3" database-type="2">
+
+        <!-- ===================================================== -->
+        <!-- dim_user: Sales users -->
+        <table type="11" name="OACDimUser" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Core -->
+                <column name="NAME" data-type="STRING" nullable="false"/>
+                <column name="EMAIL" data-type="STRING" nullable="false"/>
+                <column name="PHONE" data-type="STRING" nullable="false"/>
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="STATE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="OACDimUser.ID"/>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+
+            <indexes>
+                <index name="OACDimUser_Idx1" type="PROBABILISTICBLOOMFILTER" false-positive-probability="0.01">
+                    <index-column>EMAIL</index-column>
+                </index>
+            </indexes>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- dim_territory: Territory definitions -->
+        <table type="11" name="OACDimTerritory" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Core -->
+                <column name="NAME" data-type="STRING" nullable="false"/>
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="OACDimTerritory.ID"/>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+        </table>
+
+        <table type="11" name="OACDimCompany" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Core -->
+                <column name="NAME" data-type="STRING" nullable="false"/>
+                <column name="WEBSITE" data-type="STRING" nullable="true"/>
+                <column name="DESCRIPTION" data-type="STRING" nullable="true"/>
+                <column name="SALES_OWNER" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Classification -->
+                <column name="INDUSTRY_TYPE" data-type="STRING" nullable="true"/>
+                <column name="BUSINESS_TYPE" data-type="STRING" nullable="true"/>
+                <column name="ORGANISATION_STATUS" data-type="STRING" nullable="true"/>
+                <column name="SIC_CODE" data-type="STRING" nullable="true"/>
+
+                <!-- Geography -->
+                <column name="CITY" data-type="STRING" nullable="true"/>
+                <column name="STATE" data-type="STRING" nullable="true"/>
+                <column name="COUNTRY" data-type="LOW_CARDINALITY_STRING" nullable="true"/>
+                <column name="PIN_CODE" data-type="STRING" nullable="true"/>
+                <column name="TERRITORY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+
+                <!-- Financial -->
+                <column name="EMPLOYEES" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ANNUAL_REVENUE" data-type="DECIMAL" nullable="true" precision="18" scale="4"/>
+                <column name="PARENT_COMPANY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+
+                <!-- Activity Metrics -->
+                <column name="EMAIL_MESSAGE_COUNT" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="TOTAL_ACTIVITIES" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="DONE_ACTIVITIES" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="UPCOMING_ACTIVITIES" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="LAST_ACTIVITY_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="NEXT_ACTIVITY_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="LAST_EMAIL_SENT" data-type="DATETIME" nullable="true"/>
+                <column name="LAST_EMAIL_RECEIVED" data-type="DATETIME" nullable="true"/>
+                <column name="LAST_ACTIVITY_TYPE" data-type="STRING" nullable="true"/>
+
+                <!-- Deal Metrics -->
+                <column name="OPEN_DEALS" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CLOSED_DEALS" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="WON_DEALS" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="LOST_DEALS" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Misc -->
+                <column name="TAGS" data-type="ARRAY" nullable="false" element-type="STRING" max-length="50" default-value="[]"/>
+                <column name="CREATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="UPDATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Custom Fields (JSON) -->
+                <column name="STRING_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="NUMBER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATETIME_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DROPDOWN_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MULTI_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="USER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="CONTACT_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="COMPANY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MONETARY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="ADDRESS_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="PHONE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="EMAIL_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TEXT_FIELDS" data-type="JSON" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="OACDimCompany.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="OACDimCompany_FK1" reference-table="OACDimTerritory" local-column="TERRITORY"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimCompany_FK2" reference-table="OACDimUser" local-column="SALES_OWNER"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimCompany_FK3" reference-table="OACDimUser" local-column="CREATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimCompany_FK4" reference-table="OACDimUser" local-column="UPDATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+            <indexes>
+                <index name="OACDimCompany_Idx1" type="PROBABILISTICBLOOMFILTER" false-positive-probability="0.01">
+                    <index-column>TAGS</index-column>
+                </index>
+            </indexes>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- dim_contact: Individual CRM contacts -->
+        <table type="11" name="OACDimContact" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Basic Info -->
+                <column name="FIRST_NAME" data-type="STRING" nullable="false"/>
+                <column name="LAST_NAME" data-type="STRING" nullable="true"/>
+                <column name="FULL_NAME" data-type="STRING" nullable="false"/>
+                <column name="EMAIL" data-type="STRING" nullable="false"/>
+                <column name="PHONE" data-type="STRING" nullable="false"/>
+                <column name="DATE_OF_BIRTH" data-type="DATE" nullable="true"/>
+                <column name="DESIGNATION" data-type="STRING" nullable="true"/>
+                <column name="DEPARTMENT" data-type="STRING" nullable="true"/>
+
+                <!-- Lifecycle -->
+                <column name="LIFE_CYCLE_STATUS" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="LIFE_CYCLE_STAGE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="LOST_REASON" data-type="STRING" nullable="true"/>
+
+                <!-- Subscription -->
+                <column name="SUBSCRIPTION_STATUS" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="SUBSCRIPTION_TYPES" data-type="ARRAY" nullable="false" element-type="LOW_CARDINALITY_STRING" max-length="30"/>
+                <column name="UNSUBSCRIBE_REASON" data-type="LOW_CARDINALITY_STRING" nullable="true"/>
+                <column name="OTHER_UNSUBSCRIBE_REASON" data-type="STRING" nullable="true"/>
+
+                <!-- Ownership -->
+                <column name="SALES_OWNER" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="TERRITORY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+
+                <!-- Engagement -->
+                <column name="EMAIL_MESSAGE_COUNT" data-type="UNSIGNED_INTEGER" nullable="false"/>
+                <column name="LAST_ACTIVITY_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="NEXT_ACTIVITY_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="LAST_ACTIVITY_TYPE" data-type="STRING" nullable="true"/>
+                <column name="LAST_EMAIL_SENT" data-type="DATETIME" nullable="true"/>
+                <column name="LAST_EMAIL_RECEIVED" data-type="DATETIME" nullable="true"/>
+
+                <!-- Deal Metrics -->
+                <column name="OPEN_DEALS" data-type="UNSIGNED_INTEGER" nullable="false"/>
+                <column name="CLOSED_DEALS" data-type="UNSIGNED_INTEGER" nullable="false"/>
+                <column name="WON_DEALS" data-type="UNSIGNED_INTEGER" nullable="false"/>
+                <column name="LOST_DEALS" data-type="UNSIGNED_INTEGER" nullable="false"/>
+
+                <!-- Company Link -->
+                <column name="COMPANY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+
+                <!-- Misc -->
+                <column name="TAGS" data-type="ARRAY" nullable="false" element-type="STRING" max-length="30" default-value="[]"/>
+                <column name="TIMEZONE" data-type="LOW_CARDINALITY_STRING" nullable="true"/>
+                <column name="CITY" data-type="STRING" nullable="true"/>
+                <column name="STATE" data-type="STRING" nullable="true"/>
+                <column name="COUNTRY" data-type="LOW_CARDINALITY_STRING" nullable="true"/>
+                <column name="PIN_CODE" data-type="STRING" nullable="true"/>
+                <column name="SOURCE" data-type="STRING" nullable="true"/>
+                <column name="WEBFORM" data-type="STRING" nullable="true"/>
+
+                <!-- Activity Summary -->
+                <column name="TOTAL_ACTIVITIES" data-type="UNSIGNED_INTEGER" nullable="false"/>
+                <column name="DONE_ACTIVITIES" data-type="UNSIGNED_INTEGER" nullable="false"/>
+                <column name="UPCOMING_ACTIVITIES" data-type="UNSIGNED_INTEGER" nullable="false"/>
+
+                <!-- Metadata -->
+                <column name="CREATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="UPDATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Custom Fields (JSON) -->
+                <column name="STRING_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="NUMBER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DROPDOWN_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MULTI_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="USER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="CONTACT_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="COMPANY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MONETARY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="ADDRESS_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="PHONE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="EMAIL_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TEXT_FIELDS" data-type="JSON" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="OACDimContact.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="OACDimContact_FK1" reference-table="OACDimTerritory" local-column="TERRITORY"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimContact_FK2" reference-table="OACDimUser" local-column="SALES_OWNER"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimContact_FK3" reference-table="OACDimUser" local-column="CREATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimContact_FK4" reference-table="OACDimUser" local-column="UPDATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+            <indexes>
+                <index name="OACDimContact_Idx1" type="PROBABILISTICBLOOMFILTER" false-positive-probability="0.01">
+                    <index-column>TAGS</index-column>
+                </index>
+            </indexes>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- dim_deal: Sales pipeline lifecycle tracking -->
+        <table type="11" name="OACDimDeal" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="TITLE" data-type="STRING" nullable="false"/>
+                <column name="SALES_OWNER" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Financial -->
+                <column name="DEAL_VALUE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="DEAL_VALUE_IN_BASE_CURRENCY" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="WEIGHTED_VALUE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="STAGE_PROBABILITY" data-type="DECIMAL" nullable="false" precision="5" scale="2"/>
+                <column name="EXPECTED_DEAL_VALUE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+
+                <!-- Pipeline -->
+                <column name="PIPELINE" data-type="STRING" nullable="false"/>
+                <column name="PIPELINE_STAGE" data-type="STRING" nullable="false"/>
+                <column name="STATE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+
+                <!-- Lifecycle -->
+                <column name="DEAL_CLOSED_ON" data-type="DATETIME" nullable="true"/>
+                <column name="EXPECTED_CLOSED_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="WON_TIME" data-type="DATETIME" nullable="true"/>
+                <column name="LOST_TIME" data-type="DATETIME" nullable="true"/>
+                <column name="ROTTING_DAYS" data-type="UNSIGNED_SMALLINT" nullable="false"/>
+                <column name="AGE" data-type="UNSIGNED_SMALLINT" nullable="false"/>
+                <column name="DEAL_STAGE_UPDATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="WON_REASON" data-type="STRING" nullable="true"/>
+                <column name="LOST_REASON" data-type="STRING" nullable="true"/>
+                <column name="SOURCE" data-type="STRING" nullable="true"/>
+                <column name="TAGS" data-type="ARRAY" nullable="false" element-type="STRING" max-length="30" default-value="[]"/>
+                <column name="TYPE" data-type="STRING" nullable="true"/>
+                <column name="PAYMENT_STATUS" data-type="STRING" nullable="true"/>
+                <column name="DESCRIPTION" data-type="STRING" nullable="true"/>
+
+                <!-- Relationship Fields -->
+                <column name="PRIMARY_CONTACT" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="RELATED_CONTACT" data-type="ARRAY" nullable="false" element-type="UNSIGNED_BIGINT" max-length="100"/>
+                <column name="COMPANY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+                <column name="TERRITORY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+                <column name="WEBFORM" data-type="STRING" nullable="true"/>
+
+                <!-- Activity Summary -->
+                <column name="LAST_ACTIVITY_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="NEXT_ACTIVITY_DATE" data-type="DATETIME" nullable="true"/>
+                <column name="TOTAL_ACTIVITIES" data-type="UNSIGNED_INTEGER" nullable="false"/>
+                <column name="DONE_ACTIVITIES" data-type="UNSIGNED_INTEGER" nullable="false"/>
+                <column name="UPCOMING_ACTIVITIES" data-type="UNSIGNED_INTEGER" nullable="false"/>
+                <column name="LAST_EMAIL_SENT" data-type="DATETIME" nullable="true"/>
+                <column name="LAST_EMAIL_RECEIVED" data-type="DATETIME" nullable="true"/>
+                <column name="EMAIL_MESSAGE_COUNT" data-type="UNSIGNED_INTEGER" nullable="false"/>
+                <column name="LAST_ACTIVITY_TYPE" data-type="STRING" nullable="true"/>
+                <column name="PRODUCT_AMOUNT" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="PRODUCT_QUANTITY" data-type="UNSIGNED_INTEGER" nullable="false"/>
+
+                <!-- Metadata -->
+                <column name="CREATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="UPDATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Custom Fields (JSON) -->
+                <column name="STRING_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="NUMBER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DROPDOWN_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MULTI_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="USER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="CONTACT_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="COMPANY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MONETARY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="ADDRESS_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="PHONE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="EMAIL_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TEXT_FIELDS" data-type="JSON" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="OACDimDeal.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="OACDimDeal_FK1" reference-table="OACDimContact" local-column="PRIMARY_CONTACT"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimDeal_FK2" reference-table="OACDimCompany" local-column="COMPANY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimDeal_FK3" reference-table="OACDimTerritory" local-column="TERRITORY"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimDeal_FK4" reference-table="OACDimUser" local-column="SALES_OWNER"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimDeal_FK5" reference-table="OACDimUser" local-column="CREATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimDeal_FK6" reference-table="OACDimUser" local-column="UPDATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+            <indexes>
+                <index name="OACDimDeal_Idx1" type="PROBABILISTICBLOOMFILTER" false-positive-probability="0.01">
+                    <index-column>TAGS</index-column>
+                </index>
+            </indexes>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- dim_product: Product catalog linked to deals -->
+        <table type="11" name="OACDimProduct" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Core -->
+                <column name="NAME" data-type="STRING" nullable="false"/>
+                <column name="VALID_TILL" data-type="DATETIME" nullable="true"/>
+                <column name="SALES_OWNER" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Metadata -->
+                <column name="CREATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="UPDATED_BY" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+
+                <!-- Custom Fields (JSON) -->
+                <column name="STRING_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="NUMBER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DROPDOWN_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MULTI_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="DATE_TIME_RANGE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="USER_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="CONTACT_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="COMPANY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="MONETARY_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="ADDRESS_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="PHONE_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="EMAIL_FIELDS" data-type="JSON" nullable="false"/>
+                <column name="TEXT_FIELDS" data-type="JSON" nullable="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="OACDimProduct.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="OACDimProduct_FK1" reference-table="OACDimUser" local-column="SALES_OWNER"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimProduct_FK2" reference-table="OACDimUser" local-column="CREATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimProduct_FK3" reference-table="OACDimUser" local-column="UPDATED_BY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- dim_activity: Task/Call/Meeting entity -->
+        <table type="11" name="OACDimActivity" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Core -->
+                <column name="TITLE" data-type="STRING" nullable="false"/>
+                <column name="TYPE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="STATUS" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="PRIORITY" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+
+                <!-- Assignment -->
+                <column name="ASSIGN_TO_USER" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="COLLABORATORS" data-type="ARRAY" nullable="true" element-type="UNSIGNED_BIGINT" max-length="50"/>
+                <column name="AVAILABILITY" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="CREATOR" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="LOCATION" data-type="STRING" nullable="true"/>
+                <column name="DESCRIPTION" data-type="STRING" nullable="true"/>
+
+                <!-- Related Entities -->
+                <column name="DEAL" data-type="UNSIGNED_BIGINT" nullable="true"/>
+                <column name="CONTACT" data-type="ARRAY" nullable="true" element-type="UNSIGNED_BIGINT" max-length="50"/>
+                <column name="COMPANY" data-type="UNSIGNED_BIGINT" nullable="true"/>
+
+                <!-- Status -->
+                <column name="MARK_AS_DONE_TIME" data-type="DATETIME" nullable="true"/>
+
+                <!-- Time Details -->
+                <column name="START_DATE_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="END_DATE_TIME" data-type="DATETIME" nullable="false"/>
+
+                <!-- Metadata -->
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="SALES_OWNER" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="OACDimActivity.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="OACDimActivity_FK1" reference-table="OACDimCompany" local-column="COMPANY"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimActivity_FK2" reference-table="OACDimDeal" local-column="DEAL"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimActivity_FK3" reference-table="OACDimUser" local-column="SALES_OWNER"
+                             reference-column="ID"  constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- dim_deal_line_items: Line items inside deals -->
+        <table type="11" name="OACDimDealLineItems" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Foreign Keys -->
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="PRODUCT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Product Details -->
+                <column name="PRODUCT_NAME" data-type="STRING" nullable="false"/>
+                <column name="UNIT_PRICE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="QUANTITY" data-type="UNSIGNED_INTEGER" nullable="true"/>
+                <column name="DISCOUNT" data-type="DECIMAL" nullable="false" precision="5" scale="2"/>
+                <column name="TOTAL_PRICE_WITHOUT_TAX" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="TOTAL_PRICE_IN_BASE_CURRENCY_WITHOUT_TAX" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="ACTIVE_STATUS" data-type="LOW_CARDINALITY_STRING" nullable="true"/>
+                <column name="PRODUCT_CATEGORY" data-type="STRING" nullable="true"/>
+
+                <!-- Metadata -->
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+
+                <!-- Soft Delete -->
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ID" sequence-generator="OACDimDealLineItems.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="OACDimDealLineItems_FK1" reference-table="OACDimProduct" local-column="PRODUCT_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OACDimDealLineItems_FK2" reference-table="OACDimDeal" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">UPDATED_AT</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ID</order-by-column>
+                <order-by-column>ORG_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">CREATED_AT</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- FACT/BRIDGE TABLES -->
+        <!-- ===================================================== -->
+
+        <!-- fact_company_deal: Bridge between company and deal -->
+        <table type="11" name="OACFactCompanyDeal" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="COMPANY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Deal Context -->
+                <column name="DEAL_VALUE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="CURRENCY" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="STATE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+            <foreign-key name="OACFactCompanyDeal_FK1" reference-table="OACDimCompany" local-column="COMPANY_ID"
+                         reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            <foreign-key name="OACFactCompanyDeal_FK2" reference-table="OACDimDeal" local-column="DEAL_ID"
+                         reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>COMPANY_ID</order-by-column>
+                <order-by-column>DEAL_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_contact_deal: Contact ↔ Deal relationship -->
+        <table type="11" name="OACFactContactDeal" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CONTACT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <column name="DEAL_VALUE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="CURRENCY" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="STATE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="OACFactContactDeal_FK1" reference-table="OACDimContact" local-column="CONTACT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OACFactContactDeal_FK2" reference-table="OACDimDeal" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>CONTACT_ID</order-by-column>
+                <order-by-column>DEAL_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_deal_product: Deal ↔ Product mapping -->
+        <table type="11" name="OACFactDealProduct" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="PRODUCT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="OACFactDealProduct_FK1" reference-table="OACDimDeal" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OACFactDealProduct_FK2" reference-table="OACDimProduct" local-column="PRODUCT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>DEAL_ID</order-by-column>
+                <order-by-column>PRODUCT_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_deal_activity: Deal ↔ Activity mapping -->
+        <table type="11" name="OACFactDealActivity" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ACTIVITY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+
+            <foreign-keys>
+                <foreign-key name="OACFactDealActivity_FK1" reference-table="OACDimDeal" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OACFactDealActivity_FK2" reference-table="OACDimActivity" local-column="ACTIVITY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>DEAL_ID</order-by-column>
+                <order-by-column>ACTIVITY_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_contact_activity: Contact ↔ Activity mapping -->
+        <table type="11" name="OACFactContactActivity" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CONTACT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ACTIVITY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="OACFactContactActivity_FK1" reference-table="OACDimContact" local-column="CONTACT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OACFactContactActivity_FK2" reference-table="OACDimActivity" local-column="ACTIVITY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>CONTACT_ID</order-by-column>
+                <order-by-column>ACTIVITY_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_company_activity: Company ↔ Activity mapping -->
+        <table type="11" name="OACFactCompanyActivity" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="COMPANY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ACTIVITY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="OACFactCompanyActivity_FK1" reference-table="OACDimCompany" local-column="COMPANY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OACFactCompanyActivity_FK2" reference-table="OACDimActivity" local-column="ACTIVITY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>COMPANY_ID</order-by-column>
+                <order-by-column>ACTIVITY_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_contact_company: Historical contact-company relationship -->
+        <table type="11" name="OACFactContactCompany" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CONTACT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="COMPANY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="OACFactContactCompany_FK1" reference-table="OACDimContact" local-column="CONTACT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OACFactContactCompany_FK2" reference-table="OACDimCompany" local-column="COMPANY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>CONTACT_ID</order-by-column>
+                <order-by-column>COMPANY_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- fact_company_deal: Bridge between company and deal -->
+        <table type="11" name="OACFactCompanyDeal_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="COMPANY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Deal Context -->
+                <column name="DEAL_VALUE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="CURRENCY" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="STATE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="OACFactCompanyDeal_V2_FK1" reference-table="OACDimCompany" local-column="COMPANY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OACFactCompanyDeal_V2_FK2" reference-table="OACDimDeal" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>DEAL_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_contact_deal: Contact ↔ Deal relationship -->
+        <table type="11" name="OACFactContactDeal_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CONTACT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <column name="DEAL_VALUE" data-type="DECIMAL" nullable="false" precision="18" scale="4"/>
+                <column name="CURRENCY" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+                <column name="STATE" data-type="LOW_CARDINALITY_STRING" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="OACFactContactDeal_V2_FK1" reference-table="OACDimContact" local-column="CONTACT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OACFactContactDeal_V2_FK2" reference-table="OACDimDeal" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>DEAL_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_deal_product: Deal ↔ Product mapping -->
+        <table type="11" name="OACFactDealProduct_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="PRODUCT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="OACFactDealProduct_V2_FK1" reference-table="OACDimDeal" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OACFactDealProduct_V2_FK2" reference-table="OACDimProduct" local-column="PRODUCT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>DEAL_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_deal_activity: Deal ↔ Activity mapping -->
+        <table type="11" name="OACFactDealActivity_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="DEAL_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ACTIVITY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="true"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+
+            <foreign-keys>
+                <foreign-key name="OACFactDealActivity_V2_FK1" reference-table="OACDimDeal" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OACFactDealActivity_V2_FK2" reference-table="OACDimActivity" local-column="ACTIVITY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>ACTIVITY_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_contact_activity: Contact ↔ Activity mapping -->
+        <table type="11" name="OACFactContactActivity_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CONTACT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ACTIVITY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="true"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="OACFactContactActivity_V2_FK1" reference-table="OACDimContact" local-column="CONTACT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OACFactContactActivity_V2_FK2" reference-table="OACDimActivity" local-column="ACTIVITY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>ACTIVITY_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_company_activity: Company ↔ Activity mapping -->
+        <table type="11" name="OACFactCompanyActivity_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="COMPANY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="ACTIVITY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="true"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="OACFactCompanyActivity_V2_FK1" reference-table="OACDimCompany" local-column="COMPANY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OACFactCompanyActivity_V2_FK2" reference-table="OACDimActivity" local-column="ACTIVITY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>ACTIVITY_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+
+        <!-- ===================================================== -->
+        <!-- fact_contact_company: Historical contact-company relationship -->
+        <table type="11" name="OACFactContactCompany_V2" engine="ReplacingMergeTree">
+            <columns>
+                <!-- Identity -->
+                <column name="ORG_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="CONTACT_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+                <column name="COMPANY_ID" data-type="UNSIGNED_BIGINT" nullable="false"/>
+
+                <!-- Timestamp -->
+                <column name="TIMESTAMP" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+
+            <primary-key column="ORG_ID"/>
+            <foreign-keys>
+                <foreign-key name="OACFactContactCompany_V2_FK1" reference-table="OACDimContact" local-column="CONTACT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OACFactContactCompany_V2_FK2" reference-table="OACDimCompany" local-column="COMPANY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <engine-configuration>
+                <param is-column="true">TIMESTAMP</param>
+            </engine-configuration>
+
+            <order-by>
+                <order-by-column>ORG_ID</order-by-column>
+                <order-by-column>CONTACT_ID</order-by-column>
+            </order-by>
+
+            <partition-by>
+                <partition-by-element is-function="true">
+                    <function name="toStartOfQuarter">
+                        <param is-column="true">TIMESTAMP</param>
+                    </function>
+                </partition-by-element>
+            </partition-by>
+        </table>
+    </module>
+</metadata>

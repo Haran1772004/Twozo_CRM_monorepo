@@ -1,0 +1,11 @@
+hazelcast:
+  network:
+    rest-api:
+      enabled: true
+    join:
+      multicast:
+        enabled: false
+      tcp-ip:
+        enabled: true
+        member-list:
+          - hazelcast

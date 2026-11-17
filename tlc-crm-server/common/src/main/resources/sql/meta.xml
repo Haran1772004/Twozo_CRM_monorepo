@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+  <module name="module_crm_common">
+
+      <table name="MCRMUserReportingManager">
+          <columns>
+              <column name="ID" data-type="BIGINT"/>
+              <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+              <column name="REPORTING_MANAGER_ID" data-type="BIGINT" nullable="false"/>
+          </columns>
+          <primary-key name="MCRMUserReportingManager_PK" column="ID" sequence-generator="MCRMUserReportingManager.ID"/>
+          <unique-keys>
+              <unique-key name="MCRMUserReportingManager_UK1">
+                  <unique-key-column>USER_ID</unique-key-column>
+              </unique-key>
+          </unique-keys>
+          <foreign-keys>
+              <foreign-key name="MCRMUserReportingManager_FK1" reference-table="OMCRMUser" local-column="USER_ID"
+                           reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+              <foreign-key name="MCRMUserReportingManager_FK2" reference-table="OMCRMUser" local-column="REPORTING_MANAGER_ID"
+                           reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+          </foreign-keys>
+      </table>
+
+    <table name="MCRMUserRole">
+      <columns>
+        <column name="ID" data-type="BIGINT"/>
+        <column name="ROLE_ID" data-type="BIGINT" nullable="false"/>
+        <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+      </columns>
+      <primary-key name="MCRMUserRole_PK" column="ID" sequence-generator="MCRMUserRole.ID"/>
+      <unique-keys>
+        <unique-key name="MCRMUserRole_UK1">
+          <unique-key-column>ROLE_ID</unique-key-column>
+          <unique-key-column>USER_ID</unique-key-column>
+        </unique-key>
+      </unique-keys>
+      <foreign-keys>
+        <foreign-key name="MCRMUserRole_FK1" reference-table="OMCRMRole" local-column="ROLE_ID"
+                     reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+        <foreign-key name="MCRMUserRole_FK2" reference-table="OMCRMUser" local-column="USER_ID"
+                     reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+      </foreign-keys>
+    </table>
+
+    <table name="OMCRMTeam" type="11">
+      <columns>
+        <column name="ID" data-type="BIGINT"/>
+        <column name="NAME" data-type="CHAR" max-length="255" nullable="false"/>
+        <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+        <column name="CREATED_TIME" data-type="DATETIME" nullable="false"/>
+        <column name="UPDATED_TIME" data-type="DATETIME" nullable="false"/>
+        <column name="CREATED_BY" data-type="BIGINT" nullable="false"/>
+        <column name="UPDATED_BY" data-type="BIGINT" nullable="false"/>
+      </columns>
+      <primary-key name="OMCRMTeam_PK" column="ID" sequence-generator="OMCRMTeam.ID"/>
+      <unique-keys>
+        <unique-key name="OMCRMTeam_UK1">
+          <unique-key-column>NAME</unique-key-column>
+          <unique-key-column>ORG_ID</unique-key-column>
+        </unique-key>
+      </unique-keys>
+      <foreign-keys>
+        <foreign-key name="OMCRMTeam_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                     reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+        <foreign-key name="OMCRMTeam_FK2" reference-table="OMCRMUser" local-column="CREATED_BY"
+                     reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+        <foreign-key name="OMCRMTeam_FK3" reference-table="OMCRMUser" local-column="UPDATED_BY"
+                     reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+      </foreign-keys>
+    </table>
+
+    <table name="MCRMUserTeam">
+      <columns>
+        <column name="ID" data-type="BIGINT"/>
+        <column name="TEAM_ID" data-type="BIGINT" nullable="false"/>
+        <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+        <column name="IS_MANAGER" data-type="BOOLEAN" default-value="false" nullable="false"/>
+      </columns>
+      <primary-key name="MCRMUserTeam_PK" column="ID" sequence-generator="MCRMUserTeam.ID"/>
+      <unique-keys>
+        <unique-key name="MCRMUserTeam_UK1">
+          <unique-key-column>USER_ID</unique-key-column>
+          <unique-key-column>TEAM_ID</unique-key-column>
+        </unique-key>
+      </unique-keys>
+      <foreign-keys>
+        <foreign-key name="MCRMUserTeam_FK1" reference-table="OMCRMUser" local-column="USER_ID"
+                     reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+        <foreign-key name="MCRMUserTeam_FK2" reference-table="OMCRMTeam" local-column="TEAM_ID"
+                     reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+      </foreign-keys>
+    </table>
+
+    <table name="OMCRMTerritory" type="11">
+      <columns>
+        <column name="ID" data-type="BIGINT"/>
+        <column name="NAME" data-type="CHAR" max-length="255" nullable="false"/>
+        <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+        <column name="DESCRIPTION" data-type="CHAR" max-length="256" nullable="true"/>
+        <column name="CREATED_TIME" data-type="DATETIME" nullable="false"/>
+        <column name="UPDATED_TIME" data-type="DATETIME" nullable="false"/>
+        <column name="CREATED_BY" data-type="BIGINT" nullable="false"/>
+        <column name="UPDATED_BY" data-type="BIGINT" nullable="false"/>
+      </columns>
+      <primary-key name="OMCRMTerritory_PK" column="ID" sequence-generator="OMCRMTerritory.ID"/>
+      <unique-keys>
+        <unique-key name="OMCRMTerritory_UK1">
+          <unique-key-column>NAME</unique-key-column>
+          <unique-key-column>ORG_ID</unique-key-column>
+        </unique-key>
+      </unique-keys>
+      <foreign-keys>
+        <foreign-key name="OMCRMTerritory_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                     reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+        <foreign-key name="OMCRMTerritory_FK2" reference-table="OMCRMUser" local-column="CREATED_BY"
+                     reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+        <foreign-key name="OMCRMTerritory_FK3" reference-table="OMCRMUser" local-column="UPDATED_BY"
+                     reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+      </foreign-keys>
+    </table>
+
+    <table name="MCRMUserTerritory">
+      <columns>
+        <column name="ID" data-type="BIGINT"/>
+        <column name="TERRITORY_ID" data-type="BIGINT" nullable="false"/>
+        <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+      </columns>
+      <primary-key name="MCRMUserTerritory_PK" column="ID" sequence-generator="MCRMUserTerritory.ID"/>
+      <unique-keys>
+        <unique-key name="MCRMUserTerritory_UK1">
+          <unique-key-column>USER_ID</unique-key-column>
+          <unique-key-column>TERRITORY_ID</unique-key-column>
+        </unique-key>
+      </unique-keys>
+      <foreign-keys>
+        <foreign-key name="MCRMUserTerritory_FK1" reference-table="OMCRMUser" local-column="USER_ID"
+                     reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+        <foreign-key name="MCRMUserTerritory_FK2" reference-table="OMCRMTerritory" local-column="TERRITORY_ID"
+                     reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+      </foreign-keys>
+    </table>
+
+      <table name="OMCRMPreference" type="11">
+          <columns>
+              <column name="ID" data-type="BIGINT" nullable="false"/>
+              <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+              <column name="PREFERENCES" data-type="TEXT" nullable="false"/>
+          </columns>
+          <primary-key name="OMCRMPreference_PK" column="ID" sequence-generator="OMCRMPreference.ID"/>
+          <foreign-keys>
+              <foreign-key name="OMCRMPreference_FK" reference-table="FGOrganisation" local-column="ORG_ID"
+                           reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+          </foreign-keys>
+      </table>
+
+      <table name="OMCRMOrgPreference" type="11">
+          <columns>
+              <column name="ID" data-type="BIGINT"/>
+              <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+              <column name="PREFERENCE_ID" data-type="BIGINT" nullable="false"/>
+          </columns>
+          <primary-key name="OMCRMOrgPreference_PK" column="ID" sequence-generator="OMCRMOrgPreference.ID"/>
+          <foreign-keys>
+              <foreign-key name="OMCRMOrgPreference_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                           reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+              <foreign-key name="OMCRMOrgPreference_FK2" reference-table="OMCRMPreference" local-column="PREFERENCE_ID"
+                           reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+          </foreign-keys>
+          <unique-keys>
+              <unique-key name="OMCRMOrgPreference_UK">
+                  <unique-key-column>ORG_ID</unique-key-column>
+              </unique-key>
+          </unique-keys>
+      </table>
+
+      <table name="OMCRMUserPreference" type="11">
+          <columns>
+              <column name="ID" data-type="BIGINT"/>
+              <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+              <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+              <column name="PREFERENCE_ID" data-type="BIGINT" nullable="false"/>
+              <column name="IS_UPDATED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+          </columns>
+          <primary-key name="OMCRMUserPreference_PK" column="ID" sequence-generator="OMCRMUserPreference.ID"/>
+          <unique-keys>
+              <unique-key name="OMCRMUserPreference_UK1">
+                  <unique-key-column>USER_ID</unique-key-column>
+              </unique-key>
+          </unique-keys>
+          <foreign-keys>
+              <foreign-key name="OMCRMUserPreference_FK1" reference-table="OMCRMUser" local-column="USER_ID"
+                           reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+              <foreign-key name="OMCRMUserPreference_FK2" reference-table="OMCRMPreference" local-column="PREFERENCE_ID"
+                           reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+              <foreign-key name="OMCRMUserPreference_FK3" reference-table="FGOrganisation" local-column="ORG_ID"
+                           reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+          </foreign-keys>
+      </table>
+
+      <table name="OMCRMTemporaryUserLinkDetails" type="11">
+          <columns>
+              <column name="ID" data-type="BIGINT" nullable="false"/>
+              <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+              <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+              <column name="EXPIRATION_TIME" data-type="BIGINT" nullable="false"/>
+              <column name="CATEGORY" data-type="SMALLINT" nullable="false"/>
+          </columns>
+          <primary-key name="OMCRMTemporaryUserLinkDetails_PK" column="ID" sequence-generator="OMCRMTemporaryUserLinkDetails.ID"/>
+          <foreign-keys>
+              <foreign-key name="OMCRMTemporaryUserLinkDetails_FK1" reference-table="FGOrganisation"
+                           local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+              <foreign-key name="OMCRMTemporaryUserLinkDetails_FK2" reference-table="OMCRMUser"
+                           local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+          </foreign-keys>
+      </table>
+
+      <table name="OMOrgCancellation" type="11">
+          <columns>
+              <column name="ID" data-type="BIGINT" nullable="false"/>
+              <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+              <column name="RETENTION_END_TIME" data-type="BIGINT" nullable="false"/>
+              <column name="REASON_ID" data-type="SMALLINT" nullable="false"/>
+              <column name="OTHER_REASON" data-type="CHAR" max-length="1000" nullable="true"/>
+              <column name="SURVEY_INFO" data-type="TEXT" nullable="true"/>
+          </columns>
+          <primary-key name="OMOrgCancellation_PK" column="ID" sequence-generator="OMOrgCancellation.ID"/>
+          <unique-keys>
+              <unique-key name="OMOrgCancellation_UK">
+                  <unique-key-column>ORG_ID</unique-key-column>
+              </unique-key>
+          </unique-keys>
+      </table>
+  </module>
+
+    <module name="tlc_crm_list">
+
+        <table name="METFieldTransformers">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="750" />
+                <column name="STORE_TYPE" data-type="CHAR" nullable="true"/>
+            </columns>
+            <primary-key name="METFieldTransformers_PK" column="ID" sequence-generator="METFieldTransformers.ID" />
+            <unique-keys>
+                <unique-key name="METFieldTransformers_UK">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="METModelTransformers">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="750" />
+            </columns>
+            <primary-key name="METModelTransformers_PK" column="ID" sequence-generator="METModelTransformers.ID" />
+            <unique-keys>
+                <unique-key name="METModelTransformers_UK">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="METDataProvider">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TYPE" data-type="INTEGER" nullable="false" default-value="1" /> <!-- 1 - SQL , 2 - NOSQL-->
+                <column name="NAME" data-type="CHAR" nullable="false" />
+                <column name="CONFIG_INFO" data-type="CHAR" nullable="true"/>
+                <column name="SOURCE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="TRANSFORMER_ID" data-type="BIGINT" nullable="true" />
+            </columns>
+            <primary-key name="METDataProvider_PK" column="ID" sequence-generator="METDataProvider.ID" />
+            <foreign-keys>
+                <foreign-key name="METDataProvider_FK1" reference-table="METSource" local-column="SOURCE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="METDataProvider_FK2" reference-table="METModelTransformers" local-column="TRANSFORMER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="METDataProvider_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                    <unique-key-column>TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="METFields">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="PROVIDER_ID" data-type="BIGINT" nullable="false" />
+                <column name="NAME" data-type="CHAR" nullable="false" />
+                <column name="DISPLAY_NAME" data-type="KCHAR" nullable="false" />
+                <column name="PRIMARY" data-type="BOOLEAN" nullable="false" default-value="false" />
+                <column name="SORT" data-type="INTEGER" nullable="false" default-value="0" /> <!--  0- Disabled, 1 - Sortable, 2 - Sort Ascending default, 3 - Sort Descending default-->
+                <column name="SEARCHABLE" data-type="BOOLEAN" nullable="false" default-value="false" />
+                <column name="ORDER" data-type="INTEGER" nullable="false" default-value="1" />
+                <column name="HIDDEN" data-type="BOOLEAN" nullable="false" default-value="false" />
+                <column name="CONFIG_INFO" data-type="TEXT" nullable="true" />
+                <column name="TRANSFORMER_ID" data-type="BIGINT" nullable="true" />
+                <column name="FIELD_TYPE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="IS_ENABLED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+            <primary-key name="METFields_PK" column="ID" sequence-generator="METFields.ID" />
+            <foreign-keys>
+                <foreign-key name="METFields_FK1" reference-table="METDataProvider" local-column="PROVIDER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="METFields_FK2" reference-table="METFieldTransformers" local-column="TRANSFORMER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="METFields_FK3" reference-table="METFieldType" local-column="FIELD_TYPE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="METFields_UK1">
+                    <unique-key-column>PROVIDER_ID</unique-key-column>
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+                <unique-key name="METFields_UK2">
+                    <unique-key-column>PROVIDER_ID</unique-key-column>
+                    <unique-key-column>DISPLAY_NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="METFieldSQLTable">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TABLE_NAME" data-type="CHAR" nullable="false" />
+            </columns>
+            <primary-key name="METFieldSQLTable_PK" column="ID" sequence-generator="METFieldSQLTable.ID" />
+            <unique-keys>
+                <unique-key name="METFieldSQLTable_UK1">
+                    <unique-key-column>TABLE_NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="METFieldSQLSource">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="FIELD_ID" data-type="BIGINT" nullable="false" />
+                <column name="TABLE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="COLUMN" data-type="CHAR" nullable="false"/>
+                <column name="TYPE" data-type="INTEGER" nullable="false" default-value="0" /> <!-- 1. Distinct, 2. Count, 3. Min, 4. Max, 5. Avg -->
+                <column name="FLAG" data-type="INTEGER" nullable="false" default-value="0" />
+            </columns>
+            <primary-key name="METFieldSQLSource_PK" column="ID" sequence-generator="METFieldSQLSource.ID" />
+            <foreign-keys>
+                <foreign-key name="METFieldSQLSource_FK1" reference-table="METFields" local-column="FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="METFieldSQLSource_FK2" reference-table="METFieldSQLTable" local-column="TABLE_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT" />
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="METFieldSQLSource_UK1">
+                    <unique-key-column>FIELD_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="METSystemFieldsConfiguration">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="PROVIDER_ID" data-type="BIGINT" nullable="false" />
+                <column name="USER_ID" data-type="BIGINT" nullable="false" />
+                <column name="FIELD_ID" data-type="BIGINT" nullable="false" />
+                <column name="ORDER" data-type="INTEGER" nullable="false" />
+                <column name="CONFIG" data-type="TEXT" nullable="false"/>
+            </columns>
+            <primary-key name="METSystemFieldsConfiguration_PK" column="ID" sequence-generator="METSystemFieldsConfiguration.ID" />
+            <foreign-keys>
+                <foreign-key name="METSystemFieldsConfiguration_FK1" reference-table="METDataProvider" local-column="PROVIDER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="METSystemFieldsConfiguration_FK2" reference-table="METFields" local-column="FIELD_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT" />
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="METSystemFieldsConfiguration_UK1">
+                    <unique-key-column>PROVIDER_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>FIELD_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="METConfiguredSubField">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORDER" data-type="INTEGER" nullable="false" />
+                <column name="SUB_FIELD_ID" data-type="BIGINT" nullable="false" />
+                <column name="CONFIGURED_FIELD_ID" data-type="BIGINT" nullable="false" />
+            </columns>
+            <primary-key name="METConfiguredSubField_PK" column="ID" sequence-generator="METConfiguredSubField.ID" />
+            <foreign-keys>
+                <foreign-key name="METConfiguredSubField_FK1" reference-table="METFieldSubType" local-column="SUB_FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+                <foreign-key name="METConfiguredSubField_FK2" reference-table="METSystemFieldsConfiguration" local-column="CONFIGURED_FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE" />
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="METConfiguredSubField_UK1">
+                    <unique-key-column>SUB_FIELD_ID</unique-key-column>
+                    <unique-key-column>CONFIGURED_FIELD_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+
+    <module name="module_crm_export">
+
+    <table name="OMEXExport" type="11">
+        <columns>
+            <column name="ID" data-type="BIGINT"/>
+            <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+            <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+            <column name="CREATED_TIME" data-type="BIGINT" nullable="false"/>
+            <column name="UPDATED_TIME" data-type="BIGINT" nullable="false"/>
+            <column name="STATUS" data-type="SMALLINT" nullable="false"/>
+            <column name="FILE_ID" data-type="BIGINT" nullable="true"/>
+            <column name="TOTAL_RECORDS" data-type="BIGINT" nullable="false" default-value="0"/>
+            <column name="COMPLETED_RECORDS" data-type="BIGINT" nullable="false" default-value="0"/>
+        </columns>
+        <primary-key name="OMEXExport_PK" column="ID" sequence-generator="OMEXExport.ID"/>
+        <foreign-keys>
+            <foreign-key name="OMEXExport_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                         reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            <foreign-key name="OMEXExport_FK2" reference-table="OMCRMUser" local-column="USER_ID"
+                         reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+        </foreign-keys>
+    </table>
+    </module>
+
+    <module name="tlc_crm_sort">
+
+        <table name="OMSortConfig" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SOURCE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="VIEW_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONFIG" data-type="TEXT" nullable="false"/>
+            </columns>
+            <primary-key name="OMSortConfig_PK" column="ID" sequence-generator="OMSortConfig.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMSortConfig_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSortConfig_FK2" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSortConfig_FK3" reference-table="METSource" local-column="SOURCE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMKanbanSortConfig" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SORT_CONFIG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STAGE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMKanbanSortConfig_PK" column="ID" sequence-generator="OMKanbanSortConfig.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMKanbanSortConfig_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKanbanSortConfig_FK2" reference-table="OMSortConfig" local-column="SORT_CONFIG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMKanbanSortConfig_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>SORT_CONFIG_ID</unique-key-column>
+                    <unique-key-column>STAGE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+
+        <table name="OMListSortConfig" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SORT_CONFIG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TYPE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMListSortConfig_PK" column="ID" sequence-generator="OMListSortConfig.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMListSortConfig_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMListSortConfig_FK2" reference-table="OMSortConfig" local-column="SORT_CONFIG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMListSortConfig_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>SORT_CONFIG_ID</unique-key-column>
+                    <unique-key-column>TYPE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+
+    <module name="tlc_crm_list_paginate">
+
+        <table name="OMListPaginationState" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TYPE_ID" data-type="SMALLINT" nullable="false"/>
+                <column name="START" data-type="INTEGER" nullable="false" default-value="1"/>
+                <column name="COUNT" data-type="INTEGER" nullable="false" default-value="25"/>
+            </columns>
+            <primary-key name="OMListPaginationState_PK" column="ID" sequence-generator="OMListPaginationState.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMListPaginationState_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMListPaginationState_FK2" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMListPaginationState_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>TYPE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+
+</metadata>

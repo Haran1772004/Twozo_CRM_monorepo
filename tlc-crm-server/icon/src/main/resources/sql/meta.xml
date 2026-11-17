@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+    <module name="tlc_crm_icons">
+        <table name="MICIcon">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="50"/>
+                <column name="DISPLAY_NAME" data-type="KCHAR" nullable="false" max-length="200"/>
+            </columns>
+            <primary-key name="MICIcon_PK" column="ID" sequence-generator="MICIcon.ID"/>
+            <unique-keys>
+                <unique-key name="MICIcon_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MICIconType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="MICIconType_PK" column="ID" sequence-generator="MICIconType.ID"/>
+            <unique-keys>
+                <unique-key name="MICIconType_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MICIconHolder">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ICON_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TYPE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MICIconHolder_PK" column="ID" sequence-generator="MICIconHolder.ID"/>
+            <foreign-keys>
+                <foreign-key name="MICIconHolder_FK" reference-table="MICIcon"
+                             local-column="ICON_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MICIconHolder_FK2" reference-table="MICIconType"
+                             local-column="TYPE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MICIconHolder_UK">
+                    <unique-key-column>ICON_ID</unique-key-column>
+                    <unique-key-column>TYPE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+    </module>
+</metadata>

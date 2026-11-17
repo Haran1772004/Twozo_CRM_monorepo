@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dumpdata>
+
+    <module name="web_form">
+        <MWFFormStyle ID="MWFFormStyle:ID:CO:1" BACKGROUND_COLOR="#E7F7F0" HEADER_TEXT_COLOR="#000000"
+                      SUB_HEADER_TEXT_COLOR="#000000" HEADER_FONT_SIZE="20" SUB_HEADER_FONT_SIZE="20"
+                      ALIGNMENT_ID="1" FONT_ID="7" DESCRIPTION_TEXT_COLOR="#000000" TEXT_COLOR="#000000"
+                      DESCRIPTION_FONT_SIZE="14" TEXT_FONT_SIZE="14"/>
+        <MWFFormStyle ID="MWFFormStyle:ID:CO:2" BACKGROUND_COLOR="#E7F7F0" HEADER_TEXT_COLOR="#000000"
+                      SUB_HEADER_TEXT_COLOR="#000000" HEADER_FONT_SIZE="20" SUB_HEADER_FONT_SIZE="20"
+                      ALIGNMENT_ID="1" FONT_ID="7" DESCRIPTION_TEXT_COLOR="#000000" TEXT_COLOR="#000000"
+                      DESCRIPTION_FONT_SIZE="14" TEXT_FONT_SIZE="14"/>
+        <MWFFormStyle ID="MWFFormStyle:ID:CO:3" BACKGROUND_COLOR="#E7F7F0" HEADER_TEXT_COLOR="#000000"
+                      SUB_HEADER_TEXT_COLOR="#000000" HEADER_FONT_SIZE="20" SUB_HEADER_FONT_SIZE="20"
+                      ALIGNMENT_ID="1" FONT_ID="7" DESCRIPTION_TEXT_COLOR="#000000" TEXT_COLOR="#000000"
+                      DESCRIPTION_FONT_SIZE="14" TEXT_FONT_SIZE="14"/>
+        <MWFFormStyle ID="MWFFormStyle:ID:CO:4" BACKGROUND_COLOR="#E7F7F0" HEADER_TEXT_COLOR="#000000"
+                      SUB_HEADER_TEXT_COLOR="#000000" HEADER_FONT_SIZE="20" SUB_HEADER_FONT_SIZE="20"
+                      ALIGNMENT_ID="1" FONT_ID="7" DESCRIPTION_TEXT_COLOR="#000000" TEXT_COLOR="#000000"
+                      DESCRIPTION_FONT_SIZE="14" TEXT_FONT_SIZE="14"/>
+
+        <MWFFieldStyle ID="MWFFieldStyle:ID:CO:1" LABEL_COLOR="#000000" INPUT_TEXT_COLOR="#000000"
+                       INPUT_BACKGROUND_COLOR="#ffffff" LABEL_FONT_SIZE="14" INPUT_FONT_SIZE="16"/>
+        <MWFFieldStyle ID="MWFFieldStyle:ID:CO:2" LABEL_COLOR="#000000" INPUT_TEXT_COLOR="#000000"
+                       INPUT_BACKGROUND_COLOR="#ffffff" LABEL_FONT_SIZE="14" INPUT_FONT_SIZE="16"/>
+        <MWFFieldStyle ID="MWFFieldStyle:ID:CO:3" LABEL_COLOR="#000000" INPUT_TEXT_COLOR="#000000"
+                       INPUT_BACKGROUND_COLOR="#ffffff" LABEL_FONT_SIZE="14" INPUT_FONT_SIZE="16"/>
+        <MWFFieldStyle ID="MWFFieldStyle:ID:CO:4" LABEL_COLOR="#000000" INPUT_TEXT_COLOR="#000000"
+                       INPUT_BACKGROUND_COLOR="#ffffff" LABEL_FONT_SIZE="14" INPUT_FONT_SIZE="16"/>
+
+        <MWFSubmitButtonStyle ID="MWFSubmitButtonStyle:ID:CO:1" BACKGROUND_COLOR="#33BC7E" TEXT_COLOR="#ffffff"
+                              ALIGNMENT_ID="1" WIDTH="25"/>
+        <MWFSubmitButtonStyle ID="MWFSubmitButtonStyle:ID:CO:2" BACKGROUND_COLOR="#33BC7E" TEXT_COLOR="#ffffff"
+                              ALIGNMENT_ID="1" WIDTH="25"/>
+        <MWFSubmitButtonStyle ID="MWFSubmitButtonStyle:ID:CO:3" BACKGROUND_COLOR="#33BC7E" TEXT_COLOR="#ffffff"
+                              ALIGNMENT_ID="1" WIDTH="25"/>
+        <MWFSubmitButtonStyle ID="MWFSubmitButtonStyle:ID:CO:4" BACKGROUND_COLOR="#33BC7E" TEXT_COLOR="#ffffff"
+                              ALIGNMENT_ID="1" WIDTH="25"/>
+
+        <MWFStyle ID="MWFStyle:ID:CO:1" FORM_STYLE_ID="MWFFormStyle:ID:CO:1" FIELD_STYLE_ID="MWFFieldStyle:ID:CO:1"
+                  SUBMIT_BUTTON_STYLE_ID="MWFSubmitButtonStyle:ID:CO:1"/>
+        <MWFStyle ID="MWFStyle:ID:CO:2" FORM_STYLE_ID="MWFFormStyle:ID:CO:2" FIELD_STYLE_ID="MWFFieldStyle:ID:CO:2"
+                  SUBMIT_BUTTON_STYLE_ID="MWFSubmitButtonStyle:ID:CO:2"/>
+        <MWFStyle ID="MWFStyle:ID:CO:3" FORM_STYLE_ID="MWFFormStyle:ID:CO:3" FIELD_STYLE_ID="MWFFieldStyle:ID:CO:3"
+                  SUBMIT_BUTTON_STYLE_ID="MWFSubmitButtonStyle:ID:CO:3"/>
+        <MWFStyle ID="MWFStyle:ID:CO:4" FORM_STYLE_ID="MWFFormStyle:ID:CO:4" FIELD_STYLE_ID="MWFFieldStyle:ID:CO:4"
+                  SUBMIT_BUTTON_STYLE_ID="MWFSubmitButtonStyle:ID:CO:4"/>
+
+        <MWFSubmitAction ID="MWFSubmitAction:ID:CO:1" THANK_YOU_MESSAGE="i18n.webForm.template.submitAction.registration.thankYouMessage"/>
+        <MWFSubmitAction ID="MWFSubmitAction:ID:CO:2" THANK_YOU_MESSAGE="i18n.webForm.template.submitAction.contactUs.thankYouMessage"/>
+        <MWFSubmitAction ID="MWFSubmitAction:ID:CO:3" THANK_YOU_MESSAGE="i18n.webForm.template.submitAction.resourceDownload.thankYouMessage"/>
+        <MWFSubmitAction ID="MWFSubmitAction:ID:CO:4" THANK_YOU_MESSAGE="i18n.webForm.template.submitAction.blank.thankYouMessage"/>
+
+    </module>
+
+</dumpdata>

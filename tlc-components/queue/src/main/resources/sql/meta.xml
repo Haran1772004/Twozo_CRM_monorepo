@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_queue">
+
+        <table name="MQTopic">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="125"/>
+            </columns>
+            <primary-key name="MQTopic_PK" column="ID" sequence-generator="MQTopic.ID"/>
+            <unique-keys>
+                <unique-key name="MQTopic_UK">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MQConsumerGroup">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="GROUP_ID" data-type="CHAR" nullable="false" max-length="125"/>
+            </columns>
+            <primary-key name="MQConsumerGroup_PK" column="ID" sequence-generator="MQConsumerGroup.ID"/>
+            <unique-keys>
+                <unique-key name="MQConsumerGroup_UK">
+                    <unique-key-column>GROUP_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MQProcessedOffset">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="OFFSET" data-type="BIGINT" nullable="false"/>
+                <column name="PARTITION" data-type="SMALLINT" nullable="false"/>
+                <column name="TOPIC_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONSUMER_GROUP_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MQProcessedOffset_PK" column="ID" sequence-generator="MQProcessedOffset.ID"/>
+            <foreign-keys>
+                <foreign-key name="MQProcessedOffset_FK1" reference-table="MQTopic"
+                             local-column="TOPIC_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MQProcessedOffset_FK2" reference-table="MQConsumerGroup"
+                             local-column="CONSUMER_GROUP_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MQProcessedOffset_UK">
+                    <unique-key-column>OFFSET</unique-key-column>
+                    <unique-key-column>CONSUMER_GROUP_ID</unique-key-column>
+                    <unique-key-column>TOPIC_ID</unique-key-column>
+                    <unique-key-column>PARTITION</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+</metadata>

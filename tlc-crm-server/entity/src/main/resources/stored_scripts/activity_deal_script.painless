@@ -1,0 +1,43 @@
+def sourceDeal = params._source.deal;
+
+if (null != sourceDeal) {
+  def followers = sourceDeal.followerIds;
+  def ownerId = params.ownerId;
+
+  if (("territory".equals(params.dealPermission) && params.territoryIds.contains(sourceDeal.territoryId)) ||
+      ownerId == sourceDeal.ownerId || (params.isDealFollower && null != followers && followers.contains(ownerId))) {
+    Map dealFields = new HashMap();
+    def dealContact = sourceDeal.contact;
+    def dealCompany = sourceDeal.company;
+    def global = "global";
+
+    dealFields.put("name", sourceDeal.name);
+    dealFields.put("dealState", sourceDeal.dealState);
+    dealFields.put("expectedCloseDate", sourceDeal.expectedCloseDate);
+    dealFields.put("totalProductCount", sourceDeal.totalProductCount);
+    dealFields.put("pipeline", sourceDeal.pipeline);
+    dealFields.put("pipelineStage", sourceDeal.pipelineStage);
+    dealFields.put("dealValue", sourceDeal.dealValue);
+    dealFields.put("id", sourceDeal.id);
+
+    if (global.equals(params.contactPermission) && null != dealContact && !dealContact.isEmpty()) {
+      Map dealContactMap = new HashMap();
+
+      dealContactMap.put("name", dealContact.name);
+      dealContactMap.put("id", dealContact.id);
+      dealFields.put("contact", dealContactMap);
+    }
+
+    if (global.equals(params.companyPermission) && null != dealCompany) {
+      Map dealCompanyMap = new HashMap();
+
+      dealCompanyMap.put("name", dealCompany.name);
+      dealCompanyMap.put("id", dealCompany.id);
+      dealFields.put("company", dealCompanyMap);
+    }
+    return dealFields;
+  }
+}
+
+return null;
+

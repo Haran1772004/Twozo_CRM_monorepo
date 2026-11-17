@@ -1,0 +1,556 @@
+<metadata>
+
+    <module name="module_notifications">
+
+        <table name="OMCALCalendarSyncSettings" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_SYNC_ENABLED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="LAST_SYNC_TIME" data-type="BIGINT" nullable="true"/>
+                <column name="EMAIL_ADDRESS" data-type="CHAR" nullable="false" max-length="320"/>
+                <column name="CONNECTION_STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="SYNC_CONFIG" data-type="TEXT" nullable="false" max-length="350"/>
+                <column name="IN_PROGRESS_CONFIG" data-type="TEXT" nullable="true" max-length="350"/>
+                <column name="SYNC_STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="SYNC_MODE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMCALCalendarSyncSettings_PK" column="ID" sequence-generator="OMCALCalendarSyncSettings.ID"/>
+            <unique-keys>
+                <unique-key name="OMCALCalendarSyncSettings_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>EMAIL_ADDRESS</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMCALCalendarSyncSettings_FK1" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMCALCalendarSyncSettings_FK2" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMCALExternalEvents" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXTERNAL_EVENT_ID" data-type="CHAR" nullable="false"/>
+                <column name="REFERENCE_ID" data-type="CHAR" nullable="true" max-length="800"/>
+                <column name="ACTIVITY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CALENDAR_SYNC_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMCALExternalEvents_PK" column="ID" sequence-generator="OMCALExternalEvents.ID"/>
+            <unique-keys>
+                <unique-key name="OMCALExternalEvents_UK1">
+                    <unique-key-column>ACTIVITY_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="OMCALExternalEvents_UK2">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>REFERENCE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMCALExternalEvents_FK1" reference-table="OMACActivity"
+                             local-column="ACTIVITY_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMCALExternalEvents_FK2" reference-table="OMCALCalendarSyncSettings"
+                             local-column="CALENDAR_SYNC_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMCALExternalEvents_FK3" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+    </module>
+
+    <module name="module_crm_app_notification">
+        <table name="OMANNotification" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NOTIFICATION_TYPE" data-type="INTEGER" nullable="false"/>
+                <column name="TIMESTAMP" data-type="BIGINT" nullable="false"/>
+                <column name="NOTIFICATION" data-type="TEXT" nullable="false"/>
+            </columns>
+            <primary-key name="OMANNotification_PK" column="ID" sequence-generator="OMANNotification.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMANNotification_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMANUsers" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NOTIFICATION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_READ" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+            <primary-key name="OMANUsers_PK" column="ID" sequence-generator="OMANUsers.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMANUsers_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMANUsers_FK2" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMANUsers_FK3" reference-table="OMANNotification" local-column="NOTIFICATION_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMANUsers_UK1">
+                    <unique-key-column>NOTIFICATION_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMANReminderNotification" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ASSIGNEE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TIMESTAMP" data-type="BIGINT" nullable="false"/>
+                <column name="NOTIFICATION" data-type="TEXT" nullable="false"/>
+                <column name="ACTIVITY_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMANReminderNotification_PK" column="ID" sequence-generator="OMANReminderNotification.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMANReminderNotification_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMANReminderNotification_FK2" reference-table="OMCRMUser" local-column="ASSIGNEE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMANReminderNotification_FK3" reference-table="OMACActivity" local-column="ACTIVITY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMANReminderNotification_UK1">
+                    <unique-key-column>ACTIVITY_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+    </module>
+
+    <module name="module_crm_voice_call">
+        <table name="MNCCountry">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="75"/>
+                <column name="CODE" data-type="CHAR" nullable="false" max-length="20"/>
+            </columns>
+            <primary-key name="MNCCountry_PK" column="ID" sequence-generator="MNCCountry.ID"/>
+            <unique-keys>
+                <unique-key name="MNCCountry_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+                <unique-key name="MNCCountry_UK2">
+                    <unique-key-column>CODE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MNCState">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="COUNTRY_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MNCState_PK" column="ID" sequence-generator="MNCState.ID"/>
+            <foreign-keys>
+                <foreign-key name="MNCState_Country_FK" reference-table="MNCCountry" local-column="COUNTRY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MNCState_UK1">
+                    <unique-key-column>COUNTRY_ID</unique-key-column>
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MNCLocality">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="COUNTRY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STATE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MNCLocality_PK" column="ID" sequence-generator="MNCLocality.ID"/>
+            <foreign-keys>
+                <foreign-key name="MNCLocality_Country_FK" reference-table="MNCCountry" local-column="COUNTRY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MNCLocality_State_FK" reference-table="MNCState" local-column="STATE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MNCLocality_UK1">
+                    <unique-key-column>COUNTRY_ID</unique-key-column>
+                    <unique-key-column>STATE_ID</unique-key-column>
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMNCPhoneNumber" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="LOCATION_ID" data-type="BIGINT" nullable="true"/>
+                <column name="DISPLAY_NAME" data-type="CHAR" nullable="true" max-length="100"/>
+                <column name="NUMBER" data-type="CHAR" nullable="false" max-length="25"/>
+                <column name="SERVICE_ID" data-type="CHAR" nullable="true" max-length="50"/>
+                <column name="RECORD_TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="PROVIDER" data-type="SMALLINT" nullable="false"/>
+                <column name="IS_ACTIVE" data-type="BOOLEAN" nullable="true" default-value="true"/>
+            </columns>
+            <primary-key name="OMNCPhoneNumber_PK" column="ID" sequence-generator="OMNCPhoneNumber.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMNCPhoneNumber_Org_FK" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMNCPhoneNumber_Location_FK" reference-table="MNCLocality" local-column="LOCATION_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMNCPhoneNumber_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>NUMBER</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMNCallHistory" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="true"/>
+                <column name="NUMBER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CALL_LOG_ID" data-type="BIGINT" nullable="true"/>
+                <column name="EXTERNAL_CALL_ID" data-type="CHAR" nullable="false" max-length="75"/>
+                <column name="CALL_TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="CALL_STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="LOGGED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="IS_PARENT_CALL" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="IS_CALL_LOGGED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+            <primary-key name="OMNCallHistory_PK" column="ID" sequence-generator="OMNCallHistory.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMNCallHistory_Org_FK" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMNCallHistory_User_FK" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMNCallHistory_Number_FK" reference-table="OMNCPhoneNumber" local-column="NUMBER_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMNCallHistory_CallLogId_FK" reference-table="OMNCallLog" local-column="CALL_LOG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMNCallHistory_UK">
+                    <unique-key-column>EXTERNAL_CALL_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <indexes>
+                <index name="OMNCallHistory_Idx1">
+                    <index-column>EXTERNAL_CALL_ID</index-column>
+                </index>
+            </indexes>
+        </table>
+
+        <table name="OMNCCallSummary" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CALL_HISTORY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="START_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="END_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="DURATION" data-type="CHAR" nullable="false" max-length="50"/>
+                <column name="BILLING_DURATION" data-type="CHAR" nullable="false" max-length="50"/>
+                <column name="COST" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="OMNCCallSummary_PK" column="ID" sequence-generator="OMNCCallSummary.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMNCCallSummary_Org_FK" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMNCCallSummary_CallHistory_FK" reference-table="OMNCallHistory" local-column="CALL_HISTORY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMNCCallSummary_Monetary_FK" reference-table="OMETMonetary" local-column="COST"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMNCCallSummary_UK">
+                    <unique-key-column>CALL_HISTORY_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMNCCallingService" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="true"/>
+                <column name="DISPLAY_NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="NAME" data-type="CHAR" nullable="true" max-length="100"/>
+                <column name="APP_ID" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="OMNCCallingService_PK" column="ID" sequence-generator="OMNCCallingService.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMNCCallingService_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMNCCallingService_FK2" reference-table="MKPCRMApps"
+                             local-column="APP_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMNCCallingService_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>APP_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMNCPhoneSettings" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="DEFAULT_CALLING_SERVICE" data-type="BIGINT" nullable="false"/>
+                <column name="DEFAULT_CALLING_METHOD" data-type="SMALLINT" nullable="false" default-value="1"/>
+                <column name="CREATED_AT" data-type="BIGINT" nullable="false"/>
+                <column name="UPDATED_AT" data-type="BIGINT" nullable="false"/>
+                <column name="CREATED_BY" data-type="BIGINT" nullable="true"/>
+                <column name="UPDATED_BY" data-type="BIGINT" nullable="true"/>
+                <column name="LIFE_CYCLE_STAGE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="IS_AUTO_CREATE_CONTACT_ENABLED" data-type="BOOLEAN" nullable="true" default-value="false"/>
+            </columns>
+            <primary-key name="OMNCPhoneSettings_PK" column="ID" sequence-generator="OMNCPhoneSettings.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMNCPhoneSettings_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMNCPhoneSettings_FK2" reference-table="OMCRMUser"
+                             local-column="CREATED_BY" reference-column="ID" constraint="ON-DELETE-SET-NULL"/>
+                <foreign-key name="OMNCPhoneSettings_FK3" reference-table="OMCRMUser"
+                             local-column="UPDATED_BY" reference-column="ID" constraint="ON-DELETE-SET-NULL"/>
+                <foreign-key name="OMNCPhoneSettings_FK4" reference-table="OMNCCallingService"
+                             local-column="DEFAULT_CALLING_SERVICE" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMNCPhoneSettings_FK5" reference-table="OMCOLifeCycleStage"
+                             local-column="LIFE_CYCLE_STAGE_ID" reference-column="ID" constraint="ON-DELETE-SET-NULL"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMNCPhoneSettings_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MNCCallRecordDetails">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CALL_HISTORY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXTERNAL_RECORD_ID" data-type="CHAR" nullable="true" max-length="100"/>
+                <column name="URI" data-type="CHAR" nullable="false" max-length="500"/>
+            </columns>
+            <primary-key name="MNCCallRecordDetails_PK" column="ID" sequence-generator="MNCCallRecordDetails.ID"/>
+            <foreign-keys>
+                <foreign-key name="MNCCallRecordDetails_CallHistory_FK" reference-table="OMNCallHistory" local-column="CALL_HISTORY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MNCCallRecordDetails_UK">
+                    <unique-key-column>EXTERNAL_RECORD_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MNCCallForwardHistory">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CALL_HISTORY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FORWARDED_BY" data-type="BIGINT" nullable="false"/>
+                <column name="FORWARDED_TO" data-type="BIGINT" nullable="false"/>
+                <column name="IS_RING_BACK_ENABLED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+            <primary-key name="MNCCallForwardHistory_PK" column="ID" sequence-generator="MNCCallForwardHistory.ID"/>
+            <foreign-keys>
+                <foreign-key name="MNCCallForwardHistory_CallHistory_FK" reference-table="OMNCallHistory" local-column="CALL_HISTORY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MNCCallForwardHistory_User_FK1" reference-table="OMCRMUser" local-column="FORWARDED_BY"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MNCCallForwardHistory_User_FK2" reference-table="OMCRMUser" local-column="FORWARDED_TO"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MNCCallNote">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CALL_HISTORY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NOTE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MNCCallNote_PK" column="ID" sequence-generator="MNCCallNote.ID"/>
+            <foreign-keys>
+                <foreign-key name="MNCCallNote_CallHistory_FK" reference-table="OMNCallHistory" local-column="CALL_HISTORY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MNCCallNote_Note_FK" reference-table="OMNTNote" local-column="NOTE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MNCCallParticipant">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CALL_HISTORY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONTACT_ID" data-type="BIGINT" nullable="true"/>
+                <column name="PHONE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MNCCallParticipant_PK" column="ID" sequence-generator="MNCCallParticipant.ID"/>
+            <foreign-keys>
+                <foreign-key name="MNCCallParticipant_CallHistory_FK" reference-table="OMNCallHistory" local-column="CALL_HISTORY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MNCCallParticipant_Contact_FK" reference-table="MCOContact" local-column="CONTACT_ID"
+                             reference-column="ID" constraint="ON-DELETE-SET-NULL"/>
+                <foreign-key name="MNCCallParticipant_Phone_FK" reference-table="OMETPhone" local-column="PHONE_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MNCCallParticipant_UK">
+                    <unique-key-column>CALL_HISTORY_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MNCDealCall">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CALL_HISTORY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="DEAL_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MNCDealCall_PK" column="ID" sequence-generator="MNCDealCall.ID"/>
+            <foreign-keys>
+                <foreign-key name="MNCDealCall_CallHistory_FK" reference-table="OMNCallHistory" local-column="CALL_HISTORY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MNCDealCall_Deal_FK" reference-table="MDODeal" local-column="DEAL_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MNCDealCall_UK">
+                    <unique-key-column>CALL_HISTORY_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMECCallConversations" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CALL_HISTORY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ENTITY_CONVERSATION_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMECCallConversations_PK" column="ID" sequence-generator="OMECCallConversations.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMECCallConversations_Org_FK" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMECCallConversations_CallHistory_FK" reference-table="OMNCallHistory" local-column="CALL_HISTORY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMECCallConversations_EntityConversation_FK" reference-table="OMECEntityConversations" local-column="ENTITY_CONVERSATION_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMECCallConversations_UK">
+                    <unique-key-column>CALL_HISTORY_ID</unique-key-column>
+                    <unique-key-column>ENTITY_CONVERSATION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMTLCallTimeline" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CALL_HISTORY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TIMELINE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMTLCallTimeline_PK" column="ID" sequence-generator="OMTLCallTimeline.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMTLCallTimeline_Org_FK" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMTLCallTimeline_CallHistory_FK" reference-table="OMNCallHistory" local-column="CALL_HISTORY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMTLCallTimeline_OMTLTimeline_FK" reference-table="OMTLTimeline" local-column="TIMELINE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMTLCallTimeline_UK">
+                    <unique-key-column>CALL_HISTORY_ID</unique-key-column>
+                    <unique-key-column>TIMELINE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+
+    <module name="module_crm_notification_alert">
+        <table name="OMANNotificationAlert" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TIMESTAMP" data-type="BIGINT" nullable="false"/>
+                <column name="CONTENT" data-type="TEXT" nullable="false"/>
+                <column name="CATEGORY" data-type="SMALLINT" nullable="false"/>
+                <column name="SEVERITY" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMANNotificationAlert_PK" column="ID" sequence-generator="OMANNotificationAlert.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMANNotificationAlert_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMANActivityReminderAlert" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ALERT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ASSIGNEE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="ACTIVITY_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMANActivityReminderAlert_PK" column="ID" sequence-generator="OMANActivityReminderAlert.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMANActivityReminderAlert_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMANActivityReminderAlert_FK2" reference-table="OMCRMUser" local-column="ASSIGNEE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMANActivityReminderAlert_FK3" reference-table="OMACActivity" local-column="ACTIVITY_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMANActivityReminderAlert_FK4" reference-table="OMANNotificationAlert" local-column="ALERT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMANActivityReminderAlert_UK2">
+                    <unique-key-column>ALERT_ID</unique-key-column>
+                    <unique-key-column>ACTIVITY_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMANNotificationAlertUsers" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ALERT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_READ" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="IS_DELIVERED" data-type="BOOLEAN" nullable="true" default-value="false"/>
+            </columns>
+            <primary-key name="OMANNotificationAlertUsers_PK" column="ID" sequence-generator="OMANNotificationAlertUsers.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMANNotificationAlertUsers_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMANNotificationAlertUsers_FK2" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMANNotificationAlertUsers_FK3" reference-table="OMANNotificationAlert" local-column="ALERT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMANNotificationAlertUsers_UK1">
+                    <unique-key-column>ALERT_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+    </module>
+</metadata>

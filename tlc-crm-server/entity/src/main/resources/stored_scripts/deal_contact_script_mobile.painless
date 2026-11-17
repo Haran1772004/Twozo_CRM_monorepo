@@ -1,0 +1,19 @@
+def sourceContact = params._source.contact;
+
+if (null != sourceContact) {
+  def contactFollowers = sourceContact.followerIds;
+  def ownerId = params.ownerId;
+
+  if (("territory".equals(params.contactPermission) && params.territoryIds.contains(sourceContact.territoryId)) ||
+      ownerId == sourceContact.ownerId || (params.isContactFollower && null != contactFollowers && contactFollowers.contains(ownerId))) {
+    Map contactFields = new HashMap();
+
+    contactFields.put("name", sourceContact.name);
+    contactFields.put("emails", sourceContact.emails);
+    contactFields.put("primaryEmail", sourceContact.primaryEmail);
+    contactFields.put("id", sourceContact.id);
+    return contactFields;
+  }
+}
+return null;
+

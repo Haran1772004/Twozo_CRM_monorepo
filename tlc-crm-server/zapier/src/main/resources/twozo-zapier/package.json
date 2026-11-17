@@ -1,0 +1,16 @@
+{
+  "name": "test-crm",
+  "version": "1.0.0",
+  "description": "Twozo CRM Dev is a powerful tool for managing customers, automating workflows, and syncing data across your business systems.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --testTimeout 10000"
+  },
+  "dependencies": {
+    "zapier-platform-core": "16.5.0"
+  },
+  "devDependencies": {
+    "jest": "^29.6.0"
+  },
+  "private": true
+}

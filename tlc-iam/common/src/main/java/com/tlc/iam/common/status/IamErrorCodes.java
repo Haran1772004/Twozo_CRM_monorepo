@@ -1,0 +1,87 @@
+package com.tlc.iam.common.status;
+
+import com.tlc.commons.code.ErrorCodeGroup;
+import com.tlc.commons.code.ErrorCodeProvider;
+
+public enum IamErrorCodes implements ErrorCodeProvider {
+
+    SIGNUP_FAILED(0x01),
+    AUTHENTICATION_FAILED(0x02),
+    AUTHORIZATION_FAILED(0x03),
+    INVALID_APP_NAME(0X04),
+
+    ORG_NOT_FOUND(0x10),
+    ORG_ALREADY_EXISTS(0x11),
+    ORG_UPDATE_FAILED(0x12),
+    INVALID_ORG_STATE(0x13),
+    ORG_DELETE_FAILED(0x14),
+
+    INVALID_USER_DETAILS(0x20),
+    INVALID_USER_TYPE(0x21),
+    USER_NOT_FOUND(0x22),
+    USER_UPDATE_FAILED(0x23),
+    INVALID_USER_STATE(0x24),
+    USER_DELETE_FAILED(0x25),
+
+    ENTITY_TO_BYTE_CONVERSION_FAILED(0x30),
+    OPERATION_FAILED(0x31),
+    DATA_RETRIEVAL_FAILED(0x32),
+    SESSION_LIMIT_REACHED(0x33),
+    SESSIONS_RETRIEVAL_FAILED(0x34),
+    PASSWORD_RESET_ACTION_FAILED(0x35),
+    INVALID_PASSWORD_PATTERN(0x36),
+    PASSWORD_CHANGE_ACTION_FAILED(0x37),
+
+    INVALID_INDUSTRY_TYPE(0x38),
+    INVALID_ORG_SIZE(0x39),
+    INVALID_USER_SIZE(0x40),
+    REQUIRED_ORGANIZATION_FIELDS(0x41),
+    ACCESS_DENIED(0x42),
+    UPSERT_ACTION_FAILED(0x43),
+    PHONE_OR_EMAIL_ALREADY_EXISTS(0x44),
+    FILE_NOT_FOUND(0x45),
+    UNSUPPORTED_IMAGE_EXTENSION(0x46),
+    PROFILE_PICTURE_INFO_RETRIEVAL_FAILED(0x47),
+    PROFILE_PICTURE_UPLOAD_ACTION_FAILED(0x48),
+    PROFILE_PICTURE_DELETE_ACTION_FAILED(0x49),
+    UNSUPPORTED_PROFILE_PICTURE_TYPE(0x50),
+    PROFILE_PICTURE_NOT_FOUND(0x51),
+    UNSUPPORTED_WEB_ACTION_TYPE(0x52),
+    UPDATE_ACTION_FAILED(0x53),
+    PHONE_ALREADY_EXISTS(0x54),
+    EMAIL_MODIFICATION_RESTRICTED(0x55),
+    INVALID_USER_STATE_FILTER(0x56),
+    USER_RETRIEVAL_FAILED(0x57),
+    EMAIL_ALREADY_EXISTS(0x58),
+    LOGIN_PASSWORD_REQUIRED(0x59),
+    LOGIN_USER_ID_REQUIRED(0x60),
+    EMAIL_IS_NOT_VERIFIED(0x61),
+    UNSUPPORTED_OPERATION(0x62),
+    IDP_USER_ACCOUNT_EXISTS(0x63),
+    API_KEY_GENERATION_FAILED(0x64),
+    FAILED_TO_FETCH_API_KEY(0x65),
+    API_KEY_DELETION_FAILED(0x66),
+    API_KEY_NOT_EXISTS(0x67),
+    ;
+
+    private final int code;
+
+    IamErrorCodes(int localCode) {
+        this.code = IamErrorCodesGroup.GROUP.getConvertedCode(localCode);
+    }
+
+    @Override
+    public int getCode() {
+        return code;
+    }
+
+    private static class IamErrorCodesGroup implements ErrorCodeGroup {
+        private static final ErrorCodeGroup GROUP = new IamErrorCodesGroup();
+
+        @Override
+        public int getPrefix() {
+            return 0x02_0_0001;
+        }
+    }
+
+}

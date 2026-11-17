@@ -1,0 +1,255 @@
+package com.tlc.crm.core.features.quote.model;
+
+import com.tlc.commons.code.ErrorCode;
+import com.tlc.commons.json.resolver.model.PlaceholderKey;
+import com.tlc.crm.core.internal.quote.status.QuotationErrorCodes;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+/**
+ * <p>
+ * Defines all placeholder key constants used in a quotation JSON template.
+ * Each constant corresponds to a {@code {{KEY}}} placeholder in the template.
+ * </p>
+ *
+ * @author Sathish
+ * @version 1.0
+ * @see PlaceholderKey
+ */
+public enum QuotationPlaceholderKey implements PlaceholderKey {
+
+    // Settings
+    QUOTE_NAME("QUOTE_NAME"),
+    LANGUAGE("LANGUAGE"),
+    LOCALE("LOCALE"),
+    CURRENCY("CURRENCY"),
+    QUOTE_URL("QUOTE_URL"),
+
+    // Header - Title
+    HEADER_TITLE_VALUE("HEADER_TITLE_VALUE"),
+
+    // Header - Quote Reference
+    HEADER_QUOTE_REF_LABEL("HEADER_QUOTE_REF_LABEL"),
+    HEADER_QUOTE_REF_VALUE("HEADER_QUOTE_REF_VALUE"),
+
+    // Header - Issue Date
+    HEADER_ISSUE_DATE_LABEL("HEADER_ISSUE_DATE_LABEL"),
+    HEADER_ISSUE_DATE_VALUE("HEADER_ISSUE_DATE_VALUE"),
+
+    // Header - Expiration Date
+    HEADER_EXPIRATION_DATE_LABEL("HEADER_EXPIRATION_DATE_LABEL"),
+    HEADER_EXPIRATION_DATE_VALUE("HEADER_EXPIRATION_DATE_VALUE"),
+    HEADER_EXPIRATION_DATE_MIN_VALUE("HEADER_EXPIRATION_DATE_MIN_VALUE"),
+
+    // Header - Currency
+    HEADER_CURRENCY_LABEL("HEADER_CURRENCY_LABEL"),
+    HEADER_CURRENCY_VALUE("HEADER_CURRENCY_VALUE"),
+
+    // Header - Company Name
+    HEADER_COMPANY_NAME_VALUE("HEADER_COMPANY_NAME_VALUE"),
+
+    // Header - Logo
+    HEADER_LOGO_VALUE("HEADER_LOGO_VALUE"),
+
+    // Party - Seller Title
+    PARTY_SELLER_TITLE_VALUE("PARTY_SELLER_TITLE_VALUE"),
+
+    // Party - Seller Company
+    PARTY_SELLER_COMPANY_VALUE("PARTY_SELLER_COMPANY_VALUE"),
+    PARTY_SELLER_COMPANY_NAME_VALUE("PARTY_SELLER_COMPANY_NAME_VALUE"),
+    PARTY_SELLER_COMPANY_ADDRESS_VALUE("PARTY_SELLER_COMPANY_ADDRESS_VALUE"),
+
+    // Party - Seller Contact
+    PARTY_SELLER_CONTACT_LABEL("PARTY_SELLER_CONTACT_LABEL"),
+    PARTY_SELLER_CONTACT_VALUE("PARTY_SELLER_CONTACT_VALUE"),
+    PARTY_SELLER_CONTACT_NAME_VALUE("PARTY_SELLER_CONTACT_NAME_VALUE"),
+    PARTY_SELLER_CONTACT_EMAIL_VALUE("PARTY_SELLER_CONTACT_EMAIL_VALUE"),
+
+    // Party - Buyer Title
+    PARTY_BUYER_TITLE_VALUE("PARTY_BUYER_TITLE_VALUE"),
+
+    // Party - Buyer Company
+    PARTY_BUYER_COMPANY_VALUE("PARTY_BUYER_COMPANY_VALUE"),
+    PARTY_BUYER_COMPANY_NAME_VALUE("PARTY_BUYER_COMPANY_NAME_VALUE"),
+    PARTY_BUYER_COMPANY_ADDRESS_VALUE("PARTY_BUYER_COMPANY_ADDRESS_VALUE"),
+
+    // Party - Buyer Contact
+    PARTY_BUYER_CONTACT_LABEL("PARTY_BUYER_CONTACT_LABEL"),
+
+    // Party - Buyer Contacts (Array)
+    PARTY_BUYER_CONTACTS("PARTY_BUYER_CONTACTS"),
+
+    // Party - Buyer Contact Row Fields
+    PARTY_BUYER_CONTACT_VALUE("PARTY_BUYER_CONTACT_VALUE"),
+    PARTY_BUYER_CONTACT_EMAIL_VALUE("PARTY_BUYER_CONTACT_EMAIL_VALUE"),
+    PARTY_BUYER_CONTACT_ICON_VALUE("PARTY_BUYER_CONTACT_ICON_VALUE"),
+    PARTY_BUYER_CONTACT_SIGNER_VALUE("PARTY_BUYER_CONTACT_SIGNER_VALUE"),
+    PARTY_BUYER_CONTACT_ID_VALUE("PARTY_BUYER_CONTACT_ID_VALUE"),
+
+    // Summary - Effective Date
+    SUMMARY_EFFECTIVE_DATE_LABEL("SUMMARY_EFFECTIVE_DATE_LABEL"),
+    SUMMARY_EFFECTIVE_DATE_DROPDOWN_VALUE("SUMMARY_EFFECTIVE_DATE_DROPDOWN_VALUE"),
+    SUMMARY_EFFECTIVE_DATE_VALUE("SUMMARY_EFFECTIVE_DATE_VALUE"),
+    SUMMARY_EFFECTIVE_DATE_FORM_HIDDEN_VALUE("SUMMARY_EFFECTIVE_DATE_FORM_HIDDEN_VALUE"),
+    SUMMARY_EFFECTIVE_DATE_DEFAULT_VALUE("SUMMARY_EFFECTIVE_DATE_DEFAULT_VALUE"),
+
+    // Summary - Term Length
+    SUMMARY_TERM_LENGTH_LABEL("SUMMARY_TERM_LENGTH_LABEL"),
+    SUMMARY_TERM_LENGTH_VALUE("SUMMARY_TERM_LENGTH_VALUE"),
+
+    // Summary - Discount
+    SUMMARY_DISCOUNT_LABEL("SUMMARY_DISCOUNT_LABEL"),
+    SUMMARY_DISCOUNT_FORMAT("SUMMARY_DISCOUNT_FORMAT"),
+    SUMMARY_DISCOUNT_AMOUNT_VALUE("SUMMARY_DISCOUNT_AMOUNT_VALUE"),
+    SUMMARY_DISCOUNT_PERCENTAGE_VALUE("SUMMARY_DISCOUNT_PERCENTAGE_VALUE"),
+    SUMMARY_DISCOUNT_PERCENTAGE_AND_AMOUNT_VALUE("SUMMARY_DISCOUNT_PERCENTAGE_AND_AMOUNT_VALUE"),
+    SUMMARY_DISCOUNT_CURRENCY_VALUE("SUMMARY_DISCOUNT_CURRENCY_VALUE"),
+
+    // Summary - Total Value
+    SUMMARY_VALUE_LABEL("SUMMARY_VALUE_LABEL"),
+    SUMMARY_VALUE("SUMMARY_VALUE"),
+    SUMMARY_VALUE_CURRENCY("SUMMARY_VALUE_CURRENCY"),
+
+    // Line Items (Array)
+    LINE_ITEMS("LINE_ITEMS"),
+
+    // Line Items - Row Fields
+    ITEM_NAME("ITEM_NAME"),
+    ITEM_QUANTITY("ITEM_QUANTITY"),
+    ITEM_DISCOUNT("ITEM_DISCOUNT"),
+    ITEM_UNIT_PRICE("ITEM_UNIT_PRICE"),
+    ITEM_TERM_TOTAL("ITEM_TERM_TOTAL"),
+    ITEM_CURRENCY("ITEM_CURRENCY"),
+
+    // Line Items - Totals - Subtotal
+    ITEM_SUB_TOTAL_LABEL("ITEM_SUB_TOTAL_LABEL"),
+    ITEM_SUB_TOTAL_FORMAT("ITEM_SUB_TOTAL_FORMAT"),
+    ITEM_SUB_TOTAL_VALUE("ITEM_SUB_TOTAL_VALUE"),
+    ITEM_SUB_TOTAL_WITH_BREAKDOWN_VALUE("ITEM_SUB_TOTAL_WITH_BREAKDOWN_VALUE"),
+    ITEM_SUB_TOTAL_CURRENCY_VALUE("ITEM_SUB_TOTAL_CURRENCY_VALUE"),
+
+    // Line Items - Totals - Discount
+    ITEM_DISCOUNT_LABEL("ITEM_DISCOUNT_LABEL"),
+    ITEM_DISCOUNT_FORMAT("ITEM_DISCOUNT_FORMAT"),
+    ITEM_DISCOUNT_AMOUNT_VALUE("ITEM_DISCOUNT_AMOUNT_VALUE"),
+    ITEM_DISCOUNT_PERCENTAGE_VALUE("ITEM_DISCOUNT_PERCENTAGE_VALUE"),
+    ITEM_DISCOUNT_PERCENTAGE_AND_AMOUNT_VALUE("ITEM_DISCOUNT_PERCENTAGE_AND_AMOUNT_VALUE"),
+    ITEM_DISCOUNT_CURRENCY_VALUE("ITEM_DISCOUNT_CURRENCY_VALUE"),
+
+    // Line Items - Totals - Tax
+    ITEM_TAX_LABEL("ITEM_TAX_LABEL"),
+    ITEM_TAX_VALUE("ITEM_TAX_VALUE"),
+    ITEM_TAX_CURRENCY_VALUE("ITEM_TAX_CURRENCY_VALUE"),
+
+    // Line Items - Totals - Due
+    ITEM_DUE_DESCRIPTION("ITEM_DUE_DESCRIPTION"),
+    ITEM_DUE_LABEL("ITEM_DUE_LABEL"),
+    ITEM_DUE_VALUE("ITEM_DUE_VALUE"),
+    ITEM_DUE_CURRENCY_VALUE("ITEM_DUE_CURRENCY_VALUE"),
+
+    // Line Items - Totals - Total Value
+    ITEM_TOTAL_VALUE_LABEL("ITEM_TOTAL_VALUE_LABEL"),
+    ITEM_TOTAL_VALUE("ITEM_TOTAL_VALUE"),
+    ITEM_TOTAL_VALUE_CURRENCY("ITEM_TOTAL_VALUE_CURRENCY"),
+
+    // Payment - Title
+    PAYMENT_TITLE_LABEL("PAYMENT_TITLE_LABEL"),
+
+    // Payment - Billing
+    PAYMENT_BILLING_LABEL("PAYMENT_BILLING_LABEL"),
+    PAYMENT_BILLING_VALUE("PAYMENT_BILLING_VALUE"),
+
+    // Acceptance - Title
+    ACCEPTANCE_TITLE_DESCRIPTION("ACCEPTANCE_TITLE_DESCRIPTION"),
+    ACCEPTANCE_TITLE_VALUE("ACCEPTANCE_TITLE_VALUE"),
+
+    // Acceptance - Method
+    ACCEPTANCE_METHOD_VALUE("ACCEPTANCE_METHOD_VALUE"),
+
+    // Acceptance - Subtitles
+    ACCEPTANCE_BUYER_SUB_TITLE_VALUE("ACCEPTANCE_BUYER_SUB_TITLE_VALUE"),
+    ACCEPTANCE_SELLER_SUB_TITLE_VALUE("ACCEPTANCE_SELLER_SUB_TITLE_VALUE"),
+
+    // Acceptance - Buyer Contacts (Array)
+    ACCEPTANCE_BUYER_CONTACTS("ACCEPTANCE_BUYER_CONTACTS"),
+
+    // Acceptance - Buyer Contact Row Fields
+    ACCEPTANCE_BUYER_CONTACT_VALUE("ACCEPTANCE_BUYER_CONTACT_VALUE"),
+    ACCEPTANCE_BUYER_CONTACT_EMAIL_VALUE("ACCEPTANCE_BUYER_CONTACT_EMAIL_VALUE"),
+    ACCEPTANCE_BUYER_CONTACT_ICON_VALUE("ACCEPTANCE_BUYER_CONTACT_ICON_VALUE"),
+    ACCEPTANCE_BUYER_CONTACT_SIGNER_VALUE("ACCEPTANCE_BUYER_CONTACT_SIGNER_VALUE"),
+    ACCEPTANCE_BUYER_CONTACT_ID_VALUE("ACCEPTANCE_BUYER_CONTACT_ID_VALUE"),
+
+    // Acceptance - Seller Contacts (Array)
+    ACCEPTANCE_SELLER_CONTACTS("ACCEPTANCE_SELLER_CONTACTS"),
+
+    // Acceptance - Seller Contact Row Fields
+    ACCEPTANCE_SELLER_CONTACT_VALUE("ACCEPTANCE_SELLER_CONTACT_VALUE"),
+    ACCEPTANCE_SELLER_CONTACT_EMAIL_VALUE("ACCEPTANCE_SELLER_CONTACT_EMAIL_VALUE"),
+    ACCEPTANCE_SELLER_CONTACT_ICON_VALUE("ACCEPTANCE_SELLER_CONTACT_ICON_VALUE"),
+    ACCEPTANCE_SELLER_USER_ID_VALUE("ACCEPTANCE_SELLER_USER_ID_VALUE"),
+
+    // Custom Section - Title
+    CUSTOM_SECTION_TITLE_DESCRIPTION("CUSTOM_SECTION_TITLE_DESCRIPTION"),
+    CUSTOM_SECTION_TITLE_VALUE("CUSTOM_SECTION_TITLE_VALUE"),
+
+    // Source - Renamed placeholder keys
+    SOURCE_CONTACT("SOURCE_CONTACT"),
+    SOURCE_COMPANY("SOURCE_COMPANY"),
+    SOURCE_PRODUCT("SOURCE_PRODUCT"),
+    ;
+
+    private static final Map<String, PlaceholderKey> PLACEHOLDER_KEY_MAP;
+
+    private final String key;
+
+    static {
+        PLACEHOLDER_KEY_MAP = new HashMap<>();
+
+        for (final QuotationPlaceholderKey placeholderKey : values()) {
+            PLACEHOLDER_KEY_MAP.put(placeholderKey.getKey(), placeholderKey);
+        }
+    }
+
+    QuotationPlaceholderKey(final String key) {
+        this.key = key;
+    }
+
+    @Override
+    public String getKey() {
+        return key;
+    }
+
+    @Override
+    public String toString() {
+        return key;
+    }
+
+    /**
+     * <p>
+     * Provides lookup access to {@link QuotationPlaceholderKey} constants by their string key representation.
+     * </p>
+     *
+     * @see PlaceholderKey.Provider
+     */
+    public static class Provider implements PlaceholderKey.Provider {
+
+        /**
+         * Retrieves the {@link PlaceholderKey} associated with the given key string.
+         *
+         * @param key the string representation of the placeholder key
+         * @return the matching {@link QuotationPlaceholderKey}, or {@code null} if not found
+         */
+        @Override
+        public PlaceholderKey getKey(final String key) {
+            final PlaceholderKey placeholderKey = PLACEHOLDER_KEY_MAP.get(key);
+
+            if (Objects.isNull(placeholderKey)) {
+                throw ErrorCode.get(QuotationErrorCodes.INVALID_PLACEHOLDER, String.format("Key: %s", key));
+            }
+            return placeholderKey;
+        }
+    }
+}

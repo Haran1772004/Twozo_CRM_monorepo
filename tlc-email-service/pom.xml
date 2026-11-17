@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.tlc</groupId>
+        <artifactId>tlc-parent</artifactId>
+        <version>2.0.17-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.tlc.email</groupId>
+    <artifactId>email-service</artifactId>
+    <version>1.18.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>email-client</module>
+        <module>email-server</module>
+        <module>email-common</module>
+    </modules>
+
+
+    <properties>
+        <tlc.java.version>17</tlc.java.version>
+
+        <maven.compiler.source>${tlc.java.version}</maven.compiler.source>
+        <maven.compiler.target>${tlc.java.version}</maven.compiler.target>
+
+        <tlc.commons.version>5.35.0-SNAPSHOT</tlc.commons.version>
+        <tlc.validator.version>5.8.0-SNAPSHOT</tlc.validator.version>
+        <tlc.cache.version>5.6.0-SNAPSHOT</tlc.cache.version>
+        <tlc.i18n.version>5.3.0-SNAPSHOT</tlc.i18n.version>
+        <tlc.web.version>5.17.0-SNAPSHOT</tlc.web.version>
+        <tlc.web.client.version>5.4.0-SNAPSHOT</tlc.web.client.version>
+        <tlc.queue.version>5.9.0-SNAPSHOT</tlc.queue.version>
+        <tlc.notification.version>5.25.0-SNAPSHOT</tlc.notification.version>
+        <tlc.attachment.version>5.12.0-SNAPSHOT</tlc.attachment.version>
+        <tlc.scheduler.version>5.4.0-SNAPSHOT</tlc.scheduler.version>
+        <tlc.cluster.version>5.2.0-SNAPSHOT</tlc.cluster.version>
+        <tlc.search.version>5.12.0-SNAPSHOT</tlc.search.version>
+        <tlc.l10n.version>2.14.0-SNAPSHOT</tlc.l10n.version>
+        <tlc.sync.service.oauth.version>1.10.0-SNAPSHOT</tlc.sync.service.oauth.version>
+        <tlc.sql.common.version>5.24.0-SNAPSHOT</tlc.sql.common.version>
+
+        <tlc.file.client.version>1.6.0-SNAPSHOT</tlc.file.client.version>
+        <tlc.email.common.version>1.10.0-SNAPSHOT</tlc.email.common.version>
+        <tlc.email.server.version>1.12.0-SNAPSHOT</tlc.email.server.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>com.tlc.email</groupId>
+                <artifactId>email-common</artifactId>
+                <version>${tlc.email.common.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc.file</groupId>
+                <artifactId>file-client</artifactId>
+                <version>${tlc.file.client.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>attachment</artifactId>
+                <version>${tlc.attachment.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>cache</artifactId>
+                <version>${tlc.cache.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>cluster</artifactId>
+                <version>${tlc.cluster.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>commons</artifactId>
+                <version>${tlc.commons.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>i18n</artifactId>
+                <version>${tlc.i18n.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>notification</artifactId>
+                <version>${tlc.notification.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>queue</artifactId>
+                <version>${tlc.queue.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>sync-service-oauth</artifactId>
+                <version>${tlc.sync.service.oauth.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>validator</artifactId>
+                <version>${tlc.validator.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>web</artifactId>
+                <version>${tlc.web.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc.email</groupId>
+                <artifactId>email-server</artifactId>
+                <version>${tlc.email.server.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>scheduler</artifactId>
+                <version>${tlc.scheduler.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.tlc</groupId>
+                <artifactId>sql-common</artifactId>
+                <version>${tlc.sql.common.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi.core</artifactId>
+        </dependency>
+
+    </dependencies>
+    <scm>
+        <url>https://github.com/thelaunchclub/email-service.git</url>
+        <connection>scm:git:https://github.com/thelaunchclub/email-service.git</connection>
+        <developerConnection>scm:git:https://github.com/thelaunchclub/email-service.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>twozo-mvn-artifactory</id>
+            <url>https://pkgs.dev.azure.com/twozo/TwozoCRM/_packaging/twozo-mvn-artifactory/maven/v1</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>tlc.crm.mvn.builder.release</id>
+            <url>https://pkgs.dev.azure.com/twozo/TwozoCRM/_packaging/twozo-mvn-artifactory/maven/v1</url>
+        </repository>
+        <snapshotRepository>
+            <id>tlc.crm.builder.snapshot</id>
+            <url>https://pkgs.dev.azure.com/twozo/TwozoCRM/_packaging/twozo-mvn-artifactory/maven/v1</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <targetPath>resources</targetPath>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.17.1</version>
+                <configuration>
+                    <generateBackupPoms>false</generateBackupPoms>
+                    <processAllModules>true</processAllModules>
+                    <processDependencies>true</processDependencies>
+                    <processParent>true</processParent>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

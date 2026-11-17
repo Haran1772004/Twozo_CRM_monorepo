@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dumpdata>
+
+    <module name="module_crm_market_place">
+
+        <MKPApps ID="MKPApps:ID:CO:1" NAME="zapier" DISPLAY_NAME="i18n.marketplace.app.zapier" DESCRIPTION="i18n.marketplace.app.zapier.description"/>
+        <MKPApps ID="MKPApps:ID:CO:2" NAME="telecmi" DISPLAY_NAME="i18n.marketplace.app.telecmi" DESCRIPTION="i18n.marketplace.app.telecmi.description"/>
+        <MKPApps ID="MKPApps:ID:CO:3" NAME="mcube" DISPLAY_NAME="i18n.marketplace.app.mcube" DESCRIPTION="i18n.marketplace.app.mcube.description"/>
+
+        <MKPCRMApps ID="MKPCRMApps:ID:CO:1" APPLICATION_ID="TZApplication:ID:AM:1" MARKETPLACE_APP_ID="MKPApps:ID:CO:1"
+                    DESCRIPTION="i18n.crm.marketplace.app.zapier.description" PUBLISHED_DATE="15 Jul 2025"
+                    LATEST_RELEASED_DATE="15 Jan 2024" PRICING="1" CATEGORY="1" APPLICATION_SCOPE="2"
+                    PERMISSION="{&quot;contact&quot;:{&quot;access&quot;:true},&quot;company&quot;:{&quot;access&quot;:true},&quot;deal&quot;:{&quot;access&quot;:true},&quot;product&quot;:{&quot;access&quot;:true},&quot;activity&quot;:{&quot;access&quot;:true}}"/>
+
+        <MKPCRMApps ID="MKPCRMApps:ID:CO:2" APPLICATION_ID="TZApplication:ID:AM:1" MARKETPLACE_APP_ID="MKPApps:ID:CO:2"
+                    DESCRIPTION="i18n.crm.marketplace.app.telecmi.description" PUBLISHED_DATE="15 Jun 2025"
+                    LATEST_RELEASED_DATE="15 Jun 2025" PRICING="1" CATEGORY="2" DEVELOPED_BY="TeleCMI Technologies"
+                    PERMISSION="{&quot;contact&quot;:{&quot;access&quot;:true}}" APPLICATION_SCOPE="1"/>
+
+        <MKPCRMApps ID="MKPCRMApps:ID:CO:3" APPLICATION_ID="TZApplication:ID:AM:1" MARKETPLACE_APP_ID="MKPApps:ID:CO:3"
+                    DESCRIPTION="i18n.crm.marketplace.app.mcube.description" PUBLISHED_DATE="21 May 2026"
+                    LATEST_RELEASED_DATE="21 May 2026" PRICING="1" CATEGORY="2" DEVELOPED_BY="MCube Technologies"
+                    PERMISSION="{&quot;contact&quot;:{&quot;access&quot;:true}}" APPLICATION_SCOPE="1"/>
+    </module>
+
+</dumpdata>

@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+
+    <title>Invoice Preview</title>
+
+    <style>
+        :root {
+            --color-primary: #000;
+            --color-secondary: rgba(0,0,0,0.6);
+            --color-border: #0000001a;
+            --color-success: #33bc7e;
+
+            --bg-page: rgb(236, 238, 238);
+            --bg-card: #fff;
+
+            --radius-sm: 4px;
+            --radius-md: 8px;
+
+            --font-xs: 10px;
+            --font-sm: 13px;
+            --font-md: 16px;
+
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 24px;
+            --spacing-2xl: 32px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            font-family: "Lexend",
+            "Segoe UI",
+            Roboto,
+            Arial,
+            sans-serif;
+        }
+
+        body {
+            background: var(--bg-page);
+        }
+
+        /* Utilities */
+
+        .text-secondary {
+            color: var(--color-secondary);
+        }
+
+        .text-bold {
+            font-weight: 500;
+            color: var(--color-primary);
+        }
+
+        .no-border {
+            border: none !important;
+        }
+
+        .no-space {
+            margin-top: 0 !important;
+        }
+
+        .section-title,
+        .company-name,
+        .invoice-title {
+            font-size: var(--font-md);
+            font-weight: 600;
+        }
+
+        .party-title {
+            font-size: var(--font-md);
+            font-weight: 600;
+        }
+
+        /* Header */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 20px 30px;
+            background: var(--bg-card);
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xl);
+        }
+
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: var(--font-md);
+            font-weight: 500;
+        }
+
+        .profile-email {
+            margin-top: var(--spacing-xs);
+            font-size: var(--font-md);
+            font-weight: 400;
+        }
+
+        .actions {
+            display: flex;
+            gap: var(--spacing-lg);
+        }
+
+        .actions button {
+            padding: 8px 18px;
+
+            border: 1px solid var(--color-success);
+            border-radius: var(--radius-sm);
+
+            background: #fff;
+            color: #2ea871;
+
+            font-size: var(--font-sm);
+            font-weight: 600;
+
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .actions button:hover {
+            background: var(--color-success);
+            color: #fff;
+        }
+
+        /* Page */
+
+        .page {
+            padding: var(--spacing-xl);
+        }
+
+        /* Card */
+
+        .invoice-card {
+            width: 100%;
+            max-width: 800px;
+
+            margin: 20px auto;
+            padding: var(--spacing-xl);
+
+            background: var(--bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+        }
+
+        /* Invoice Header */
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .company-info {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .company-logo {
+            max-width: 80px;
+            max-height: 60px;
+            object-fit: contain;
+        }
+
+        .invoice-info {
+            width: 300px;
+            max-width: 100%;
+
+            margin-left: auto;
+        }
+
+        .info-table {
+            border-collapse: collapse;
+            margin-top: var(--spacing-md);
+        }
+
+        .info-table td {
+            padding: 4px 0 4px 20px;
+            font-size: var(--font-sm);
+            color: var(--color-secondary);
+        }
+
+        .info-table td:first-child {
+            padding-left: 0;
+        }
+
+        /* Parties */
+
+        .party-section {
+            display: flex;
+            justify-content: space-between;
+
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .party {
+            width: 45%;
+        }
+
+        .party-section .party:last-child {
+            width: 300px;
+            max-width: 45%;
+            margin-left: auto;
+        }
+
+        .party-title {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .party strong {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .party p {
+            margin-top: var(--spacing-sm);
+
+            color: var(--color-secondary);
+            font-size: var(--font-sm);
+            line-height: 24px;
+        }
+
+        .party-contact {
+            margin-top: var(--spacing-xl);
+        }
+
+        .party > div + div {
+            margin-top: var(--spacing-lg);
+        }
+
+        .address-block + .address-block {
+            margin-top: var(--spacing-xl);
+        }
+
+        /* Line Items */
+
+        .line-items {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .line-items th {
+            padding: 12px 0 12px 40px;
+
+            text-align: left;
+            font-size: var(--font-sm);
+            font-weight: 500;
+
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .line-items th:first-child,
+        .line-items td:first-child {
+            padding-left: 0;
+        }
+
+        .line-items td {
+            padding: 12px 0 12px 40px;
+
+            font-size: var(--font-sm);
+            color: var(--color-secondary);
+
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .line-items th:not(:first-child),
+        .line-items td:not(:first-child) {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .line-items th.unit-price-header {
+            text-align: left;
+        }
+
+        .line-items tr.summary-row td.summary-label {
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .line-items .bold-text {
+            font-weight: 500;
+            color: var(--color-primary);
+        }
+
+        .line-items tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .line-items tr.summary-row td {
+            border-bottom: none;
+        }
+
+        .description {
+            max-width: 240px;
+            margin-top: 4px;
+
+            font-size: var(--font-xs);
+            font-weight: 400;
+            color: var(--color-secondary);
+        }
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+
+            .header,
+            .invoice-header,
+            .party-section {
+                flex-direction: column;
+                gap: var(--spacing-xl);
+            }
+
+            .invoice-info,
+            .party {
+                width: 100%;
+            }
+
+            .actions {
+                width: 100%;
+            }
+
+            .actions button {
+                flex: 1;
+            }
+        }
+
+        @media print {
+
+            #section-top-banner,
+            .header,
+            .actions,
+            button {
+                display: none !important;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 1.5cm !important;
+            }
+
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                margin: 0 !important;
+                font-size: 12pt;
+                line-height: 1.5;
+                width: 100% !important;
+                background-color: white !important;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .invoice-card {
+                margin: 0 auto !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            table, tr {
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+            }
+
+            .section-title {
+                break-after: avoid !important;
+                page-break-after: avoid !important;
+            }
+
+            .invoice-header {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: flex-start !important;
+                width: 100% !important;
+                margin-bottom: 2rem !important;
+            }
+
+            .company-info {
+                max-width: 48% !important;
+            }
+
+            .invoice-info {
+                width: 300px !important;
+            }
+
+            .invoice-info .info-table {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+
+            .party-section {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: flex-start !important;
+                width: 100% !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            .party-section > div {
+                width: 48% !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+#set($model = $template.get("invoice"))
+#set($currency = $model.get("currency"))
+#set($header = $model.get("header"))
+#set($parties = $model.get("parties"))
+#set($lineItems = $model.get("lineItems"))
+#set($placeholderAvatar = "data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%2220%22 fill=%22%23e5e7eb%22/%3E%3Ccircle cx=%2220%22 cy=%2216%22 r=%227%22 fill=%22%23a3a3a3%22/%3E%3Cpath d=%22M6 38c0-9 6-15 14-15s14 6 14 15%22 fill=%22%23a3a3a3%22/%3E%3C/svg%3E")
+
+<header id="section-top-banner" class="header">
+    <div class="profile">
+        #set($profileUrl = $model.salesPersonProfileUrl)
+
+        #if($profileUrl != "")
+        <img src="$profileUrl" alt="Profile" onerror="this.onerror=null; this.src='$placeholderAvatar';"/>
+        #else
+        <img src="$placeholderAvatar" alt="Profile"/>
+        #end
+
+        <div>
+            <div class="profile-name">$model.get("salesPersonName")</div>
+            <div class="profile-email">$model.get("salesPersonEmail")</div>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button onclick="window.print()">Print</button>
+        <button onclick="location.href='$model.downloadUrl'">Download PDF</button>
+    </div>
+</header>
+
+<div class="page">
+    <div id="section-invoice-card" class="invoice-card">
+
+        <div id="section-1" class="invoice-header">
+            <div class="company-info">
+                #set($companyLogo = $header.get("companyLogo"))
+
+                #if($companyLogo != "")
+                <img id="section-1.6" src="$companyLogo" alt="Company Logo" class="company-logo"/>
+                #end
+
+                #set($companyName = $header.get("companyName"))
+
+                #if($companyName != "")
+                <div id="section-1.5" class="company-name">$companyName</div>
+                #end
+            </div>
+
+            <div class="invoice-info">
+                <div id="section-1.1" class="invoice-title">Invoice</div>
+
+                <table class="info-table">
+                    <tr id="section-1.2">
+                        <td>$header.get("invoiceDateTitle")</td>
+                        <td>$header.get("invoiceDateValue")</td>
+                    </tr>
+
+                    <tr id="section-1.3">
+                        <td>$header.get("dueDateTitle")</td>
+                        <td>$header.get("dueDateValue")</td>
+                    </tr>
+
+                    #set($poNumberValue = $header.get("poNumberValue"))
+
+                    #if($poNumberValue != "")
+                    <tr id="section-1.4">
+                        <td>$header.get("poNumberTitle")</td>
+                        <td>$poNumberValue</td>
+                    </tr>
+                    #end
+                </table>
+            </div>
+        </div>
+
+        <div id="section-2" class="party-section">
+            <div class="party">
+                <div id="section-2.1" class="party-title">$parties.get("buyerTitle")</div>
+
+                <div id="section-2.2" class="party-contact">
+                    #set($buyerContactName = $parties.get("buyerContactName"))
+                    #set($buyerContactEmail = $parties.get("buyerContactEmail"))
+                    #set($buyerContactWithEmail = $buyerContactName)
+
+                    #if($buyerContactEmail != "")
+                    #set($buyerContactWithEmail = $buyerContactName + " (" + $buyerContactEmail + ")")
+                    #end
+
+                    <strong>$parties.get("buyerContactTitle")</strong>
+                    <p>$buyerContactWithEmail</p>
+                </div>
+
+                <div id="section-2.3">
+                    #set($buyerCompanyName = $parties.get("buyerCompanyName"))
+                    #set($billingAddress = $parties.get("billingAddress"))
+                    #set($buyerCompanyAddress = $parties.get("buyerCompanyAddress"))
+                    #set($buyerBillingAddress = $billingAddress)
+
+                    #if($buyerBillingAddress == "")
+                    #set($buyerBillingAddress = $buyerCompanyAddress)
+                    #end
+
+                    #if($buyerCompanyName != "")
+                    <strong>Company</strong>
+                    <p>$buyerCompanyName</p>
+                    #if($buyerBillingAddress != "")
+                    <p class="no-space">$buyerBillingAddress</p>
+                    #end
+                    #elseif($buyerBillingAddress != "")
+                    <p>$buyerBillingAddress</p>
+                    #end
+                </div>
+            </div>
+
+            <div class="party">
+                #set($shippingAddressTitle = $parties.get("shippingAddressTitle"))
+                #set($shippingAddress = $parties.get("shippingAddress"))
+
+                #if($shippingAddress)
+                <div id="section-2.4" class="party-contact">
+                    <strong id="section-2.4-label">$shippingAddressTitle</strong>
+                    <p>$shippingAddress</p>
+                </div>
+                #end
+            </div>
+        </div>
+
+        <div id="section-3" class="section-title">Line Items</div>
+
+        <table id="section-3.1" class="line-items">
+            <colgroup>
+                <col style="width: 28%"/>
+                <col style="width: 12%"/>
+                <col style="width: 16%"/>
+                <col style="width: 10%"/>
+                <col style="width: 14%"/>
+                <col style="width: 20%"/>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th class="unit-price-header">Unit Price</th>
+                <th>Tax</th>
+                <th>Unit Discount</th>
+                <th>Term Total</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            #if($lineItems.get("items"))
+            #foreach($lineItem in $lineItems.get("items"))
+            <tr id="section-3.1.$foreach.count">
+                <td>$lineItem.get("name")</td>
+                <td>$lineItem.get("quantity")</td>
+                <td>$currency$lineItem.get("unitPrice")</td>
+                <td>$lineItem.get("taxValue")%</td>
+                <td>$lineItem.get("discount")%</td>
+                <td>$currency$lineItem.get("totalValue")</td>
+            </tr>
+            #end
+            #end
+
+            #set($subTotalValue = $lineItems.get("subTotalValue"))
+
+            #if($subTotalValue != "")
+            <tr id="section-3.3" class="summary-row">
+                <td class="no-border"></td>
+                <td class="no-border"></td>
+                <td class="summary-label bold-text">$lineItems.get("subTotalTitle")</td>
+                <td class="no-border"></td>
+                <td class="no-border"></td>
+                <td class="bold-text">$subTotalValue</td>
+            </tr>
+            #end
+
+            #set($totalDiscountValue = $lineItems.get("totalDiscountValue"))
+
+            #if($totalDiscountValue != "")
+            <tr id="section-3.4" class="summary-row">
+                <td class="no-border"></td>
+                <td class="no-border"></td>
+                <td class="summary-label">Discount included in the subtotal</td>
+                <td class="no-border"></td>
+                <td class="no-border"></td>
+                <td>$totalDiscountValue</td>
+            </tr>
+            #end
+
+            #set($taxValue = $lineItems.get("taxValue"))
+
+            #if($taxValue != "")
+            <tr id="section-3.5" class="summary-row">
+                <td class="no-border"></td>
+                <td class="no-border"></td>
+                <td class="summary-label bold-text">$lineItems.get("taxTitle")</td>
+                <td class="no-border"></td>
+                <td class="no-border"></td>
+                <td class="bold-text">$currency$taxValue</td>
+            </tr>
+            #end
+
+            #set($totalContractValue = $lineItems.get("totalValue"))
+
+            #if($totalContractValue != "")
+            <tr id="section-3.7" class="summary-row">
+                <td class="no-border"></td>
+                <td class="no-border"></td>
+                <td class="summary-label bold-text">$lineItems.get("totalValueTitle")</td>
+                <td class="no-border"></td>
+                <td class="no-border"></td>
+                <td class="bold-text">$currency$totalContractValue</td>
+            </tr>
+            #end
+
+            #set($dueValue = $lineItems.get("dueValue"))
+
+            #if($dueValue != "")
+            <tr id="section-3.6" class="summary-row">
+                <td class="no-border"></td>
+                <td class="no-border"></td>
+                <td class="summary-label bold-text">$lineItems.get("dueTitle")</td>
+                <td class="no-border"></td>
+                <td class="no-border"></td>
+                <td class="bold-text">$currency$dueValue</td>
+            </tr>
+            #end
+            </tbody>
+        </table>
+
+    </div>
+</div>
+</body>
+
+</html>

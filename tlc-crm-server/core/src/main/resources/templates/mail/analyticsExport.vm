@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Your exports are ready</title>
+  </head>
+  <body>
+    #set($model = $template.get("model"))
+
+    <!-- Subject for backend -->
+    <div data-info-group="subject" style="display: none">Your exports are ready</div>
+
+    <div style="margin: 0 auto; background: #fafafa; padding: 5% 10%">
+      <div>
+        <div
+          style="
+            background: white;
+            border-radius: 8px;
+            border: 1px rgba(0, 0, 0, 0.1) solid;
+            overflow: auto;
+            padding: 40px;
+          "
+        >
+
+          <div>
+            <img
+              width="107px"
+              height="33px"
+              src="https://twozo.io/_next/image?url=%2Fimages%2Flogo%2Ftwozo-full-logo.png&w=256&q=75"
+              alt="twozo"
+            />
+          </div>
+
+          <div style="padding-top: 32px">
+            <p
+              style="
+                margin: 0px;
+                font-size: 18px;
+                font-weight: 700;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+              "
+            >
+              Your exports are ready
+            </p>
+          </div>
+
+          <div style="padding-top: 25px">
+            <p
+              style="
+                margin: 0px;
+                font-size: 18px;
+                font-weight: 700;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+              "
+            >
+              Hello $model.getReceiver(),
+            </p>
+
+            <p
+              style="
+                margin: 0px;
+                padding-top: 9px;
+                font-size: 14px;
+                font-weight: 400;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                color: rgba(0, 0, 0, 0.6);
+              "
+            >
+              Your export for <b>$model.getChartName()</b> is now available.
+            </p>
+
+            <p
+              style="
+                margin: 0px;
+                padding-top: 16px;
+                font-size: 14px;
+                font-weight: 400;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+              "
+            >
+              <a
+                style="color: #33bc7e; text-decoration: none; font-weight: 600;"
+                target="_blank"
+                href=$model.getFileDownloadUrl()
+                >Click Here</a
+              >
+              to download the file.
+            </p>
+          </div>
+
+          <div style="padding-top: 32px">
+            <p
+              style="
+                margin: 0px;
+                font-size: 14px;
+                font-weight: 400;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+              "
+            >
+              Cheers,
+            </p>
+            <p
+              style="
+                margin: 0px;
+                font-size: 14px;
+                font-weight: 600;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                padding-top: 4px;
+              "
+            >
+              Team Twozo
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

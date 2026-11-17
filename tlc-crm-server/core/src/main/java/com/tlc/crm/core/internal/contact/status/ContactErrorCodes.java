@@ -1,0 +1,95 @@
+package com.tlc.crm.core.internal.contact.status;
+
+import com.tlc.commons.code.ErrorCodeGroup;
+import com.tlc.commons.code.ErrorCodeProvider;
+
+/**
+ * <p>
+ * Provides the error codes of crm contact module
+ * </p>
+ *
+ * @author Selvakumar
+ * @version 1.0
+ */
+public enum ContactErrorCodes implements ErrorCodeProvider {
+
+    ENTITY_NOT_FOUND(0x20),
+    CONTACT_NOT_FOUND(0x21),
+    CONTACT_SOURCE_NOT_FOUND(0x22),
+    CONTACT_PHONE_NOT_FOUND(0x23),
+    CONTACT_EMAIL_NOT_FOUND(0x24),
+    LIFE_CYCLE_STAGE_NOT_FOUND(0x25),
+    COMPANY_NOT_FOUND(0x26),
+    COMPANY_ALREADY_EXISTS(0X27),
+    MERGE_ACTION_FAILED(0X28),
+    INVALID_EMAIL_SUBTYPE(0x29),
+    INVALID_SUBSCRIPTION_STATUS(0x30),
+    DUPLICATE_EMAIL_ADDRESS(0x31),
+    DUPLICATE_MOBILE_NUMBER(0x32),
+    EMAIL_OR_PHONE_IS_REQUIRED(0x33),
+    CRM_USER_NOT_FOUND(0x34),
+    TERRITORY_NOT_FOUND(0x35),
+    SALES_OWNER_NOT_FOUND(0x36),
+    INVALID_SMS_SUBSCRIPTION_STATUS(0x37),
+    INVALID_WHATSAPP_SUBSCRIPTION_STATUS(0x38),
+    CREATE_ACTION_FAILED(0x39),
+    UPDATE_ACTION_FAILED(0x40),
+    DELETE_ACTION_FAILED(0x41),
+    PRIMARY_EMAIL_REQUIRED(0x42),
+    PRIMARY_PHONE_REQUIRED(0x43),
+    EMAILS_LIMIT_EXCEEDED(0x44),
+    PHONES_LIMIT_EXCEEDED(0x45),
+    CONTACT_FIELDS_NOT_FOUND(0x44),
+    CONTACT_DISMISSAL_FAILED(0X45),
+    COMPANY_DISMISSAL_FAILED(0x46),
+    TAG_LIMIT_EXCEEDED(0x47),
+    TAG_NOT_FOUND(0x48),
+    TAG_NAME_ALREADY_EXISTS(0x49),
+    INVALID_DATE_OF_BIRTH(0x50),
+    SYNC_EMAIL_NOT_FOUND(0x51),
+    EMAIL_ADDRESS_ALREADY_EXISTS(0x52),
+    CONNECTION_ALREADY_ESTABLISHED(0x53),
+    SYNC_STOP_ACTION_FAILED(0x54),
+    ACCOUNT_CHANGE_ACTION_FAILED(0x55),
+    SYNC_ID_NOT_FOUND(0x56),
+    SYNC_CONFIG_REQUIRED(0x57),
+    SYNC_CONFIG_PROPERTIES_REQUIRED(0x58),
+    INVALID_SOURCE(0x59),
+    EMAILS_AND_PHONES_LIMIT_EXCEEDED(0x60),
+    LIFE_CYCLE_STATUS_NOT_FOUND(0x61),
+    INVALID_LABEL(0x62),
+    INVALID_LOST_REASON(0x63),
+    LOST_REASON_NOT_FOUND(0x64),
+    DUPLICATE_LIFE_CYCLE_STAGE(0x65),
+    DUPLICATE_LIFE_CYCLE_STATUS(0x66),
+    INVALID_LIFECYCLE_STAGE_RULE(0x67),
+    LIFE_CYCLE_STAGE_COUNT_EXCEEDED(0x68),
+    INVALID_LIFECYCLE_STATUS_ORDER(0x69),
+    LABELED_STATUS_ALREADY_EXISTS(0x70),
+    DEFAULT_LIFE_CYCLE_STATUS_NOT_FOUND(0x71),
+    LIFE_CYCLE_STATUS_COUNT_EXCEEDED(0x72),
+    PHONE_ALREADY_EXISTS(0x73),
+    DELETE_ACTION_RESTRICTED(0x74),
+    SAME_PRIMARY_AND_SECONDARY_ID_RESTRICTED(0x75),
+    ;
+
+    private final int code;
+
+    ContactErrorCodes(int localCode) {
+        this.code = ContactErrorCodeGroup.GROUP.getConvertedCode(localCode);
+    }
+
+    @Override
+    public int getCode() {
+        return code;
+    }
+
+    private static class ContactErrorCodeGroup implements ErrorCodeGroup {
+        private static final ErrorCodeGroup GROUP = new ContactErrorCodeGroup();
+
+        @Override
+        public int getPrefix() {
+            return 0x15_0_0001;
+        }
+    }
+}

@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_messenger_oauth">
+
+        <table name="OMOAFBRefreshableToken" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TOKEN_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMOAFBRefreshableToken_PK" column="ID" sequence-generator="OMOAFBRefreshableToken.ID"/>
+            <unique-keys>
+                <unique-key name="OMOAFBRefreshableToken_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMOAFBRefreshableToken_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMOAFBRefreshableToken_FK2" reference-table="MOARefreshableToken"
+                             local-column="TOKEN_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMOAInstagramRefreshableToken" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TOKEN_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMOAInstagramRefreshableToken_PK" column="ID" sequence-generator="OMOAInstagramRefreshableToken.ID"/>
+            <unique-keys>
+                <unique-key name="OMOAInstagramRefreshableToken_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMOAInstagramRefreshableToken_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMOAInstagramRefreshableToken_FK2" reference-table="MOARefreshableToken"
+                             local-column="TOKEN_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+    </module>
+
+    <module name="module_messenger">
+
+        <table name="OMSOChat" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CHAT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="OWNER_ID" data-type="BIGINT" nullable="true"/>
+                <column name="DEAL_ID" data-type="BIGINT" nullable="true"/>
+                <column name="CONTACT_ID" data-type="BIGINT" nullable="true"/>
+                <column name="LAST_MESSAGE" data-type="CHAR" nullable="false" max-length="255"/>
+                <column name="UNREAD_COUNT" data-type="INTEGER" nullable="true" default-value="0"/>
+                <column name="RECIPIENT_PROFILE_NAME" data-type="CHAR" nullable="true" max-length="300"/>
+                <column name="CREATED_AT" data-type="BIGINT" nullable="true"/>
+                <column name="UPDATED_AT" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="OMSOChat_PK" column="ID" sequence-generator="OMSOChat.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMSOChat_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSOChat_FK2" reference-table="MCOContact"
+                             local-column="CONTACT_ID" reference-column="ID" constraint="ON-DELETE-SET-NULL"/>
+                <foreign-key name="OMSOChat_FK3" reference-table="MDODeal"
+                             local-column="DEAL_ID" reference-column="ID" constraint="ON-DELETE-SET-NULL"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMSOChat_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>CHAT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMSOConversationActivity">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="CHAT_OWNER_TEMPLATE" data-type="CHAR" nullable="false" max-length="500"/>
+                <column name="OTHER_USER_TEMPLATE" data-type="CHAR" nullable="false" max-length="500"/>
+            </columns>
+            <primary-key name="OMSOConversationActivity_PK" column="ID" sequence-generator="OMSOConversationActivity.ID"/>
+            <unique-keys>
+                <unique-key name="OMSOConversationActivity_UK1">
+                    <unique-key-column>TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMSOConversation" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CHAT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="MESSAGE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="MESSAGE_FLOW" data-type="SMALLINT" nullable="true"/>
+                <column name="TIMESTAMP" data-type="BIGINT" nullable="false"/>
+                <column name="ACTIVITY_ID" data-type="BIGINT" nullable="true"/>
+                <column name="PLACE_HOLDER_VALUES" data-type="TEXT" nullable="true"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="true"/>
+                <column name="OUTBOUND_MESSAGE_SOURCE" data-type="SMALLINT" nullable="true"/>
+            </columns>
+            <primary-key name="OMSOConversation_PK" column="ID" sequence-generator="OMSOConversation.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMSOConversation_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSOConversation_FK2" reference-table="OMSOChat"
+                             local-column="CHAT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSOConversation_FK3" reference-table="OMSOConversationActivity"
+                             local-column="ACTIVITY_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSOConversation_FK4" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <unique-keys>
+                <unique-key name="OMSOConversation_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>MESSAGE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMECChatConversations" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CHAT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ENTITY_CONVERSATION_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMECChatConversations_PK" column="ID" sequence-generator="OMECChatConversations.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMECChatConversations_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMECChatConversations_FK2" reference-table="OMSOChat" local-column="CHAT_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMECChatConversations_FK3" reference-table="OMECEntityConversations"
+                             local-column="ENTITY_CONVERSATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMECChatConversations_UK">
+                    <unique-key-column>CHAT_ID</unique-key-column>
+                    <unique-key-column>ENTITY_CONVERSATION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+
+    <module name="module_facebook">
+
+        <table name="OMSOFBPage" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PAGE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STATE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMSOFBPage_PK" column="ID" sequence-generator="OMSOFBPage.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMSOFBPage_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMSOFBPage_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>PAGE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMSOFBPageChat" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PAGE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CHAT_ID" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="OMSOFBPageChat_PK" column="ID" sequence-generator="OMSOFBPageChat.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMSOFBPageChat_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSOFBPageChat_FK2" reference-table="OMSOFBPage"
+                             local-column="PAGE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSOFBPageChat_FK3" reference-table="OMSOChat"
+                             local-column="CHAT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMSOFBPageChat_UK1">
+                    <unique-key-column>CHAT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+    </module>
+
+    <module name="module_whatsapp">
+
+        <table name="OMSOWABusinessAccount" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="WA_BUSINESS_ACCOUNT_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMSOWABusinessAccount_PK" column="ID" sequence-generator="OMSOWABusinessAccount.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMSOWABusinessAccount_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMSOWABusinessAccount_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>WA_BUSINESS_ACCOUNT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMSOWABusinessPhoneNumber" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="WA_BUSINESS_PHONE_NUMBER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="BUSINESS_ACCOUNT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STATE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMSOWABusinessPhoneNumber_PK" column="ID" sequence-generator="OMSOWABusinessPhoneNumber.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMSOWABusinessPhoneNumber_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSOWABusinessPhoneNumber_FK2" reference-table="OMSOWABusinessAccount"
+                             local-column="BUSINESS_ACCOUNT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMSOWABusinessPhoneNumber_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>WA_BUSINESS_PHONE_NUMBER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMSOWAPhoneNumberChat" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="BUSINESS_PHONE_NUMBER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CHAT_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMSOWAPhoneNumberChat_PK" column="ID" sequence-generator="OMSOWAPhoneNumberChat.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMSOWAPhoneNumberChat_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSOWAPhoneNumberChat_FK2" reference-table="OMSOWABusinessPhoneNumber"
+                             local-column="BUSINESS_PHONE_NUMBER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSOWAPhoneNumberChat_FK3" reference-table="OMSOChat"
+                             local-column="CHAT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMSOWAPhoneNumberChat_UK1">
+                    <unique-key-column>CHAT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMKCPWACampaign" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CAMPAIGN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="WA_PHONE_NUMBER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TEMPLATE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TEMPLATE_CONFIG" data-type="TEXT" nullable="true"/>
+                <column name="CREATED_BY" data-type="BIGINT" nullable="false"/>
+                <column name="CREATED_AT" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_BY" data-type="BIGINT" nullable="false"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+            </columns>
+            <primary-key name="OMKCPWACampaign_PK" column="ID" sequence-generator="OMKCPWACampaign.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMKCPWACampaign_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKCPWACampaign_FK2" reference-table="OMKCPCampaign"
+                             local-column="CAMPAIGN_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKCPWACampaign_FK3" reference-table="OMSOWABusinessPhoneNumber"
+                             local-column="WA_PHONE_NUMBER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKCPWACampaign_FK4" reference-table="OMCRMUser"
+                             local-column="CREATED_BY" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMKCPWACampaign_FK5" reference-table="OMCRMUser"
+                             local-column="UPDATED_BY" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMKCPWACampaign_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>CAMPAIGN_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMKCPWACampaignContact" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CAMPAIGN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONTACT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONVERSATION_ID" data-type="BIGINT" nullable="true"/>
+                <column name="PHONE_NUMBER" data-type="CHAR" nullable="true" max-length="50"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="IS_DELIVERED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="IS_READ" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="RETRY_COUNT" data-type="SMALLINT" nullable="false" default-value="0"/>
+                <column name="NEXT_RETRY_AT" data-type="DATETIME" nullable="true"/>
+            </columns>
+            <primary-key name="OMKCPWACampaignContact_PK" column="ID" sequence-generator="OMKCPWACampaignContact.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMKCPWACampaignContact_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKCPWACampaignContact_FK2" reference-table="OMKCPCampaign"
+                             local-column="CAMPAIGN_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKCPWACampaignContact_FK3" reference-table="MCOContact"
+                             local-column="CONTACT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKCPWACampaignContact_FK4" reference-table="OMSOConversation"
+                             local-column="CONVERSATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMKCPWACampaignContact_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>CAMPAIGN_ID</unique-key-column>
+                    <unique-key-column>CONTACT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMKCPWATemplateFilterPreference" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="BUSINESS_PHONE_NUMBER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="VIEW" data-type="SMALLINT" nullable="false"/>
+                <column name="FILTER_CONFIG" data-type="TEXT" nullable="true" max-length="200"/>
+                <column name="UPDATED_AT" data-type="DATETIME" nullable="false"/>
+            </columns>
+            <primary-key name="OMKCPWATemplateFilterPreference_PK" column="ID" sequence-generator="OMKCPWATemplateFilterPreference.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMKCPWATemplateFilterPreference_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKCPWATemplateFilterPreference_FK2" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMKCPWATemplateFilterPreference_FK3" reference-table="OMSOWABusinessPhoneNumber"
+                             local-column="BUSINESS_PHONE_NUMBER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMKCPWATemplateFilterPreference_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+
+    <module name="module_instagram">
+
+        <table name="OMSOInstagramPage" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PAGE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STATE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMSOInstagramPage_PK" column="ID" sequence-generator="OMSOInstagramPage.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMSOInstagramPage_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMSOInstagramPage_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>PAGE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMSOInstagramPageChat" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PAGE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CHAT_ID" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="OMSOInstagramPageChat_PK" column="ID" sequence-generator="OMSOInstagramPageChat.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMSOInstagramPageChat_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSOInstagramPageChat_FK2" reference-table="OMSOInstagramPage"
+                             local-column="PAGE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSOInstagramPageChat_FK3" reference-table="OMSOChat"
+                             local-column="CHAT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMSOInstagramPageChat_UK1">
+                    <unique-key-column>CHAT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+    </module>
+</metadata>

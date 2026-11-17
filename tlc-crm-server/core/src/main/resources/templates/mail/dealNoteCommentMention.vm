@@ -1,0 +1,228 @@
+#set($model = $template.get("model"))
+#set($message = $model.getMessage())
+#set($content = $message.getContent())
+#set($deal = $model.getDeal())
+#set($primaryContact = $deal.getPrimaryContact())
+#set($company = $deal.getCompany())
+#set($users = $template.getAll("users"))
+#set($mentionedUser = false)
+#foreach($user in $users)
+    #if($user.id() == $model.getMentionedUserId())
+        #set($mentionedUser = $user)
+        #break
+    #end
+#end
+#set($dealUrl = "$deal.getURL('deal')$deal.id()")
+#set($contactUrl = "$primaryContact.getURL('contact')$primaryContact.id()")
+#if($company)
+    #set($companyUrl = "$company.getURL('company')$company.id()")
+#end
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Mentioned Note Comment in Deal</title>
+    <style>
+        .jss16 {
+            margin: 0px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div data-info-group="subject" style="display:none">You were mentioned in a note comment on the deal</div>
+
+<div style="margin:0 auto;background:#fafafa;padding:5% 10%;">
+    <div>
+        <div style="
+            background:white;
+            border-radius:8px;
+            border:1px rgba(0,0,0,0.1) solid;
+            overflow:auto;
+            padding:40px;
+        ">
+            <div>
+                <img width="107px" height="33px"
+                     src="https://twozo.io/_next/image?url=%2Fimages%2Flogo%2Ftwozo-full-logo.png&w=256&q=75"
+                     alt="twozo"/>
+            </div>
+
+            <div style="padding-top:25px">
+                <div>
+                    <p style="
+                        margin:0px;
+                        font-size:18px;
+                        font-weight:600;
+                        font-family:Verdana, Geneva, Tahoma, sans-serif;
+                    ">
+                        Hello $mentionedUser.getFullName(),
+                    </p>
+                    <p style="
+                        margin:0px;
+                        padding-top:9px;
+                        font-size:14px;
+                        font-weight:400;
+                        font-family:Verdana, Geneva, Tahoma, sans-serif;
+                        color:rgba(0,0,0,0.6);
+                    ">
+                        You were mentioned in a note comment on the deal:
+                    </p>
+                </div>
+
+                <div style="padding-top:24px">
+                    <table cellspacing="0" cellpadding="0" border="0"
+                           style="width:100%;font-family:Verdana, Geneva, Tahoma, sans-serif;font-size:14px;">
+
+                        <tr>
+                            <td style="width:110px;color:rgba(0,0,0,0.6);padding-bottom:12px;vertical-align:top;white-space:nowrap;">
+                                Note :
+                            </td>
+                            <td style="padding-bottom:12px;vertical-align:top;">
+                  <span style="
+                                 display: -webkit-box;
+                                 -webkit-box-orient: vertical;
+                                 -webkit-line-clamp: 3;
+                                 overflow: hidden;
+                                 ">
+                      $content
+                  </span>
+                                #if($message.isContentTruncated())
+                                <span style="display: block; margin-top: 6px">
+                    <a href="$contactUrl/overview?view=notes" style="
+                                    color: #33bc7e;
+                                    cursor: pointer;
+                                    text-decoration: none;
+                                    " target="_blank">See More</a>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M6.5 5.50039L10.6 1.40039" stroke="#33BC7E" stroke-linecap="round"
+                            stroke-linejoin="round"/>
+                      <path d="M11.0001 3.4V1H8.6001" stroke="#33BC7E" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M5.5 1H4.5C2 1 1 2 1 4.5V7.5C1 10 2 11 4.5 11H7.5C10 11 11 10 11 7.5V6.5"
+                            stroke="#33BC7E" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                                #end
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width:110px;color:rgba(0,0,0,0.6);padding-bottom:12px;vertical-align:top;white-space:nowrap;">
+                                Deal :
+                            </td>
+                            <td style="padding-bottom:12px;">
+                                <a href="$dealUrl"
+                                   style="color:#33bc7e;text-decoration:none;"
+                                   target="_blank">
+                                    $deal.getTitle()
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width:110px;color:rgba(0,0,0,0.6);padding-bottom:12px;vertical-align:top;white-space:nowrap;">
+                                Contact :
+                            </td>
+                            <td style="padding-bottom:12px;">
+                                <a href="$contactUrl"
+                                   style="color:#33bc7e;text-decoration:none;"
+                                   target="_blank">
+                                    $primaryContact.getFullName()
+                                </a>
+                            </td>
+                        </tr>
+
+                        #if($company)
+                            <tr>
+                                <td style="width:110px;color:rgba(0,0,0,0.6);padding-bottom:12px;vertical-align:top;white-space:nowrap;">
+                                    Company :
+                                </td>
+                                <td style="padding-bottom:12px;">
+                                    <a href="$companyUrl"
+                                       style="color:#33bc7e;text-decoration:none;"
+                                       target="_blank">
+                                        $company.getName()
+                                    </a>
+                                </td>
+                            </tr>
+                        #end
+
+                        <tr>
+                            <td style="width:110px;color:rgba(0,0,0,0.6);padding-bottom:12px;vertical-align:top;white-space:nowrap;">
+                                Mentioned By :
+                            </td>
+                            #set($mentioner=$message.getUpdatedBy())
+                            #if($mentioner)
+                                <td style="padding-bottom: 12px">$message.getUpdatedBy().getFullName()</td>
+                            #else
+                                <td style="padding-bottom: 12px">$message.getCreatedBy().getFullName()</td>
+                            #end
+                        </tr>
+
+                    </table>
+                </div>
+
+                <div style="padding-top:32px">
+                    <p style="
+                        margin:0px;
+                        font-size:14px;
+                        font-weight:400;
+                        font-family:Verdana, Geneva, Tahoma, sans-serif;
+                    ">
+                        Cheers,
+                    </p>
+                    <p style="
+                        margin:0px;
+                        font-size:14px;
+                        font-weight:600;
+                        font-family:Verdana, Geneva, Tahoma, sans-serif;
+                        padding-top:4px;
+                    ">
+                        Team Twozo
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <div style="padding-top:16px;text-align:center;">
+            <div style="text-align:center;">
+                <div>
+                    <img width="72px" height="22px" style="margin-right:12px"
+                         src="https://ci3.googleusercontent.com/meips/ADKq_NaXM9lCOs5luvUcsKwYTE4a39T_j1ruuTAj8HA3Qy8qB1bdzlLyIO7AHV_2K__Ot03VQ3EH1vuUB1Mu4qt5BUWTutbWF1RsGsPe3yntKkeEGmn6iw=s0-d-e1-ft#https://ind-assets.freshsales.io/assets/images/google-play.png"
+                         alt="google-play"/>
+                    <img width="72px" height="22px" style="margin-left:12px"
+                         src="https://ci3.googleusercontent.com/meips/ADKq_NYiX6-9q45vsuMEOkPWau7MEr-X5uNrY1gMEsfkpicybI2bRIGTjDMrYhP1Bb6j4v5dNNUwVTT-mPj1IC6Zw-0IN2YHoEVW5WJE2TyQJgp2vRQlQ9vHvok=s0-d-e1-ft#https://ind-assets.freshsales.io/assets/images/apple-app-store.png"
+                         alt="apple-app-store"/>
+                </div>
+                <div style="padding-top:8px;">
+                    <p style="
+                        margin:0px;
+                        font-size:10px;
+                        font-family:Verdana, Geneva, Tahoma, sans-serif;
+                        color:rgba(0,0,0,0.6);
+                    ">
+                        Twozo Inc.
+                    </p>
+                </div>
+                <div style="text-align:center;padding-top:8px;opacity:0.6;">
+                    <img width="20px" height="20px"
+                         src="https://cdn4.iconfinder.com/data/icons/iconsimple-logotypes/512/facebook-64.png"
+                         alt="facebook"/>
+                    <img width="20px" height="20px" style="margin:0px 32px"
+                         src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_twitter-64.png"
+                         alt="twitter"/>
+                    <img width="20px" height="20px"
+                         src="https://cdn2.iconfinder.com/data/icons/social-media-2102/100/social_media_circled_network-03-64.png"
+                         alt="linkedIn"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

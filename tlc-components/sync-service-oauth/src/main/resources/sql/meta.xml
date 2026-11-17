@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_sync_service">
+
+        <table name="MOAEmailAddress">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="EMAIL_ADDRESS" data-type="CHAR" nullable="false" max-length="320"/>
+            </columns>
+            <primary-key name="MOAEmailAddress_PK" column="ID" sequence-generator="MOAEmailAddress.ID"/>
+            <unique-keys>
+                <unique-key name="MOAEmailAddress_UK1">
+                    <unique-key-column>EMAIL_ADDRESS</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MOANonRefreshableToken">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TOKEN" data-type="CHAR" nullable="false" max-length="3300"/>
+                <column name="TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="EMAIL_ADDRESS_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CATEGORY" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MOANonRefreshableToken_PK" column="ID" sequence-generator="MOANonRefreshableToken.ID"/>
+            <unique-keys>
+                <unique-key name="MOANonRefreshableToken_UK1">
+                    <unique-key-column>TOKEN</unique-key-column>
+                    <unique-key-column>EMAIL_ADDRESS_ID</unique-key-column>
+                    <unique-key-column>CATEGORY</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MOANonRefreshableToken_FK1" reference-table="MOAEmailAddress"
+                             local-column="EMAIL_ADDRESS_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MOARefreshableToken">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TOKEN" data-type="CHAR" nullable="false" max-length="3300"/>
+                <column name="TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="REFRESHED_AT" data-type="BIGINT" nullable="false"/>
+                <column name="NEXT_REFRESH_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="CATEGORY" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MOARefreshableToken_PK" column="ID" sequence-generator="MOARefreshableToken.ID"/>
+        </table>
+
+        <table name="MOAEmailRefreshableToken">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TOKEN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EMAIL_ADDRESS_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MOAEmailRefreshableToken_PK" column="ID" sequence-generator="MOAEmailRefreshableToken.ID"/>
+            <unique-keys>
+                <unique-key name="MOAEmailRefreshableToken_UK1">
+                    <unique-key-column>TOKEN_ID</unique-key-column>
+                    <unique-key-column>EMAIL_ADDRESS_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MOAEmailRefreshableToken_FK1" reference-table="MOAEmailAddress"
+                             local-column="EMAIL_ADDRESS_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MOAEmailRefreshableToken_FK2" reference-table="MOARefreshableToken"
+                             local-column="TOKEN_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+    </module>
+
+</metadata>

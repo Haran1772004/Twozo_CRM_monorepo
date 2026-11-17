@@ -1,0 +1,81 @@
+def territoryIds = params.territoryIds;
+def ownerId = params.ownerId;
+def docSource = params._source.entitySource;
+def territory = "territory";
+def isCompanyGlobal = "global".equals(params.companyPermission);
+Map results = new HashMap();
+
+if ("deal".equals(docSource)) {
+  def sourceContact = params._source.contact;
+  def sourceCompany = params._source.company;
+  Map dealFields = new HashMap();
+
+  if (null != sourceContact) {
+    def contactFollowers = sourceContact.followerIds;
+
+    if ((territory.equals(params.contactPermission) && territoryIds.contains(sourceContact.territoryId)) ||
+        ownerId == sourceContact.ownerId || (params.isContactFollower && null != contactFollowers && contactFollowers.contains(ownerId))) {
+      Map contactFields = new HashMap();
+      Map dealContactMap = new HashMap();
+      def contactCompany = sourceContact.company;
+
+      contactFields.put("name", sourceContact.name);
+      contactFields.put("emails", sourceContact.emails);
+      contactFields.put("phones", sourceContact.phones);
+      contactFields.put("linkedin", sourceContact.linkedin);
+      contactFields.put("facebook", sourceContact.facebook);
+      contactFields.put("id", sourceContact.id);
+      dealContactMap.put("id", sourceContact.id);
+      dealContactMap.put("name", sourceContact.name);
+      dealFields.put("contact", dealContactMap);
+
+      if (isCompanyGlobal && null != contactCompany) {
+        Map contactCompanyMap = new HashMap();
+
+        contactCompanyMap.put("name", contactCompany.name);
+        contactCompanyMap.put("id", contactCompany.id);
+        contactFields.put("company", contactCompanyMap);
+      }
+      results.put("contact", contactFields);
+    }
+  }
+
+  if (isCompanyGlobal && null != sourceCompany) {
+    Map dealCompanyMap = new HashMap();
+
+    dealCompanyMap.put("id", sourceCompany.id);
+    dealCompanyMap.put("name", sourceCompany.name);
+    dealFields.put("company", dealCompanyMap);
+  }
+
+  if (!dealFields.isEmpty()) {
+    results.put("deal", dealFields);
+  }
+} else if ("contact".equals(docSource)) {
+  Map contactFields = new HashMap();
+  def sourceContact = params._source.contact;
+  def contactCompany = sourceContact.company;
+
+  contactFields.put("name", sourceContact.name);
+  contactFields.put("emails", sourceContact.emails);
+  contactFields.put("phones", sourceContact.phones);
+  contactFields.put("linkedin", sourceContact.linkedin);
+  contactFields.put("facebook", sourceContact.facebook);
+  contactFields.put("id", sourceContact.id);
+
+  if (isCompanyGlobal && null != contactCompany) {
+    Map contactCompanyMap = new HashMap();
+
+    contactCompanyMap.put("name", contactCompany.name);
+    contactCompanyMap.put("id", contactCompany.id);
+    contactFields.put("company", contactCompanyMap);
+  }
+  results.put("contact", contactFields);
+}
+
+if (results.isEmpty()) {
+  return null;
+} else {
+  return results;
+}
+

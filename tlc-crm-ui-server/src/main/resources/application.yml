@@ -1,0 +1,43 @@
+spring:
+  profiles.active: prod
+  application:
+    name: CRM Web Client
+
+server:
+  compression:
+    enabled: true
+    min-response-size: 256 # Minimum response size to compress (in bytes)
+    mime-types:
+      - application/json
+      - application/xml
+      - text/html
+      - text/xml
+      - text/plain
+      - text/css
+      - application/javascript
+
+twozo:
+ client:
+   index-file: index.html
+   location: /app/build
+ csp:
+   enabled: true
+   nonce-enabled: true
+   directive:
+    connect-src: "'self' *.twozo.live *.telecmi.com *.portae.ai *.twilio.com wss://voice-js.roaming.twilio.com *.blob.core.windows.net;"
+    img-src: "'self' blob:;"
+    media-src: "'self' *.twilio.com *.telecmi.com;"
+    script-src-elem: "'self' *.facebook.net;"
+
+ web:
+   headers:
+     csp:
+       name: Content-Security-Policy
+       value: default-src
+       nested:
+         value: default-value
+         k1: Key 1
+         v1: Value 1
+     cache:
+       name: Cache-Control
+       value: no-cache

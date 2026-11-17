@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+    <module name="tlc_attachment">
+
+        <table name="METAttachment">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="FILE_NAME" data-type="CHAR" nullable="false" max-length="255"/>
+                <column name="EXTENSION" data-type="CHAR" nullable="false" max-length="8"/>
+                <column name="MEDIA_TYPE" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="FILE_SIZE" data-type="BIGINT" nullable="false"/>
+                <column name="CREATED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="UPDATED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="STORAGE_TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="DESCRIPTION" data-type="CHAR" nullable="true" max-length="140"/>
+            </columns>
+            <primary-key name="METAttachment_PK" column="ID" sequence-generator="METAttachment.ID"/>
+        </table>
+
+        <table name="METObjectStorage">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="VERSION_ID" data-type="CHAR" nullable="false"/>
+                <column name="OBJECT_NAME" data-type="CHAR" nullable="false" max-length="350"/>
+                <column name="ATTACHMENT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STORAGE_SOURCE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="METObjectStorage_PK" column="ID" sequence-generator="METObjectStorage.ID"/>
+            <foreign-keys>
+                <foreign-key name="METObjectStorage_FK1" reference-table="METAttachment"
+                             local-column="ATTACHMENT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="METObjectStorage_UK1">
+                    <unique-key-column>ATTACHMENT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="METFileStorage">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ALTERNATE_NAME" data-type="CHAR" nullable="false" max-length="50"/>
+                <column name="ATTACHMENT_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="METFileStorage_PK" column="ID" sequence-generator="METFileStorage.ID"/>
+            <foreign-keys>
+                <foreign-key name="METFileStorage_FK1" reference-table="METAttachment"
+                             local-column="ATTACHMENT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="METFileStorage_UK1">
+                    <unique-key-column>ATTACHMENT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MFSPreSignedUrl">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="URL" data-type="TEXT" nullable="false"/>
+                <column name="ATTACHMENT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXPIRATION_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="ACTION_TYPE" data-type="SMALLINT" nullable="true"/>
+            </columns>
+            <primary-key name="MFSPreSignedUrl_PK" column="ID" sequence-generator="MFSPreSignedUrl.ID"/>
+            <foreign-keys>
+                <foreign-key name="MFSPreSignedUrl_FK1" reference-table="METAttachment"
+                             local-column="ATTACHMENT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MFSPreSignedUrl_UK1">
+                    <unique-key-column>ATTACHMENT_ID</unique-key-column>
+                    <unique-key-column>ACTION_TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+    </module>
+
+</metadata>

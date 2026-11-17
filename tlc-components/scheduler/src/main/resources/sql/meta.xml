@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_round_robin">
+
+        <table name="MSCHRoundRobinGroup">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="125"/>
+                <column name="LIMIT_TYPE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MSCHRoundRobinGroup_PK" column="ID" sequence-generator="MSCHRoundRobinGroup.ID"/>
+            <unique-keys>
+                <unique-key name="MSCHRoundRobinGroup_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMSCHRoundRobinRule" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="RULE_ENTITY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="LAST_ASSIGNED_INDEX" data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="OMSCHRoundRobinRule_PK" column="ID" sequence-generator="OMSCHRoundRobinRule.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMSCHRoundRobinRule_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMSCHRoundRobinRule_UK1">
+                    <unique-key-column>RULE_ENTITY_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMSCHRoundRobinTracker" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="GROUP_ID" data-type="BIGINT" nullable="false"/>
+                <column name="RULE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="CURRENT_INDEX" data-type="INTEGER" nullable="false" default-value="0"/>
+                <column name="UPDATED_AT" data-type="BIGINT" nullable="false"/>
+                <column name="LAST_RESET_AT" data-type="BIGINT" nullable="false"/>
+                <column name="RESET_INTERVAL" data-type="SMALLINT" nullable="true"/>
+                <column name="TOTAL_COUNT" data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="OMSCHRoundRobinTracker_PK" column="ID" sequence-generator="OMSCHRoundRobinTracker.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMSCHRoundRobinTracker_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSCHRoundRobinTracker_FK2" reference-table="MSCHRoundRobinGroup"
+                             local-column="GROUP_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMSCHRoundRobinTracker_FK3" reference-table="OMSCHRoundRobinRule"
+                             local-column="RULE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMSCHRoundRobinTracker_UK1">
+                    <unique-key-column>GROUP_ID</unique-key-column>
+                    <unique-key-column>RULE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+
+</metadata>

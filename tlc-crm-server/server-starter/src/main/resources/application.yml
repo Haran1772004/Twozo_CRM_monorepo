@@ -1,0 +1,1357 @@
+spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-source-enabled: ${SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCE_ENABLED:true}
+          credential:
+            managed-identity-enabled: true
+          property-sources:
+            - name: server-config
+              endpoint: ${SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_ENDPOINT}
+              secret-keys:
+                - TLC-CONFIG-CALL-TWILIO-ACCOUNT-AUTH-TOKEN
+                - TLC-CONFIG-CRM-USER-SERVER-REDIRECTURL-VALIDATELINK
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-APP-SECRET
+                - TLC-CONFIG-NOTIFICATION-MAILSERVICE-FROM
+                - TLC-CONFIG-EMAIL-APP-OUTLOOK-CLIENT-SECRET
+                - TLC-CONFIG-NOTIFICATION-EMAIL-SENDER-ID
+                - TLC-CONFIG-CALL-TWILIO-TWIML-APP-SERVICE-ID
+                - TLC-CONFIG-DATABASE-PASSWORD
+                - TLC-CONFIG-CALL-TWILIO-API-KEY-SERVICE-ID
+                - TLC-CONFIG-SYNC-SERVICE-WHATSAPP-CONFIG-ID
+                - TLC-CONFIG-PAYMENT-GATEWAY-CLIENT-ID
+                - TLC-CONFIG-DATABASE-NAME
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-WEBHOOK-VERIFY-TOKEN
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-UI-DIALOG-ENDPOINT
+                - TLC-CONFIG-STORAGE-AWS-SECRETKEY
+                - TLC-CONFIG-STORAGE-AZURE-ACCOUNTNAME
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-SERVER
+                - TLC-CONFIG-WEBFORM-DOMAIN
+                - TLC-CONFIG-EMAIL-APP-GMAIL-CLIENT-ID
+                - TLC-CONFIG-SYNC-SERVICE-WHATSAPP-WEBHOOK-VERIFY-TOKEN
+                - TLC-CONFIG-STORAGE-AZURE-ACCOUNTKEY
+                - TLC-CONFIG-EMAIL-APP-OUTLOOK-TENANTAUTHORITY
+                - TLC-CONFIG-SEARCH-OPENSEARCH-SELFMANAGED-PASSWORD
+                - TLC-CONFIG-PAYMENT-GATEWAY-PAYMENT-LINK-URL
+                - TLC-CONFIG-QUEUE-KAFKA-SELFMANAGED-SERVER
+                - TLC-CONFIG-PAYMENT-GATEWAY-MERCHANT-ID
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-AUTH-CALLBACK-SCOPE
+                - TLC-CONFIG-NOTIFICATION-EMAIL-OUTLOOK-TENANT-ID
+                - TLC-CONFIG-STORAGE-AZURE-ENDPOINT
+                - TLC-CONFIG-CACHE-PASSWORD
+                - TLC-CONFIG-CALL-TWILIO-API-SECRET-KEY-SERVICE-ID
+                - TLC-CONFIG-PAYMENT-GATEWAY-URL-CLIENT-REDIRECTION
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-APP-ID
+                - TLC-CONFIG-PAYMENT-GATEWAY-PROVIDER
+                - TLC-CONFIG-WEB-ALLOWEDORIGINS
+                - TLC-CONFIG-PAYMENT-GATEWAY-URL-REDIRECTION
+                - TLC-CONFIG-STORAGE-AWS-ACCESSKEY
+                - TLC-CONFIG-DATABASE-USERNAME
+                - TLC-CONFIG-STORAGE-AWS-SERVER
+                - TLC-CONFIG-EMAIL-APP-OUTLOOK-ALIAS-ID
+                - TLC-CONFIG-EMAIL-APP-OUTLOOK-CLIENT-ID
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-ACCESS-TOKEN-URI
+                - TLC-CONFIG-SEARCH-OPENSEARCH-SELFMANAGED-URL
+                - TLC-CONFIG-PAYMENT-GATEWAY-CLIENT-SECRET
+                - TLC-CONFIG-SEARCH-OPENSEARCH-MANAGED-DOMAIN
+                - TLC-CONFIG-SEARCH-OPENSEARCH-MANAGED-REGION
+                - TLC-CONFIG-WEB-DEFAULT-DOMAIN
+                - TLC-CONFIG-NOTIFICATION-MAILSERVICE-ACS-CONNECTIONSTRING
+                - TLC-CONFIG-CALL-TWILIO-ACCOUNT-SERVICE-ID
+                - TLC-CONFIG-PAYMENT-GATEWAY-TOKEN-GENERATION-URL
+                - TLC-CONFIG-DATABASE-SERVER
+                - TLC-CONFIG-EMAIL-APP-OUTLOOK-ALIAS-CLIENT-SECRET
+                - TLC-CONFIG-CACHE-SERVER
+                - TLC-CONFIG-EMAIL-APP-GMAIL-CLIENT-SECRET
+                - TLC-CONFIG-NOTIFICATION-EMAIL-SENDER-ADDRESS
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-OAUTHBEARER-TOKEN-ENDPOINT-URL
+                - TLC-CONFIG-ZOOKEEPER-SERVER
+                - TLC-CONFIG-EMAIL-APP-OUTLOOK-ALIAS-CLIENT-ID
+                - TLC-CONFIG-CURRENCY-API-URL
+                - TLC-CONFIG-CURRENCY-API-KEY
+                - TLC-CONFIG-WEB-CLIENT-VERTX-CLUSTER-HAZELCAST-HOST
+                - TLC-CONFIG-SEARCH-OPENSEARCH-SELFMANAGED-USER
+                - TLC-CONFIG-NOTIFICATION-TWILIO-CALL-RECORD-URL-DOMAIN
+                - TLC-CONFIG-NOTIFICATION-TELECMI-WEBHOOKURL
+                - TLC-CONFIG-NOTIFICATION-MAILSERVICE-SES-ACCESSKEY
+                - TLC-CONFIG-NOTIFICATION-MAILSERVICE-SES-SECRETKEY
+                - TLC-CONFIG-NOTIFICATION-MAILSERVICE-SENDGRID-APIKEY
+                - TLC-CONFIG-SYNC-SERVICE-GMAIL-AUTHORITY
+                - TLC-CONFIG-SYNC-SERVICE-GMAIL-SCOPE-EMAIL
+                - TLC-CONFIG-SYNC-SERVICE-GMAIL-SCOPE-CALENDAR
+                - TLC-CONFIG-SYNC-SERVICE-GMAIL-SCOPE-CONTACT
+                - TLC-CONFIG-SYNC-SERVICE-GMAIL-ACCESSTOKENURL
+                - TLC-CONFIG-SYNC-SERVICE-GMAIL-TOKENINFOURL
+                - TLC-CONFIG-SYNC-SERVICE-GMAIL-REDIRECTURL-EMAIL
+                - TLC-CONFIG-SYNC-SERVICE-GMAIL-REDIRECTURL-CALENDAR
+                - TLC-CONFIG-SYNC-SERVICE-GMAIL-REDIRECTURL-CONTACT
+                - TLC-CONFIG-SYNC-SERVICE-OUTLOOK-AUTHORITY
+                - TLC-CONFIG-SYNC-SERVICE-OUTLOOK-ACCESSTOKENURL
+                - TLC-CONFIG-SYNC-SERVICE-OUTLOOK-DEFAULTSCOPE
+                - TLC-CONFIG-SYNC-SERVICE-OUTLOOK-COMMONAUTHORITY
+                - TLC-CONFIG-SYNC-SERVICE-OUTLOOK-SCOPE-EMAIL
+                - TLC-CONFIG-SYNC-SERVICE-OUTLOOK-SCOPE-CALENDAR
+                - TLC-CONFIG-SYNC-SERVICE-OUTLOOK-SCOPE-CONTACT
+                - TLC-CONFIG-SYNC-SERVICE-OUTLOOK-REDIRECTURL-EMAIL
+                - TLC-CONFIG-SYNC-SERVICE-OUTLOOK-REDIRECTURL-CALENDAR
+                - TLC-CONFIG-SYNC-SERVICE-OUTLOOK-REDIRECTURL-CONTACT
+                - TLC-CONFIG-SOCIAL-FACEBOOK-GRAPH-API-ENDPOINT
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-REDIRECT-URI
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-SCOPES
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-PAGE-SUBSCRIBED-FIELDS
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-SERVER-REDIRECTURL-SYNC
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-SERVER-REDIRECTURL-ERROR
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-SERVER-INTEGRATION-FAILED
+                - TLC-CONFIG-SOCIAL-WHATSAPP-GRAPH-API-ENDPOINT
+                - TLC-CONFIG-SYNC-SERVICE-WHATSAPP-APP-ID
+                - TLC-CONFIG-SYNC-SERVICE-WHATSAPP-APP-SECRET
+                - TLC-CONFIG-SYNC-SERVICE-WHATSAPP-ACCESS-TOKEN-URI
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-UI-DIALOG-ENDPOINT
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-GRAPH-API-ENDPOINT
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-APP-ID
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-APP-SECRET
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-REDIRECT-URI
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-ACCESS-TOKEN-URI
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-WEBHOOK-VERIFY-TOKEN
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-SCOPES
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-PAGE-SUBSCRIBED-FIELDS
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-SERVER-REDIRECTURL-SYNC
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-SERVER-REDIRECTURL-ERROR
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-SERVER-INTEGRATION-FAILED
+                - TLC-CONFIG-SYNC-SERVICE-SERVER-REDIRECTURL-SYNC
+                - TLC-CONFIG-SYNC-SERVICE-SERVER-REDIRECTURL-TRACKING
+                - TLC-CONFIG-SYNC-SERVICE-SERVER-REDIRECTURL-ERROR-EMAILEXISTS
+                - TLC-CONFIG-SYNC-SERVICE-SERVER-REDIRECTURL-ERROR-LACKSPERMISSION
+                - TLC-CONFIG-SYNC-SERVICE-SERVER-REDIRECTURL-ERROR-AUTHORIZATIONFAILED
+                - TLC-CONFIG-SYNC-SERVICE-OUTLOOK-WEBHOOK-CHANGETYPE
+                - TLC-CONFIG-SYNC-SERVICE-OUTLOOK-WEBHOOK-RESOURCE
+                - TLC-CONFIG-OUTLOOK-WEBHOOK-CERTIFICATE-PUBLIC-KEY
+                - TLC-CONFIG-OUTLOOK-WEBHOOK-CERTIFICATE-PRIVATE-KEY
+                - TLC-CONFIG-OUTLOOK-WEBHOOK-NOTIFICATION-URL
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-MECHANISM
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-JAAS-CONFIG
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-CLIENT-CALLBACK-HANDLER-CLASS
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-MECHANISM
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-JAAS-CONFIG
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-LOGIN-CALLBACK-HANDLER-CLASS
+                - TLC-CONFIG-WEB-CSRF-SYMMETRIC-KEY-VALUE
+                - TLC-CONFIG-WEB-CSRF-SYMMETRIC-KEY-SECURITY-TOKEN-ISSUER-0
+                - TLC-CONFIG-WEB-PREFLIGHT-ALLOWED-ENDPOINTS-PATH-0
+                - TLC-CONFIG-WEB-PREFLIGHT-ALLOWED-ENDPOINTS-PATH-1
+                - TLC-CONFIG-WEB-PREFLIGHT-ALLOWED-ENDPOINTS-PATH-2
+                - TLC-CONFIG-CRM-COMMON-CHANNELOTPVERIFICATION-ACCOUNTVERIFICATION-EMAIL-OTPVALIDATE
+                - TLC-CONFIG-CRM-COMMON-CHANNELOTPVERIFICATION-ACCOUNTVERIFICATION-EMAIL-SIGNUP
+                - TLC-CONFIG-CRM-COMMON-CHANNELOTPVERIFICATION-ACCOUNTVERIFICATION-EMAIL-LOGIN
+                - TLC-CONFIG-CRM-COMMON-CHANNELOTPVERIFICATION-ACCOUNTVERIFICATION-EMAIL-LINKEXPIRED
+                - TLC-CONFIG-EMAIL-ADDONSERVICES-DOMAIN
+                - TLC-CONFIG-EMAIL-ADDONSERVICES-TEAMINBOX-VERIFICATION-VERIFIEDFROMADDRESSES-GMAIL
+                - TLC-CONFIG-EMAIL-ADDONSERVICES-TEAMINBOX-VERIFICATION-VERIFIEDFROMADDRESSES-OUTLOOK
+                - TLC-CONFIG-EMAIL-ADDONSERVICES-TEAMINBOX-SERVER-REDIRECTURL-SUCCESS
+                - TLC-CONFIG-EMAIL-ADDONSERVICES-TEAMINBOX-SERVER-REDIRECTURL-FAILURE
+                - TLC-CONFIG-EMAIL-ADDONSERVICES-TEAMINBOX-SERVER-REDIRECTURL-VALIDATELINK
+                - TLC-CONFIG-CALENDAR-SERVER-NAVIGATEURL
+                - TLC-CONFIG-CALENDAR-SERVER-REDIRECTURL-ERROR
+                - TLC-CONFIG-CALENDAR-SERVER-REDIRECTURL-SYNC
+                - TLC-CONFIG-WEBFORM-REDIRECTURL-RENDER
+                - TLC-CONFIG-WEBFORM-REDIRECTURL-SUBMIT
+                - TLC-CONFIG-CONTACT-SYNC-SERVER-NAVIGATEURL
+                - TLC-CONFIG-CONTACT-SYNC-SERVER-REDIRECTURL-SYNC
+                - TLC-CONFIG-CONTACT-SYNC-SERVER-REDIRECTURL-ERROR
+                - TLC-CONFIG-CRM-USER-INVITATIONURL-SERVER
+                - TLC-CONFIG-CRM-USER-SERVER-REDIRECTURL-INVITATION-SUCCESS
+                - TLC-CONFIG-CRM-USER-SERVER-REDIRECTURL-INVITATION-FAILURE
+                - TLC-CONFIG-CRM-USER-SERVER-REDIRECTURL-RESETPASSWORD-SUCCESS
+                - TLC-CONFIG-CRM-USER-SERVER-REDIRECTURL-RESETPASSWORD-FAILURE
+                - TLC-CONFIG-DATA-EXPORT-REDIRECT-URL-FILEDOWNLOAD
+                - TLC-CONFIG-ZAPIER-REDIRECT-URL
+                - TLC-CONFIG-PROFILE-PICTURE-REDIRECTURL-USER
+                - TLC-CONFIG-PROFILE-PICTURE-REDIRECTURL-SOURCE
+                - TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-0
+                - TLC-CONFIG-SEARCH-OPENSEARCH-MANAGED-SIGNING-SERVICE
+                - TLC-CONFIG-EMAIL-APP-LOCAL-REDIRECTURL-ERROR-EMAILEXISTS
+                - TLC-CONFIG-EMAIL-APP-LOCAL-REDIRECTURL-ERROR-LACKSPERMISSION
+                - TLC-CONFIG-EMAIL-APP-LOCAL-REDIRECTURL-ERROR-AUTHORIZATIONFAILED
+                - TLC-CONFIG-EMAIL-APP-LOCAL-NAVIGATEURL-SYNC
+                - TLC-CONFIG-CRM-USER-LOCAL-REDIRECTURL-RESETPASSWORD-SUCCESS
+                - TLC-CONFIG-CALENDAR-LOCAL-NAVIGATEURL
+                - TLC-CONFIG-QUEUE-PROVIDER
+                - TLC-CONFIG-CRM-USER-LOCAL-REDIRECTURL-INVITATION-SUCCESS
+                - TLC-CONFIG-CRM-USER-LOCAL-REDIRECTURL-INVITATION-FAILURE
+                - TLC-CONFIG-CRM-USER-LOCAL-REDIRECTURL-RESETPASSWORD-FAILURE
+                - TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-1
+                - TLC-CONFIG-CRM-USER-LOCAL-REDIRECTURL-VALIDATELINK
+                - TLC-CONFIG-CONTACT-SYNC-LOCAL-NAVIGATEURL
+                - TLC-CONFIG-STORAGE-AZURE-AZURITE-ENDPOINT
+                - TLC-CONFIG-STORAGE-AZURE-AUTHTYPE
+                - TLC-CONFIG-STORAGE-AWS-BUCKET
+                - TLC-CONFIG-STORAGE-AWS-REGION
+                - TLC-CONFIG-IAM-SERVER-REDIRECTURL-ACCOUNTEXISTS
+                - TLC-CONFIG-IAM-SERVER-REDIRECTURL-ACCOUNTNOTEXISTS
+                - TLC-CONFIG-IAM-SERVER-REDIRECTURL-COMPLETESIGNUP
+                - TLC-CONFIG-IAM-LOCAL-REDIRECTURL-ACCOUNTEXISTS
+                - TLC-CONFIG-IAM-LOCAL-REDIRECTURL-ACCOUNTNOTEXISTS
+                - TLC-CONFIG-IAM-LOCAL-REDIRECTURL-COMPLETESIGNUP
+                - TLC-CONFIG-IAM-REDIRECTURL-LOCAL-LOGINSUCCESS
+                - TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-SCOPE
+                - TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-AUTHORITY
+                - TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-JWKSURL
+                - TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-ISSUER
+                - TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-TOKENURL
+                - TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-USERINFOURL
+                - TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-REDIRECTURL-SIGNUP
+                - TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-REDIRECTURL-LOGIN
+                - TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-MICROSOFT-JWKSURL
+                - TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-MICROSOFT-ISSUER
+                - TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-MICROSOFT-USERINFOURL
+                - TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-MICROSOFT-REDIRECTURL-SIGNUP
+                - TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-MICROSOFT-REDIRECTURL-LOGIN
+                - TLC-CONFIG-IAM-SERVER-REDIRECTURL-PHONENUMBERREQUIRED
+                - TLC-CONFIG-IAM-LOCAL-REDIRECTURL-PHONENUMBERREQUIRED
+                - TLC-CONFIG-WEB-COOKIE-DOMAIN
+                - TLC-CONFIG-NOTIFICATION-TELECMI-V2-BASEURL
+                - TLC-CONFIG-NOTIFICATION-TELECMI-V3-BASEURL
+                - TLC-CONFIG-NOTIFICATION-TELECMI-RECORDPATH
+                - TLC-CONFIG-AI-PROVIDER
+                - TLC-CONFIG-AI-PORTAE-APIKEY
+                - TLC-CONFIG-AI-PORTAE-PLAN-ID
+                - TLC-CONFIG-AI-PORTAE-URL
+                - TLC-CONFIG-AI-PORTAE-URI-EXECUTE
+                - TLC-CONFIG-CRM-COMMON-FILE-PREVIEW-REDIRECT-URL
+                - TLC-CONFIG-DATABASE-SERVER-WITHOUT-PORT
+                - TLC-CONFIG-DATABASE-PORT
+                - TLC-CONFIG-CLICKHOUSE-DATABASE
+                - TLC-CONFIG-CLICKHOUSE-USERNAME
+                - TLC-CONFIG-CLICKHOUSE-PASSWORD
+                - TLC-CONFIG-KAKFA-CONNECT-URL
+                - TLC-CONFIG-CLICKHOUSE-SERVER
+                - TLC-CONFIG-CLICKHOUSE-PORT
+                - TLC-CONFIG-CLICKHOUSE-URL
+                - TLC-CONFIG-CLICKHOUSE-DRIVER-CLASS-NAME
+                - TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-2
+                - TLC-CONFIG-KAFKA-SERVER
+                - TLC-CONFIG-CLICKHOUSE-READER-USERNAME
+                - TLC-CONFIG-CLICKHOUSE-READER-PASSWORD
+                - TLC-CONFIG-ORG-ONBOARD-ENABLED
+                - TLC-CONFIG-ORG-ONBOARD-ADMIN-CRM-ID
+                - TLC-CONFIG-ORG-ONBOARD-SALES-OWNER-IAM-ID
+                - TLC-CONFIG-ORG-ONBOARD-SALES-OWNER-CRM-ID
+                - TLC-CONFIG-ORG-ONBOARD-CRM-ORG-ID
+                - TLC-CONFIG-ORG-ONBOARD-IAM-ORG-ID
+                - TLC-CONFIG-ORG-ONBOARD-CONTACT-WEB-SOURCE-OPTION
+                - TLC-CONFIG-ORG-ONBOARD-CUSTOM-FIELD-NO-OF-USERS
+                - TLC-CONFIG-ORG-ONBOARD-CUSTOM-FIELD-ORG-SIZE
+                - TLC-CONFIG-ORG-ONBOARD-CUSTOM-FIELD-INDUSTRY-TYPE
+                - TLC-CONFIG-NOTIFICATION-MCUBE-API-BASEURL
+                - TLC-CONFIG-NOTIFICATION-MCUBE-CONFIG-BASEURL
+                - TLC-CONFIG-NOTIFICATION-MCUBE-WEBHOOKURL
+                - TLC-CONFIG-NOTIFICATION-MCUBE-RECORDPATH
+                - TLC-CONFIG-QUOTATION-PREVIEW-URL
+                - TLC-CONFIG-QUOTATION-DOWNLOAD-URL
+                - TLC-CONFIG-QUOTATION-IMAGE-PREVIEW-URL
+                - TLC-CONFIG-FONT-BASEPATH
+
+  application.name: twozo-crm
+  profiles.active: ${SPRING_PROFILES_ACTIVE}
+
+logging:
+  level:
+    root: INFO
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger{35} - %msg%n"
+  file:
+    name: logs/twozo-crm.log
+
+tlc.config:
+  storage:
+    client: ${TLC_CONFIG_STORAGE_CLIENT}
+    azure:
+      accountName: ${TLC-CONFIG-STORAGE-AZURE-ACCOUNTNAME}
+      accountKey: ${TLC-CONFIG-STORAGE-AZURE-ACCOUNTKEY}
+      endpoint: ${TLC-CONFIG-STORAGE-AZURE-ENDPOINT}
+      authType: ${TLC-CONFIG-STORAGE-AZURE-AUTHTYPE}
+      containers:
+        - ${TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-0}
+        - ${TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-1}
+        - ${TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-2}
+      azurite:
+        enabled: ${TLC_CONFIG_STORAGE_AZURE_AZURITE_ENABLED}
+        endpoint: ${TLC-CONFIG-STORAGE-AZURE-AZURITE-ENDPOINT}
+    aws:
+      server: ${TLC-CONFIG-STORAGE-AWS-SERVER}
+      accessKey: ${TLC-CONFIG-STORAGE-AWS-ACCESSKEY}
+      secretKey: ${TLC-CONFIG-STORAGE-AWS-SECRETKEY}
+      bucket: ${TLC-CONFIG-STORAGE-AWS-BUCKET}
+      region: ${TLC-CONFIG-STORAGE-AWS-REGION}
+      authMethod: ${TLC_CONFIG_STORAGE_AWS_AUTHMETHOD}
+
+  cache:
+    type: ${TLC_CONFIG_CACHE_TYPE}
+    scheme: ${TLC_CONFIG_CACHE_SCHEME}
+    server: ${TLC-CONFIG-CACHE-SERVER}
+    password: ${TLC-CONFIG-CACHE-PASSWORD}
+    test-enabled: ${TLC_CONFIG_CACHE_TEST_ENABLED}
+
+  zookeeper:
+    server: ${TLC-CONFIG-ZOOKEEPER-SERVER}
+    maxRetry: 3
+    retryWait: 1000
+    connectionTimeout: 5000
+    sessionTimeout: 500000
+
+  database:
+    oltp:
+      name: ${TLC-CONFIG-DATABASE-NAME}
+      server: ${TLC-CONFIG-DATABASE-SERVER}
+      username: ${TLC-CONFIG-DATABASE-USERNAME}
+      password: ${TLC-CONFIG-DATABASE-PASSWORD}
+      developmentModeEnabled: ${TLC_CONFIG_DATABASE_DEVELOPMENTMODEENABLED}
+      connectionPool:
+        name: crm-oltp-pool
+        max: 15
+        idle: 5
+        idle.timeout: 300000
+        maxLifetime: 1800000
+        connectionTimeout: 30000
+        leakDetectionThreshold: 60000
+    olap:
+      name: ${TLC-CONFIG-CLICKHOUSE-DATABASE}
+      url: ${TLC-CONFIG-CLICKHOUSE-URL}
+      driver-class-name: ${TLC-CONFIG-CLICKHOUSE-DRIVER-CLASS-NAME}
+      admin:
+        roletype: ADMIN
+        username: ${TLC-CONFIG-CLICKHOUSE-USERNAME}
+        password: ${TLC-CONFIG-CLICKHOUSE-PASSWORD}
+      reader:
+        roletype: READER
+        username: ${TLC-CONFIG-CLICKHOUSE-READER-USERNAME}
+        password: ${TLC-CONFIG-CLICKHOUSE-READER-PASSWORD}
+
+  currency:
+    api:
+      url: ${TLC-CONFIG-CURRENCY-API-URL}
+      key: ${TLC-CONFIG-CURRENCY-API-KEY}
+    dev.mode: ${TLC_CONFIG_CURRENCY_DEV_MODE}
+
+  database-resource:
+    serverMode: ${TLC_CONFIG_DATABASE_RESOURCE_SERVERMODE}
+    snapshotPath: sql/snapshot
+    home: ${TLC_CONFIG_DATABASE_RESOURCE_HOME:twozo}
+    storeType: ${TLC_CONFIG_DATABASE_RESOURCE_STORETYPE:remote}
+
+  notification:
+    twilio:
+      account.service.id: ${TLC-CONFIG-CALL-TWILIO-ACCOUNT-SERVICE-ID}
+      auth.token: ${TLC-CONFIG-CALL-TWILIO-ACCOUNT-AUTH-TOKEN}
+      call:
+        pause.time.in.seconds: 2
+        twiml.app.service.id: ${TLC-CONFIG-CALL-TWILIO-TWIML-APP-SERVICE-ID}
+        access.token.ttl: 300
+        allow.incoming.calls: true
+        api:
+          key.service.id: ${TLC-CONFIG-CALL-TWILIO-API-KEY-SERVICE-ID}
+          secret.key.service.id: ${TLC-CONFIG-CALL-TWILIO-API-SECRET-KEY-SERVICE-ID}
+        record:
+          url.domain: ${TLC-CONFIG-NOTIFICATION-TWILIO-CALL-RECORD-URL-DOMAIN}
+          extension: mp3
+
+    telecmi:
+      baseV2Url: ${TLC-CONFIG-NOTIFICATION-TELECMI-V2-BASEURL}
+      baseV3Url: ${TLC-CONFIG-NOTIFICATION-TELECMI-V3-BASEURL}
+      recordPath: ${TLC-CONFIG-NOTIFICATION-TELECMI-RECORDPATH}
+      webhookUrl: ${TLC-CONFIG-NOTIFICATION-TELECMI-WEBHOOKURL}
+
+    mcube:
+      url:
+        common: ${TLC-CONFIG-NOTIFICATION-MCUBE-API-BASEURL}
+        config: ${TLC-CONFIG-NOTIFICATION-MCUBE-CONFIG-BASEURL}
+        webhook: ${TLC-CONFIG-NOTIFICATION-MCUBE-WEBHOOKURL}
+        recordPath: ${TLC-CONFIG-NOTIFICATION-MCUBE-RECORDPATH}
+
+    call:
+      location.loader.iterations: 1
+
+    email:
+      sender:
+        address: ${TLC-CONFIG-NOTIFICATION-EMAIL-SENDER-ADDRESS}
+        id: ${TLC-CONFIG-NOTIFICATION-EMAIL-SENDER-ID}
+      outlook:
+        tenant.id: ${TLC-CONFIG-NOTIFICATION-EMAIL-OUTLOOK-TENANT-ID}
+      smtp.gmail:
+        port: 465
+        host: smtp.gmail.com
+      imap.gmail:
+        port: 993
+        host: imap.gmail.com
+
+    mailService:
+      client: ${TLC_CONFIG_NOTIFICATION_MAILSERVICE_CLIENT}
+      from: ${TLC-CONFIG-NOTIFICATION-MAILSERVICE-FROM}
+      ses:
+        accessKey: ${TLC-CONFIG-NOTIFICATION-MAILSERVICE-SES-ACCESSKEY}
+        secretKey: ${TLC-CONFIG-NOTIFICATION-MAILSERVICE-SES-SECRETKEY}
+        region: ${TLC_CONFIG_NOTIFICATION_MAILSERVICE_REGION}
+      sendGrid:
+        apiKey: ${TLC-CONFIG-NOTIFICATION-MAILSERVICE-SENDGRID-APIKEY}
+      acs:
+        connectionString: ${TLC-CONFIG-NOTIFICATION-MAILSERVICE-ACS-CONNECTIONSTRING}
+
+  iam:
+    redirectUrl:
+      server:
+        accountExists: ${TLC-CONFIG-IAM-SERVER-REDIRECTURL-ACCOUNTEXISTS}
+        accountNotExists: ${TLC-CONFIG-IAM-SERVER-REDIRECTURL-ACCOUNTNOTEXISTS}
+        completeSignup: ${TLC-CONFIG-IAM-SERVER-REDIRECTURL-COMPLETESIGNUP}
+        phoneNumberRequired: ${TLC-CONFIG-IAM-SERVER-REDIRECTURL-PHONENUMBERREQUIRED}
+      local:
+        accountExists: ${TLC-CONFIG-IAM-LOCAL-REDIRECTURL-ACCOUNTEXISTS}
+        accountNotExists: ${TLC-CONFIG-IAM-LOCAL-REDIRECTURL-ACCOUNTNOTEXISTS}
+        completeSignup: ${TLC-CONFIG-IAM-LOCAL-REDIRECTURL-COMPLETESIGNUP}
+        loginSuccess: ${TLC-CONFIG-IAM-REDIRECTURL-LOCAL-LOGINSUCCESS}
+        phoneNumberRequired: ${TLC-CONFIG-IAM-LOCAL-REDIRECTURL-PHONENUMBERREQUIRED}
+
+  sync-service:
+    gmail:
+      name: ${TLC_CONFIG_EMAIL_APP_GMAIL_NAME}
+      authority: ${TLC-CONFIG-SYNC-SERVICE-GMAIL-AUTHORITY}
+      responseType: code
+      app:
+        prompt: select_account consent
+      grantType: authorization_code
+      client:
+        id: ${TLC-CONFIG-EMAIL-APP-GMAIL-CLIENT-ID}
+        secret: ${TLC-CONFIG-EMAIL-APP-GMAIL-CLIENT-SECRET}
+
+      scope:
+        email: ${TLC-CONFIG-SYNC-SERVICE-GMAIL-SCOPE-EMAIL}
+        calendar: ${TLC-CONFIG-SYNC-SERVICE-GMAIL-SCOPE-CALENDAR}
+        contact: ${TLC-CONFIG-SYNC-SERVICE-GMAIL-SCOPE-CONTACT}
+      accessTokenUrl: ${TLC-CONFIG-SYNC-SERVICE-GMAIL-ACCESSTOKENURL}
+      tokenInfoUrl: ${TLC-CONFIG-SYNC-SERVICE-GMAIL-TOKENINFOURL}
+      alias.createAlias:
+        prefix: emailvalidate2022+
+        suffix: "@gmail.com"
+      redirectUrl:
+        email: ${TLC-CONFIG-SYNC-SERVICE-GMAIL-REDIRECTURL-EMAIL}
+        calendar: ${TLC-CONFIG-SYNC-SERVICE-GMAIL-REDIRECTURL-CALENDAR}
+        contact: ${TLC-CONFIG-SYNC-SERVICE-GMAIL-REDIRECTURL-CONTACT}
+      pubSubTopic: ${TLC-CONFIG-EMAIL-APP-GMAIL-PUBSUBTOPIC}
+      batch:
+        size:
+          message: 10
+          history: 10
+    outlook:
+      client:
+        id: ${TLC-CONFIG-EMAIL-APP-OUTLOOK-CLIENT-ID}
+        secret: ${TLC-CONFIG-EMAIL-APP-OUTLOOK-CLIENT-SECRET}
+      tenantAuthority: ${TLC-CONFIG-EMAIL-APP-OUTLOOK-TENANTAUTHORITY}
+      authority: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-AUTHORITY}
+      app:
+        prompt: select_account
+      responseType: code
+      grantType: authorization_code
+      accessTokenUrl: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-ACCESSTOKENURL}
+      defaultScope: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-DEFAULTSCOPE}
+      commonAuthority: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-COMMONAUTHORITY}
+      scope:
+        email: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-SCOPE-EMAIL}
+        calendar: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-SCOPE-CALENDAR}
+        contact: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-SCOPE-CONTACT}
+      refreshTokenExpiryDays: 89
+      webhook:
+        changeType: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-WEBHOOK-CHANGETYPE}
+        resource: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-WEBHOOK-RESOURCE}
+        latestSupportedTlsVersion: 'v1_2'
+        certificate:
+          id: 'v1'
+          key:
+            public: ${TLC-CONFIG-OUTLOOK-WEBHOOK-CERTIFICATE-PUBLIC-KEY}
+            private: ${TLC-CONFIG-OUTLOOK-WEBHOOK-CERTIFICATE-PRIVATE-KEY}
+        notificationUrl: ${TLC-CONFIG-OUTLOOK-WEBHOOK-NOTIFICATION-URL}
+
+      alias:
+        client:
+          id: ${TLC-CONFIG-EMAIL-APP-OUTLOOK-ALIAS-CLIENT-ID}
+          secret: ${TLC-CONFIG-EMAIL-APP-OUTLOOK-ALIAS-CLIENT-SECRET}
+        id: ${TLC-CONFIG-EMAIL-APP-OUTLOOK-ALIAS-ID}
+        createAlias:
+          prefix: smartbcc+
+          suffix: '@thelaunchclub.in'
+
+      redirectUrl:
+        email: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-REDIRECTURL-EMAIL}
+        calendar: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-REDIRECTURL-CALENDAR}
+        contact: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-REDIRECTURL-CONTACT}
+
+    server:
+      redirectUrl:
+        unsubscribe:
+        sync: ${TLC-CONFIG-SYNC-SERVICE-SERVER-REDIRECTURL-SYNC}
+        tracking: ${TLC-CONFIG-SYNC-SERVICE-SERVER-REDIRECTURL-TRACKING}
+        error:
+          emailExists: ${TLC-CONFIG-SYNC-SERVICE-SERVER-REDIRECTURL-ERROR-EMAILEXISTS}
+          lacksPermission: ${TLC-CONFIG-SYNC-SERVICE-SERVER-REDIRECTURL-ERROR-LACKSPERMISSION}
+          authorizationFailed: ${TLC-CONFIG-SYNC-SERVICE-SERVER-REDIRECTURL-ERROR-AUTHORIZATIONFAILED}
+    local.redirectUrl:
+      sync: ${TLC-CONFIG-EMAIL-APP-LOCAL-REDIRECTURL-SYNC}
+      error:
+        emailExists: ${TLC-CONFIG-EMAIL-APP-LOCAL-REDIRECTURL-ERROR-EMAILEXISTS}
+        lacksPermission: ${TLC-CONFIG-EMAIL-APP-LOCAL-REDIRECTURL-ERROR-LACKSPERMISSION}
+        authorizationFailed: ${TLC-CONFIG-EMAIL-APP-LOCAL-REDIRECTURL-ERROR-AUTHORIZATIONFAILED}
+
+    facebook:
+      ui.dialog.endpoint: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-UI-DIALOG-ENDPOINT}
+      graph.api.endpoint: ${TLC-CONFIG-SOCIAL-FACEBOOK-GRAPH-API-ENDPOINT}
+      app:
+        id: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-APP-ID}
+        secret: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-APP-SECRET}
+      redirect.uri: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-REDIRECT-URI}
+      accessToken.uri: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-ACCESS-TOKEN-URI}
+      webhook.verify.token: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-WEBHOOK-VERIFY-TOKEN}
+      scopes: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-SCOPES}
+      page.subscribed.fields: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-PAGE-SUBSCRIBED-FIELDS}
+      local.redirectUrl:
+        error: ${CLIENT_LOCAL_DOMAIN}/settings/channels?type=facebook_messenger&status=noPagesFound
+        sync: ${CLIENT_LOCAL_DOMAIN}/settings/channels?type=facebook_messenger&status=success
+        integration.failed: ${CLIENT_LOCAL_DOMAIN}/settings/channels?type=facebook_messenger&status=integrationFailed
+      server:
+        redirectUrl:
+          sync: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-SERVER-REDIRECTURL-SYNC}
+          error: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-SERVER-REDIRECTURL-ERROR}
+          integration.failed: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-SERVER-INTEGRATION-FAILED}
+
+    whatsapp:
+      graph.api.endpoint: ${TLC-CONFIG-SOCIAL-WHATSAPP-GRAPH-API-ENDPOINT}
+      app:
+        id: ${TLC-CONFIG-SYNC-SERVICE-WHATSAPP-APP-ID}
+        secret: ${TLC-CONFIG-SYNC-SERVICE-WHATSAPP-APP-SECRET}
+      config.id: ${TLC-CONFIG-SYNC-SERVICE-WHATSAPP-CONFIG-ID}
+      accessToken.uri: ${TLC-CONFIG-SYNC-SERVICE-WHATSAPP-ACCESS-TOKEN-URI}
+      webhook.verify.token: ${TLC-CONFIG-SYNC-SERVICE-WHATSAPP-WEBHOOK-VERIFY-TOKEN}
+
+    instagram:
+      ui.dialog.endpoint: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-UI-DIALOG-ENDPOINT}
+      graph.api.endpoint: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-GRAPH-API-ENDPOINT}
+      app:
+        id: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-APP-ID}
+        secret: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-APP-SECRET}
+      redirect.uri: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-REDIRECT-URI}
+      accessToken.uri: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-ACCESS-TOKEN-URI}
+      webhook.verify.token: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-WEBHOOK-VERIFY-TOKEN}
+      scopes: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-SCOPES}
+      page.subscribed.fields: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-PAGE-SUBSCRIBED-FIELDS}
+      local.redirectUrl:
+        error: ${CLIENT_LOCAL_DOMAIN}/settings/channels?type=instagram_messenger&status=noPagesFound
+        sync: ${CLIENT_LOCAL_DOMAIN}/settings/channels?type=instagram_messenger&status=success
+        integration.failed: ${CLIENT_LOCAL_DOMAIN}/settings/channels?type=instagram_messenger&status=integrationFailed
+      server:
+        redirectUrl:
+          sync: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-SERVER-REDIRECTURL-SYNC}
+          error: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-SERVER-REDIRECTURL-ERROR}
+          integration.failed: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-SERVER-INTEGRATION-FAILED}
+
+  queue:
+    consumerBufferBytes: 5000000
+    heartbeatInterval: 10000
+    sessionTimeout: 30000
+    maxPollInterval: 300000
+    provider: ${TLC-CONFIG-QUEUE-PROVIDER}
+    async:
+      offset:
+        writer:
+          pool: async-offset-writer-pool:3
+    kafka:
+      selfManaged:
+        server: ${TLC-CONFIG-QUEUE-KAFKA-SELFMANAGED-SERVER}
+      managed:
+        server: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-SERVER}
+        security.protocol: ${TLC_CONFIG_QUEUE_KAFKA_MANAGED_SECURITY_PROTOCOL}
+        provider: ${TLC_CONFIG_QUEUE_KAFKA_MANAGED_PROVIDER}
+        aws:
+          sasl:
+            mechanism: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-MECHANISM}
+            jaas.config: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-JAAS-CONFIG}
+            client.callback.handler.class: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-CLIENT-CALLBACK-HANDLER-CLASS}
+        azure:
+          sasl:
+            mechanism: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-MECHANISM}
+            jaas.config: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-JAAS-CONFIG}
+            login.callback.handler.class: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-LOGIN-CALLBACK-HANDLER-CLASS}
+            oauthbearer.token.endpoint.url: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-OAUTHBEARER-TOKEN-ENDPOINT-URL}
+            auth.callback:
+              scope: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-AUTH-CALLBACK-SCOPE}
+              principal: azure-cli
+    topics:
+      - DATA_EXPORTER:1
+      - ORG_INITIATOR:1
+      - USER_DATA_MIGRATOR:1
+      - DATA_IMPORTER:2
+      - DATA_REVERT:1
+      - CONTACT_CREATE_EVENT:1
+      - CONTACT_DELETE_EVENT:1
+      - CONTACT_PUSH_EVENT:1
+      - CONTACT_STOP_SYNC_EVENT:1
+      - CONTACT_UPDATE_EVENT:1
+      - INDEX_ACTION_PERFORMER:3
+      - WEBFORM_SUBMIT_EVENT:1
+      - NOTIFICATION_STORAGE_EVENT:1
+      - ACTION_INITIATOR:1
+      - TRIGGER_INITIATOR:1
+      - EMAIL_SEND_REQUESTED:1
+      - EMAIL_SYNC_RETRIEVED:1
+      - ATTACHMENT_UPLOAD_LISTENER:1
+      - ATTACHMENT_DELETE_LISTENER:1
+      - SEND_REQUEST_TO_PROVIDER:1
+      - CONTACT_UPDATE:1
+      - COMPANY_UPDATE:1
+      - DEAL_UPDATE:1
+      - PRODUCT_UPDATE:1
+      - ACTIVITY_UPDATE:1
+      - CONTACT_DELETE:1
+      - COMPANY_DELETE:1
+      - DEAL_DELETE:1
+      - PRODUCT_DELETE:1
+      - ACTIVITY_DELETE:1
+      - EMAIL_ALERT_EVENT:1
+      - SYNC_STATUS_UPDATE_REQUEST:1
+      - SMART_BCC_RETRIEVED:1
+      - SYNC_DATA_LOADER:3
+      - SMART_BCC_DATA_LOADER:1
+      - ZAP_EVENT_INITIATOR:1
+      - DELETE_REQUEST_TO_PROVIDER:1
+      - UPDATE_REQUEST_TO_PROVIDER:1
+      - FB_WEBHOOK_RESPONSE_PROCESSOR:3
+      - FB_WEBHOOK_DATA_CONSUMER:3
+      - TRANSACTIONAL_MAIL_SEND_REQUESTED:1
+      - ANALYTICS_EXPORT:1
+      - AUTO_SYNC_DATA_LOADER:1
+      - WA_WEBHOOK_DATA_CONSUMER:3
+      - WA_WEBHOOK_RESPONSE_PROCESSOR:3
+      - INSTAGRAM_WEBHOOK_RESPONSE_PROCESSOR:3
+      - INSTAGRAM_WEBHOOK_DATA_CONSUMER:3
+      - PAYER_CREATE_EVENT:1
+      - WEBHOOK_NOTIFICATION_RECEIVED:3
+      - CONTACT_CREATED:1
+      - COMPANY_CREATED:1
+      - DEAL_CREATED:1
+      - CALL_LOG_DELETE:1
+      - EMAIL_UPDATED:1
+      - EMAIL_DELETED:1
+      - DOMAIN_REQUEST_TO_PROVIDER:1
+      - DOMAIN_ACTION_REQUESTED:1
+      - QUOTA_DEAL_EVENT:1
+      - QUOTA_EVENT:1
+      - ORG_ONBOARDING_EVENT:1
+      - AGGREGATED_CDC_EVENT:2
+      - FAVOURITE_CONTACT_CREATE:1
+      - MARKETING_LIST_UPDATE:1
+      - MARKETING_LIST_CONTACT_TRANSFER_EVENT:1
+      - SEGMENT_RECOMPUTE_REQUESTED:1
+      - EMAIL_ACTION:1
+
+  aggregated-cdc-consumer:
+    count: 2
+
+  auto-assignment:
+    event:
+      handler.pool: assignment-event-handler-pool:5
+      delegator.pool: assignment-event-delegator-pool:5
+      consumer:
+        max.records: 10
+        poll.duration: 1000
+        max.queue.size: 10
+
+  search:
+    provider: ${TLC_CONFIG_SEARCH_PROVIDER}
+    script:
+      auth:
+        password: ${TLC-CONFIG-SEARCH-SCRIPT-PASSWORD}
+    env: ${TLC_CONFIG_SEARCH_ENV}
+    openSearch:
+      selfManaged:
+        user: ${TLC-CONFIG-SEARCH-OPENSEARCH-SELFMANAGED-USER}
+        url: ${TLC-CONFIG-SEARCH-OPENSEARCH-SELFMANAGED-URL}
+        password: ${TLC-CONFIG-SEARCH-OPENSEARCH-SELFMANAGED-PASSWORD}
+        server.enabled: ${TLC_CONFIG_SEARCH_OPENSEARCH_SELFMANAGED_SERVER_ENABLED}
+        security.enabled: ${TLC_CONFIG_SEARCH_OPENSEARCH_SELFMANAGED_SECURITY_ENABLED}
+      managed:
+        domain: ${TLC-CONFIG-SEARCH-OPENSEARCH-MANAGED-DOMAIN}
+        signing.service: ${TLC-CONFIG-SEARCH-OPENSEARCH-MANAGED-SIGNING-SERVICE}
+        region: ${TLC-CONFIG-SEARCH-OPENSEARCH-MANAGED-REGION}
+
+  core:
+    index-action:
+      consumer:
+        name: tlc-crm-core-index-action-request-consumer
+        max.records: 10
+        count: 3
+        poll.duration: 1000
+        max.queue.size: 10
+
+    email-alert-action:
+      consumer:
+        name: tlc-crm-core-email-alert-consumer
+        count: 1
+        max.records: 10
+        poll.duration: 1000
+        max.queue.size: 10
+
+    entity-insights:
+      recompute:
+        intervalSeconds: 10
+        drainLimit: 100
+
+    org-onboarding:
+      enabled: ${TLC-CONFIG-ORG-ONBOARD-ENABLED}
+      iam.org.id: ${TLC-CONFIG-ORG-ONBOARD-IAM-ORG-ID}
+      crm.org.id: ${TLC-CONFIG-ORG-ONBOARD-CRM-ORG-ID}
+      admin.crm.id: ${TLC-CONFIG-ORG-ONBOARD-ADMIN-CRM-ID}
+      sales.owner.iam.id: ${TLC-CONFIG-ORG-ONBOARD-SALES-OWNER-IAM-ID}
+      sales.owner.crm.id: ${TLC-CONFIG-ORG-ONBOARD-SALES-OWNER-CRM-ID}
+      contact.web.source.option: ${TLC-CONFIG-ORG-ONBOARD-CONTACT-WEB-SOURCE-OPTION}
+      custom.field:
+        no.of.users: ${TLC-CONFIG-ORG-ONBOARD-CUSTOM-FIELD-NO-OF-USERS}
+        company.size: ${TLC-CONFIG-ORG-ONBOARD-CUSTOM-FIELD-ORG-SIZE}
+        industry.type: ${TLC-CONFIG-ORG-ONBOARD-CUSTOM-FIELD-INDUSTRY-TYPE}
+      consumer:
+        name: tlc-org-onboarding-consumer
+        max.records: 5
+        count: 1
+        poll.duration: 12000
+        max.queue.size: 5
+
+    marketing-list:
+      transfer:
+        consumer:
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+    segment:
+      recompute:
+        intervalSeconds: 1800
+        thresholdSeconds: 43200
+        pageSize: 100
+        worker:
+          pool:
+            size: 5
+
+  scheduler:
+    pool: zk-health-checker:1,vertx-cluster-reboot:1,currency-exchange-rate-pool:1,org-initializer-pool:2,data-export-pool:5,data-import-pool:5,import-skip-file-pool:3,data-revert-pool:2,importable-file-reader-pool:5,scheduled-email-pool:1,user-sync-email-pool:1,email-trash-pool:1,user-data-migrator-pool:1,automation-trigger-pool:7,automation-action-pool:5,automation-history-cleaner-pool:1,email-sync-thread-pool:2,contact-pull-pool:1,contact-push-pool:1,contact-create-pool:1,contact-update-pool:1,contact-delete-pool:1,contact-sync-thread-pool:1,calendar-sync-thread-pool:1,index-action-performer-pool:3,notification-pool:1,email-sync-pool:1,notification-reminder-pool:1,webform-submission-request-handler-pool:1,contact-stop-sync-event-pool:1,scheduled-activity-status-pool:1,calendar-events-sync-pool:1,automation-entity-trigger-cleaner-pool:1,email-retrieval-thread-pool:1,action-limit-cleaner-pool:1,attachment-upload-handler-pool:5,email-auto-sync-thread-pool:2,dashboard-trash-pool:1,async-bulk-update-action-pool:5,provider-send-request-pool:1,async-bulk-delete-action-pool:5,sync-load-pool:3,email-send-thread-pool:1,email-sync-status-pool:1,auto-sync-load-pool:2,inbound-email-load-pool:1,zap-event-trigger-pool:2,call-completed-status-pool:2,fb-webhook-data-load-pool:3,token-refresh-pool:1,analytics-export-pool:1,email-auto-sync-event-pool:1,instagram-webhook-data-load-pool:3,wa-webhook-data-load-pool:3,payer-create-pool:1,plan-expiration-pool:1,assignment-executor-pool:2,notification-alert-monitor-pool:1,callLog_delete-action-pool:1,email-domain-event-pool:1,quota-deal-pool:1,quota-event-pool:1,analytics-dlq-pool:1,cdc-pool:2,cdc-dispatcher-pool:5,aggregated-cdc-pool:8,org-onboarding-pool:1,favourite_contact_create-action-pool:1,marketing-list-update-action-pool:1,marketing-list-transfer-pool:1,entity-insights-recompute-pool:1,email-bulk-update-action-pool:1,email-bulk-delete-action-pool:1,email-alert-event-pool:1,segment-recompute-pool:1,segment-recompute-consumer-pool:1,automation-delay-sweeper-pool:2,automation-wait-expiry-pool:2,automation-v2-trigger-pool:4
+
+  web:
+    csrf:
+      symmetricKey:
+        value: ${TLC-CONFIG-WEB-CSRF-SYMMETRIC-KEY-VALUE}
+        security:
+          token.issuer: ${TLC-CONFIG-WEB-CSRF-SYMMETRIC-KEY-SECURITY-TOKEN-ISSUER-0}
+          keyGroup: CSRF
+      cookies:
+        name: X-CSRF-Token
+        sameSite: strict
+        maxAgeInSeconds: 600
+        version: 1
+      cache:
+        ttl: 600000
+
+    http.port: ${TLC_CONFIG_WEB_HTTP_PORT}
+    path.prefix: /api #It should start with a forward slash
+    app.name: CRM
+    allowedOrigins: ${TLC-CONFIG-WEB-ALLOWEDORIGINS}
+    cookieDomain: ${TLC-CONFIG-WEB-COOKIE-DOMAIN}
+    preflight.allowed.endpoints:
+      - path: ${TLC-CONFIG-WEB-PREFLIGHT-ALLOWED-ENDPOINTS-PATH-0}
+      - path: ${TLC-CONFIG-WEB-PREFLIGHT-ALLOWED-ENDPOINTS-PATH-1}
+        operations: generate,validate
+      - path: ${TLC-CONFIG-WEB-PREFLIGHT-ALLOWED-ENDPOINTS-PATH-2}
+        operations: completeSignup
+    default:
+      domain: ${TLC-CONFIG-WEB-DEFAULT-DOMAIN}
+
+  web-client:
+    vertx:
+      cluster:
+        manager: ${TLC_CONFIG_WEB_CLIENT_VERTX_CLUSTER_MANAGER}
+        hazelcast:
+          host: ${TLC-CONFIG-WEB-CLIENT-VERTX-CLUSTER-HAZELCAST-HOST}
+          port: ${TLC_CONFIG_WEB_CLIENT_VERTX_CLUSTER_HAZELCAST_PORT}
+        zookeeper:
+          host: ${TLC-CONFIG-ZOOKEEPER-SERVER}
+          rootPath: io.vertx
+          initialSleepTime: 1000
+          maxTimes: 5
+
+  crm-common:
+    request.handler.pool:
+      single: crm-single-request-handler-pool:15
+      bulk: crm-bulk-request-handler-pool:5
+    event.handler.pool: crm-event-request-handler-pool:5
+    telephone.event.handler.pool: telephone-event-request-handler-pool:1
+    file.event.handler.pool: file-event-request-handler-pool:2
+    import.data.fetch.batch.size: 45
+    file.preview.redirect.url: ${TLC-CONFIG-CRM-COMMON-FILE-PREVIEW-REDIRECT-URL}
+
+    channelOTPVerification:
+      accountVerification:
+        email:
+          redirectUrl:
+            otpValidate: ${TLC-CONFIG-CRM-COMMON-CHANNELOTPVERIFICATION-ACCOUNTVERIFICATION-EMAIL-OTPVALIDATE}
+            signup: ${TLC-CONFIG-CRM-COMMON-CHANNELOTPVERIFICATION-ACCOUNTVERIFICATION-EMAIL-SIGNUP}
+            login: ${TLC-CONFIG-CRM-COMMON-CHANNELOTPVERIFICATION-ACCOUNTVERIFICATION-EMAIL-LOGIN}
+            linkExpired: ${TLC-CONFIG-CRM-COMMON-CHANNELOTPVERIFICATION-ACCOUNTVERIFICATION-EMAIL-LINKEXPIRED}
+
+  external-identity:
+    oidc:
+      domain: ${TLC-CONFIG-WEB-DEFAULT-DOMAIN}
+      responseType: code
+      grantType: authorization_code
+      scope: ${TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-SCOPE}
+      google:
+        client:
+          id: ${TLC-CONFIG-EMAIL-APP-GMAIL-CLIENT-ID}
+          secret: ${TLC-CONFIG-EMAIL-APP-GMAIL-CLIENT-SECRET}
+        authority: ${TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-AUTHORITY}
+        jwksUrl: ${TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-JWKSURL}
+        issuer: ${TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-ISSUER}
+        tokenUrl: ${TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-TOKENURL}
+        userInfoUrl: ${TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-USERINFOURL}
+        redirectUrl:
+          signup: ${TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-REDIRECTURL-SIGNUP}
+          login: ${TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-GOOGLE-REDIRECTURL-LOGIN}
+      microsoft:
+        client:
+          id: ${TLC-CONFIG-EMAIL-APP-OUTLOOK-CLIENT-ID}
+          secret: ${TLC-CONFIG-EMAIL-APP-OUTLOOK-CLIENT-SECRET}
+        authority: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-AUTHORITY}
+        jwksUrl: ${TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-MICROSOFT-JWKSURL}
+        issuer: ${TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-MICROSOFT-ISSUER}
+        tokenUrl: ${TLC-CONFIG-SYNC-SERVICE-OUTLOOK-ACCESSTOKENURL}
+        userInfoUrl: ${TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-MICROSOFT-USERINFOURL}
+        redirectUrl:
+          signup: ${TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-MICROSOFT-REDIRECTURL-SIGNUP}
+          login: ${TLC-CONFIG-EXTERNAL-IDENTITY-OIDC-MICROSOFT-REDIRECTURL-LOGIN}
+
+
+  workflow-executor:
+    trigger:
+      consumer.count: 2
+      handler.pool: trigger-handler-pool:15
+      delegator.pool: trigger-delegator-pool:17
+    action:
+        controller.pool: workflow-action-controller-pool:5
+    delay:
+      sweeper.interval.ms: 20000
+      sweeper.batch.size: 500
+      resume.pool: workflow-delay-resume-pool:7
+    wait:
+      sweeper.interval.ms: 20000
+      sweeper.batch.size: 500
+      matcher.pool: workflow-wait-matcher-pool:10
+      expiry.pool: workflow-wait-expiry-pool:3
+
+  email:
+    addOnServices:
+      env: ${TLC_CONFIG_EMAIL_ADDONSERVICES_ENV}
+      domain: ${TLC-CONFIG-EMAIL-ADDONSERVICES-DOMAIN}
+      smartBcc:
+        alias:
+          prefix: smartbcc
+      teamInbox:
+        alias:
+          prefix: teaminbox
+        verification:
+          verifiedFromAddresses:
+            gmail: ${TLC-CONFIG-EMAIL-ADDONSERVICES-TEAMINBOX-VERIFICATION-VERIFIEDFROMADDRESSES-GMAIL}
+            outlook: ${TLC-CONFIG-EMAIL-ADDONSERVICES-TEAMINBOX-VERIFICATION-VERIFIEDFROMADDRESSES-OUTLOOK}
+        server.redirectUrl:
+          success: ${TLC-CONFIG-EMAIL-ADDONSERVICES-TEAMINBOX-SERVER-REDIRECTURL-SUCCESS}
+          failure: ${TLC-CONFIG-EMAIL-ADDONSERVICES-TEAMINBOX-SERVER-REDIRECTURL-FAILURE}
+          validateLink: ${TLC-CONFIG-EMAIL-ADDONSERVICES-TEAMINBOX-SERVER-REDIRECTURL-VALIDATELINK}
+        local.redirectUrl:
+          success: ${CLIENT_LOCAL_DOMAIN}/settings/team-inbox
+          failure: ${CLIENT_LOCAL_DOMAIN}/team/inbox/verification/linkExpired
+          validateLink: ${CLIENT_LOCAL_DOMAIN}/api/email/teamInbox/validate
+
+    executor:
+      sync:
+        load:
+          thread:
+            name: email-load-sync-handler
+            pool.size: 10
+            daemon: false
+          consumer:
+            name: tlc-crm-email-core-sync-load-consumer
+            max.records: 10
+            count: 3
+            poll.duration: 1000
+            max.queue.size: 10
+
+      inbound:
+        load:
+          consumer:
+            name: tlc-crm-email-core-inbound-email-load-consumer
+            max.records: 10
+            poll.duration: 1000
+            max.queue.size: 10
+
+      auto-sync:
+        consumer:
+          name: tlc-crm-email-core-email-auto-sync-load-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+  calendar:
+    local.navigateUrl: ${TLC-CONFIG-CALENDAR-LOCAL-NAVIGATEURL}
+    server.navigateUrl: ${TLC-CONFIG-CALENDAR-SERVER-NAVIGATEURL}
+    redirectUrl:
+      sync: ${TLC-CONFIG-CALENDAR-SERVER-REDIRECTURL-SYNC}
+      error: ${TLC-CONFIG-CALENDAR-SERVER-REDIRECTURL-ERROR}
+
+  webform:
+    redirectUrl:
+      render: ${TLC-CONFIG-WEBFORM-REDIRECTURL-RENDER}
+      submit: ${TLC-CONFIG-WEBFORM-REDIRECTURL-SUBMIT}
+    domain: ${TLC-CONFIG-WEBFORM-DOMAIN}
+
+  contact-sync:
+    local.navigateUrl: ${TLC-CONFIG-CONTACT-SYNC-LOCAL-NAVIGATEURL}
+    server.navigateUrl: ${TLC-CONFIG-CONTACT-SYNC-SERVER-NAVIGATEURL}
+    redirectUrl:
+      sync: ${TLC-CONFIG-CONTACT-SYNC-SERVER-REDIRECTURL-SYNC}
+      error: ${TLC-CONFIG-CONTACT-SYNC-SERVER-REDIRECTURL-ERROR}
+
+  crm-user:
+    local.redirectUrl:
+      invitation:
+        success: ${TLC-CONFIG-CRM-USER-LOCAL-REDIRECTURL-INVITATION-SUCCESS}
+        failure: ${TLC-CONFIG-CRM-USER-LOCAL-REDIRECTURL-INVITATION-FAILURE}
+      resetPassword:
+        success: ${TLC-CONFIG-CRM-USER-LOCAL-REDIRECTURL-RESETPASSWORD-SUCCESS}
+        failure: ${TLC-CONFIG-CRM-USER-LOCAL-REDIRECTURL-RESETPASSWORD-FAILURE}
+      validateLink: ${TLC-CONFIG-CRM-USER-LOCAL-REDIRECTURL-VALIDATELINK}
+    invitationUrl.local: ${CLIENT_LOCAL_DOMAIN}/setPassword
+    invitationUrl.server: ${TLC-CONFIG-CRM-USER-INVITATIONURL-SERVER}
+    server.redirectUrl:
+      invitation:
+        success: ${TLC-CONFIG-CRM-USER-SERVER-REDIRECTURL-INVITATION-SUCCESS}
+        failure: ${TLC-CONFIG-CRM-USER-SERVER-REDIRECTURL-INVITATION-FAILURE}
+      resetPassword:
+        success: ${TLC-CONFIG-CRM-USER-SERVER-REDIRECTURL-RESETPASSWORD-SUCCESS}
+        failure: ${TLC-CONFIG-CRM-USER-SERVER-REDIRECTURL-RESETPASSWORD-FAILURE}
+      validateLink: ${TLC-CONFIG-CRM-USER-SERVER-REDIRECTURL-VALIDATELINK}
+
+  analytics:
+    dashboard:
+      name.limit: 100
+      description.limit: 255
+      view.limit: 10
+      trash.expiry.days: 180
+    view:
+      name.limit: 100
+      position.limit: 10
+    export:
+      link.expiry.time: 1
+
+  async-bulk-action:
+    contact:
+      - event: update
+        topic: contact_update
+        threadPool: async-bulk-update-action-pool
+        taskController: contact-update-executor
+        consumer:
+          name: tlc-crm-core-contact-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+      - event: delete
+        topic: contact_delete
+        threadPool: async-bulk-delete-action-pool
+        taskController: contact-delete-executor
+        consumer:
+          name: tlc-crm-core-contact-delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+    company:
+      - event: update
+        topic: company_update
+        threadPool: async-bulk-update-action-pool
+        taskController: company-update-executor
+        consumer:
+          name: tlc-crm-core-company-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+      - event: delete
+        topic: company_delete
+        threadPool: async-bulk-delete-action-pool
+        taskController: company-delete-executor
+        consumer:
+          name: tlc-crm-core-company-delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+    deal:
+      - event: update
+        topic: deal_update
+        threadPool: async-bulk-update-action-pool
+        taskController: deal-update-executor
+        consumer:
+          name: tlc-crm-core-deal-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+      - event: delete
+        topic: deal_delete
+        threadPool: async-bulk-delete-action-pool
+        taskController: deal-delete-executor
+        consumer:
+          name: tlc-crm-core-deal-delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+    product:
+      - event: update
+        topic: product_update
+        threadPool: async-bulk-update-action-pool
+        taskController: product-update-executor
+        consumer:
+          name: tlc-crm-core-product-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+      - event: delete
+        topic: product_delete
+        threadPool: async-bulk-delete-action-pool
+        taskController: product-delete-executor
+        consumer:
+          name: tlc-crm-core-product-delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+    activity:
+      - event: update
+        topic: activity_update
+        threadPool: async-bulk-update-action-pool
+        taskController: activity-update-executor
+        consumer:
+          name: tlc-crm-core-activity-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+      - event: delete
+        topic: activity_delete
+        threadPool: async-bulk-delete-action-pool
+        taskController: activity-delete-executor
+        consumer:
+          name: tlc-crm-core-activity-delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+    callLog:
+      - event: delete
+        topic: call_log_delete
+        threadPool: callLog_delete-action-pool
+        taskController: callLog_delete-executor
+        consumer:
+          name: tlc-crm-core-callLog_delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+    favouriteContact:
+      - event: create
+        topic: favourite_contact_create
+        threadPool: favourite_contact_create-action-pool
+        taskController: favourite_contact_create-executor
+        consumer:
+          name: tlc-crm-core-favourite-contact-create-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+    marketingList:
+      - event: update
+        topic: marketing_list_update
+        threadPool: marketing-list-update-action-pool
+        taskController: marketing-list-update-executor
+        consumer:
+          name: tlc-crm-core-marketing-list-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+      - event: delete
+        topic: contact_delete
+
+    email:
+      - event: update
+        topic: email_updated
+        threadPool: email-bulk-update-action-pool
+        taskController: email-update-executor
+        consumer:
+          name: tlc-crm-core-email-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+      - event: delete
+        topic: email_deleted
+        threadPool: email-bulk-delete-action-pool
+        taskController: email-delete-executor
+        consumer:
+          name: tlc-crm-core-email-delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+    asyncBulkActionNames:
+      - contact
+      - company
+      - deal
+      - product
+      - activity
+      - callLog
+      - favouriteContact
+      - marketingList
+      - email
+
+  data-export:
+    redirect-url:
+      fileDownload: ${TLC-CONFIG-DATA-EXPORT-REDIRECT-URL-FILEDOWNLOAD}
+
+  zapier:
+    redirect.url: ${TLC-CONFIG-ZAPIER-REDIRECT-URL}
+    event:
+      handler.pool: zap-event-handler-pool:7
+      consumer:
+        max.records: 10
+        poll.duration: 1000
+        max.queue.size: 10
+
+  messenger-executor:
+    facebook:
+      webhook:
+        consumer:
+          max.records: 30
+          poll.duration: 1000
+          max.queue.size: 30
+          count: 3
+    whatsapp:
+      webhook:
+        consumer:
+          max.records: 30
+          poll.duration: 1000
+          max.queue.size: 30
+          count: 3
+    instagram:
+      webhook:
+        consumer:
+          max.records: 30
+          poll.duration: 1000
+          max.queue.size: 30
+          count: 3
+
+  payment-gateway:
+    provider: ${TLC-CONFIG-PAYMENT-GATEWAY-PROVIDER}
+    url:
+      paymentLink: ${TLC-CONFIG-PAYMENT-GATEWAY-PAYMENT-LINK-URL}
+      tokenGeneration: ${TLC-CONFIG-PAYMENT-GATEWAY-TOKEN-GENERATION-URL}
+      redirection: ${TLC-CONFIG-PAYMENT-GATEWAY-URL-REDIRECTION}
+      client.redirection: ${TLC-CONFIG-PAYMENT-GATEWAY-URL-CLIENT-REDIRECTION}
+    needPayerCreation: false
+    merchant.id: ${TLC-CONFIG-PAYMENT-GATEWAY-MERCHANT-ID}
+    client:
+      id: ${TLC-CONFIG-PAYMENT-GATEWAY-CLIENT-ID}
+      secret: ${TLC-CONFIG-PAYMENT-GATEWAY-CLIENT-SECRET}
+
+  profile-picture:
+    redirectUrl:
+      user: ${TLC-CONFIG-PROFILE-PICTURE-REDIRECTURL-USER}
+      source: ${TLC-CONFIG-PROFILE-PICTURE-REDIRECTURL-SOURCE}
+
+  ai:
+    provider: ${TLC-CONFIG-AI-PROVIDER}
+    portae:
+      apiKey: ${TLC-CONFIG-AI-PORTAE-APIKEY}
+      planId: ${TLC-CONFIG-AI-PORTAE-PLAN-ID}
+      url: ${TLC-CONFIG-AI-PORTAE-URL}
+      uri:
+        execute: ${TLC-CONFIG-AI-PORTAE-URI-EXECUTE}
+
+  list-action:
+    field.selection.limit: 50
+    filter.limit: 16
+
+  quotation:
+    url:
+      preview: ${TLC-CONFIG-QUOTATION-PREVIEW-URL}
+      download: ${TLC-CONFIG-QUOTATION-DOWNLOAD-URL}
+      image.preview: ${TLC-CONFIG-QUOTATION-IMAGE-PREVIEW-URL}
+  invoice:
+    url:
+      preview: ${TLC-CONFIG-INVOICE-PREVIEW-URL}
+      download: ${TLC-CONFIG-INVOICE-DOWNLOAD-URL}
+
+  kafka-connect:
+    url: ${TLC-CONFIG-KAKFA-CONNECT-URL}
+    connector:
+      source:
+        config:
+          connector.class: io.debezium.connector.postgresql.PostgresConnector
+          database.hostname: ${TLC-CONFIG-DATABASE-SERVER-WITHOUT-PORT}
+          database.port: ${TLC-CONFIG-DATABASE-PORT}
+          database.user: ${TLC-CONFIG-DATABASE-USERNAME}
+          database.password: ${TLC-CONFIG-DATABASE-PASSWORD}
+          database.dbname: ${TLC-CONFIG-DATABASE-NAME}
+          plugin.name: pgoutput
+          topic.prefix: crm
+          publication.autocreate.mode: filtered
+          schema.include.list: public
+          snapshot.mode: initial
+          heartbeat.interval.ms: 20000
+          producer.override.batch.size: 524288
+          producer.override.linger.ms: 10
+          key.converter: org.apache.kafka.connect.json.JsonConverter
+          value.converter: org.apache.kafka.connect.json.JsonConverter
+          key.converter.schemas.enable: "false"
+          value.converter.schemas.enable: "false"
+          schema.history.internal.kafka.bootstrap.servers: ${TLC-CONFIG-KAFKA-SERVER}
+      analytics.sink:
+        topic.partition: 2
+        config:
+          tasks.max: 1
+          connector.class: com.clickhouse.kafka.connect.ClickHouseSinkConnector
+          clickhouse.table.name.format: ${topic}
+          hostname: ${TLC-CONFIG-CLICKHOUSE-SERVER}
+          port: ${TLC-CONFIG-CLICKHOUSE-PORT}
+          database: ${TLC-CONFIG-CLICKHOUSE-DATABASE}
+          username: ${TLC-CONFIG-CLICKHOUSE-USERNAME}
+          password: ${TLC-CONFIG-CLICKHOUSE-PASSWORD}
+          auto.create.tables: false
+          batch.size: 20000
+          linger.ms: 5000
+          consumer.override.max.poll.records: 15000
+          consumer.override.max.partition.fetch.bytes: 30485760
+          consumer.override.fetch.max.bytes: 60485760
+          key.converter: org.apache.kafka.connect.storage.StringConverter
+          value.converter: org.apache.kafka.connect.json.JsonConverter
+          value.converter.schemas.enable: false
+          errors.tolerance: all
+          errors.log.enable: true
+          errors.log.include.messages: true
+          errors.deadletterqueue.topic.replication.factor: 1
+          errors.deadletterqueue.context.headers.enable: true
+
+  font:
+    basePath: ${TLC-CONFIG-FONT-BASEPATH}
+    config:
+      lexend:
+        name: Lexend
+        fonts:
+          - name: lexendRegular
+            fileName: lexend-regular.ttf
+            style: NORMAL
+            weight: 400
+            subset: true
+
+          - name: lexendMedium
+            fileName: lexend-medium.ttf
+            style: NORMAL
+            weight: 500
+            subset: true
+
+          - name: lexendSemiBold
+            fileName: lexend-semi-bold.ttf
+            style: NORMAL
+            weight: 400
+            subset: true
+
+          - name: lexendThin
+            fileName: lexend-thin.ttf
+            style: NORMAL
+            weight: 100
+            subset: true
+
+      noto-sans:
+        name: Noto Sans
+        fonts:
+          - name: notoSansBold
+            fileName: NotoSans-Bold.ttf
+            style: NORMAL
+            weight: 700
+            subset: true
+
+          - name: notoSansRegular
+            fileName: NotoSans-Regular.ttf
+            style: NORMAL
+            weight: 400
+            subset: true
+
+    fontFamilies:
+      - lexend
+      - noto-sans
+  mcp:
+    execution:
+      max-concurrent-per-node: 50   # node-level concurrency cap (default 50)
+      hard-timeout-seconds: 300     # hard ceiling for all tools (default 300)
+      task-retention-seconds: 3600
+    executors:
+      - name: default
+        threads: 10
+        queue-capacity: 200
+      - name: heavy
+        threads: 4
+        queue-capacity: 50
+
+  services:
+    enabled:
+      - storage
+      - cache
+      - zookeeper
+      - currency
+      - database
+      - database-resource
+      - notification
+      - email-app
+      - queue
+      - scheduler
+      - search
+      - web
+      - crm-common
+      - calendar
+      - workflow-executor
+      - webform
+      - crm-user
+      - contact-sync
+      - entity-url
+      - sync-service
+      - async-bulk-action
+      - data-export
+      - zapier
+      - email-executor
+      - email
+      - payment-gateway
+      - external-identity
+      - ai
+      - olap
+      - kafka-connect
+      - cdc-core
+      - font
+      - playwright-service
+      - mcp
+
+  entity-url:
+    contact: /contacts/
+    company: /companies/
+    deal: /deals/
+    product: /products/
+    activity:
+      summary: /activities/?isOpenActivitySummaryDialog=true&activityId=

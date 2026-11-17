@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dumpdata>
+
+    <module name="crm_messenger">
+        <OMSOConversationActivity ID="OMSOConversationActivity:ID:CO:1" TYPE="1" CHAT_OWNER_TEMPLATE="{{placeholder_1}} assigned this conversation to {{placeholder_2}} on" OTHER_USER_TEMPLATE="Conversation was assigned to {{placeholder_2}} on"/>
+        <OMSOConversationActivity ID="OMSOConversationActivity:ID:CO:2" TYPE="2" CHAT_OWNER_TEMPLATE="{{placeholder_1}} reassigned this conversation to {{placeholder_2}} on" OTHER_USER_TEMPLATE="Conversation was reassigned to {{placeholder_2}} on"/>
+        <OMSOConversationActivity ID="OMSOConversationActivity:ID:CO:3" TYPE="3" CHAT_OWNER_TEMPLATE="{{placeholder_1}} unassigned {{placeholder_2}} from this conversation on" OTHER_USER_TEMPLATE="{{placeholder_2}} was unassigned from this conversation on"/>
+    </module>
+
+</dumpdata>

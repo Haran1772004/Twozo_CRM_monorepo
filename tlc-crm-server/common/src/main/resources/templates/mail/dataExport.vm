@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Export</title>
+  </head>
+  <body>
+      #set($model = $template.get("model"))
+      #set($exportName = $model.getExportName())
+   <div data-info-group="subject" style="display: none">Your $exportName are ready for export</div>
+
+      #set($usersList = $template.getAll("users"))
+            #set($isUsersListNotEmpty = $usersList && !$usersList.isEmpty())
+            #if($isUsersListNotEmpty)
+                #foreach($user in $usersList)
+                    #if($user.id().equals($model.getUserId()))
+                        #set($userFullName = $user.getFullName())
+                    #end
+                #end
+         #end
+
+    <div style="margin: 0 auto; background: #fafafa; padding: 5% 10%">
+      <div>
+        <div
+          style="
+            background: white;
+            border-radius: 8px;
+            border: 1px rgba(0, 0, 0, 0.1) solid;
+            overflow: auto;
+            padding: 40px;
+          "
+        >
+          <div>
+            <img
+              width="107px"
+              height="33px"
+              src="https://twozo.io/_next/image?url=%2Fimages%2Flogo%2Ftwozo-full-logo.png&w=256&q=75"
+              alt="twozo"
+            />
+          </div>
+
+          <div style="padding-top: 32px">
+            <div>
+              <p
+                style="
+                  margin: 0px;
+                  font-size: 18px;
+                  font-weight: 600;
+                  font-family: Verdana, Geneva, Tahoma, sans-serif;
+                "
+              >
+                Hello $userFullName,
+              </p>
+
+              <p
+                style="
+                  margin: 0px;
+                  padding-top: 8px;
+                  font-size: 14px;
+                  font-weight: 400;
+                  font-family: Verdana, Geneva, Tahoma, sans-serif;
+                  color: rgba(0, 0, 0, 0.6);
+                "
+              >
+                Your $exportName are ready for export.
+              </p>
+              <p
+                style="
+                  margin: 0px;
+                  padding-top: 16px;
+                  font-size: 14px;
+                  font-weight: 400;
+                  font-family: Verdana, Geneva, Tahoma, sans-serif;
+                  color: rgba(0, 0, 0, 0.6);
+                "
+              >
+                <a style="color:rgba(46, 168, 113, 1)" href="$model.getFileDownloadUrl()$model.id()&source=export">Click Here</a> to download the data.
+              </p>
+
+              <p
+                style="
+                  margin: 0px;
+                  padding-top: 16px;
+                  font-size: 14px;
+                  font-weight: 400;
+                  font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+                "
+              >
+                <span style="color: rgba(0, 0, 0, 0.6);">Note:</span> Clicking on the download link will redirect you to Twozo for authentication. If you're already logged in, download starts immediately.
+              </p>
+
+            </div>
+
+            <div style="padding-top: 40px">
+              <p
+                style="
+                  margin: 0px;
+                  font-size: 14px;
+                  font-weight: 400;
+                  font-family: Verdana, Geneva, Tahoma, sans-serif;
+                "
+              >
+                Cheers,
+              </p>
+              <p
+                style="
+                  margin: 0px;
+                  font-size: 14px;
+                  font-weight: 600;
+                  font-family: Verdana, Geneva, Tahoma, sans-serif;
+                  padding-top: 4px;
+                "
+              >
+                Team Twozo
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding-top: 16px; text-align: center">
+          <div style="text-align: center">
+            <div>
+              <img
+                width="72px"
+                height="22px"
+                style="margin-right: 12px"
+                src="https://ci3.googleusercontent.com/meips/ADKq_NaXM9lCOs5luvUcsKwYTE4a39T_j1ruuTAj8HA3Qy8qB1bdzlLyIO7AHV_2K__Ot03VQ3EH1vuUB1Mu4qt5BUWTutbWF1RsGsPe3yntKkeEGmn6iw=s0-d-e1-ft#https://ind-assets.freshsales.io/assets/images/google-play.png"
+                alt="google-play"
+              />
+
+              <img
+                width="72px"
+                height="22px"
+                style="margin-left: 12px"
+                src="https://ci3.googleusercontent.com/meips/ADKq_NYiX6-9q45vsuMEOkPWau7MEr-X5uNrY1gMEsfkpicybI2bRIGTjDMrYhP1Bb6j4v5dNNUwVTT-mPj1IC6Zw-0IN2YHoEVW5WJE2TyQJgp2vRQlQ9vHvok=s0-d-e1-ft#https://ind-assets.freshsales.io/assets/images/apple-app-store.png"
+                alt="apple-app-store"
+              />
+            </div>
+
+            <div style="padding-top: 8px">
+              <p
+                style="
+                  margin: 0px;
+                  font-size: 10px;
+                  font-family: Verdana, Geneva, Tahoma, sans-serif;
+                  color: rgba(0, 0, 0, 0.6);
+                "
+              >
+                Twozo Inc.
+              </p>
+            </div>
+
+            <div style="text-align: center; padding-top: 8px; opacity: 0.6">
+              <img
+                width="20px"
+                height="20px"
+                src="https://cdn4.iconfinder.com/data/icons/iconsimple-logotypes/512/facebook-64.png"
+                alt="facebook"
+              />
+
+              <img
+                width="20px"
+                height="20px"
+                style="margin: 0px 32px"
+                src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_twitter-64.png"
+                alt="twitter"
+              />
+
+              <img
+                width="20px"
+                height="20px"
+                src="https://cdn2.iconfinder.com/data/icons/social-media-2102/100/social_media_circled_network-03-64.png"
+                alt="linkedIn"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

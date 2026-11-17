@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_crm_auto_assignment">
+
+        <table name="MASRComparator">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="KCHAR" nullable="false" max-length="100"/>
+                <column name="ALIAS_NAME" data-type="CHAR" nullable="false" max-length="30"/>
+                <column name="HAS_VALUE" data-type="BOOLEAN" nullable="false" default-value="true"/>
+            </columns>
+            <primary-key name="MASRComparator_PK" column="ID" sequence-generator="MASRComparator.ID"/>
+            <unique-keys>
+                <unique-key name="MASRComparator_UK">
+                    <unique-key-column>NAME</unique-key-column>
+                    <unique-key-column>ALIAS_NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MASRFieldTypeComparator">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="FIELD_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="COMPARATOR_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MASRFieldTypeComparator_PK" column="ID" sequence-generator="MASRFieldTypeComparator.ID"/>
+            <foreign-keys>
+                <foreign-key name="MASRFieldTypeComparator_FK1" reference-table="METFieldType"
+                             local-column="FIELD_TYPE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MASRFieldTypeComparator_FK2" reference-table="MASRComparator"
+                             local-column="COMPARATOR_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MASRFieldTypeComparator_UK">
+                    <unique-key-column>FIELD_TYPE_ID</unique-key-column>
+                    <unique-key-column>COMPARATOR_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MASRTemplate">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="KCHAR" max-length="100" nullable="false"/>
+                <column name="DESCRIPTION" data-type="KCHAR" max-length="200" nullable="false"/>
+                <column name="MODULE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MASRTemplate_PK" column="ID" sequence-generator="MASRTemplate.ID"/>
+            <unique-keys>
+                <unique-key name="MASRTemplate_UK">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MASRTemplateCriteriaSet">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CONNECTOR_ID" data-type="SMALLINT" nullable="true"/>
+                <column name="TEMPLATE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MASRTemplateCriteriaSet_PK" column="ID" sequence-generator="MASRTemplateCriteriaSet.ID"/>
+            <foreign-keys>
+                <foreign-key name="MASRTemplateCriteriaSet_FK1" reference-table="MASRTemplate"
+                             local-column="TEMPLATE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MASRTemplateCriteriaSet_UK">
+                    <unique-key-column>TEMPLATE_ID</unique-key-column>
+                    <unique-key-column>ORDER</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MASRTemplateCriteria">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TEMPLATE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_ID" data-type="BIGINT" nullable="false"/>
+                <column name="COMPARATOR_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONNECTOR_ID" data-type="SMALLINT" nullable="true"/>
+                <column name="SET_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MASRTemplateCriteria_PK" column="ID" sequence-generator="MASRTemplateCriteria.ID"/>
+            <foreign-keys>
+                <foreign-key name="MASRTemplateCriteria_FK1" reference-table="MASRTemplate"
+                             local-column="TEMPLATE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MASRTemplateCriteria_FK2" reference-table="MASRComparator"
+                             local-column="COMPARATOR_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MASRTemplateCriteria_FK3" reference-table="MASRTemplateCriteriaSet"
+                             local-column="SET_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MASRTemplateCriteria_FK4" reference-table="OMETFields"
+                             local-column="FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MASRTemplateCriteria_UK">
+                    <unique-key-column>SET_ID</unique-key-column>
+                    <unique-key-column>ORDER</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MASRTemplateCriteriaValue">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CRITERIA_ID" data-type="BIGINT" nullable="false"/>
+                <column name="VALUE" data-type="CHAR" nullable="true" max-length="200"/>
+            </columns>
+            <primary-key name="MASRTemplateCriteriaValue_PK" column="ID"
+                         sequence-generator="MASRTemplateCriteriaValue.ID"/>
+            <foreign-keys>
+                <foreign-key name="MASRTemplateCriteriaValue_FK1" reference-table="MASRTemplateCriteria"
+                             local-column="CRITERIA_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMASRAssignmentRule" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="DESCRIPTION" data-type="CHAR" nullable="true" max-length="255"/>
+                <column name="MODULE" data-type="SMALLINT" nullable="false"/>
+                <column name="TEMPLATE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="IS_ACTIVE" data-type="BOOLEAN" nullable="false"/>
+                <column name="CREATED_BY" data-type="BIGINT" nullable="false"/>
+                <column name="UPDATED_BY" data-type="BIGINT" nullable="false"/>
+                <column name="CREATED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="MODIFIED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMASRAssignmentRule_PK" column="ID" sequence-generator="OMASRAssignmentRule.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMASRAssignmentRule_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMASRAssignmentRule_FK2" reference-table="OMCRMUser"
+                             local-column="CREATED_BY" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMASRAssignmentRule_FK3" reference-table="OMCRMUser"
+                             local-column="UPDATED_BY" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMASRAssignmentRule_FK4" reference-table="MASRTemplate"
+                             local-column="TEMPLATE_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMASRCriteriaSet" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONNECTOR_ID" data-type="SMALLINT" nullable="true"/>
+                <column name="ASSIGNMENT_RULE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMASRCriteriaSet_PK" column="ID" sequence-generator="OMASRCriteriaSet.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMASRCriteriaSet_FK1" reference-table="OMASRAssignmentRule"
+                             local-column="ASSIGNMENT_RULE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMASRCriteriaSet_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMASRCriteria" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ASSIGNMENT_RULE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_ID" data-type="BIGINT" nullable="false"/>
+                <column name="COMPARATOR_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONNECTOR_ID" data-type="SMALLINT" nullable="true"/>
+                <column name="SET_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMASRCriteria_PK" column="ID" sequence-generator="OMASRCriteria.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMASRCriteria_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMASRCriteria_FK2" reference-table="OMASRAssignmentRule"
+                             local-column="ASSIGNMENT_RULE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMASRCriteria_FK3" reference-table="MASRComparator"
+                             local-column="COMPARATOR_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMASRCriteria_FK4" reference-table="OMASRCriteriaSet"
+                             local-column="SET_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMASRCriteria_FK5" reference-table="OMETFields"
+                             local-column="FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMASRCriteriaValue" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CRITERIA_ID" data-type="BIGINT" nullable="false"/>
+                <column name="VALUE_ENTITY_ID" data-type="BIGINT" nullable="true"/>
+                <column name="VALUE" data-type="CHAR" nullable="false" max-length="1000"/>
+            </columns>
+            <primary-key name="OMASRCriteriaValue_PK" column="ID" sequence-generator="OMASRCriteriaValue.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMASRCriteriaValue_FK1" reference-table="OMASRCriteria"
+                             local-column="CRITERIA_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMASRCriteriaValue_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMASRCriteriaValue_UK">
+                    <unique-key-column>CRITERIA_ID</unique-key-column>
+                    <unique-key-column>VALUE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMASRRuleUsers" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ASSIGNMENT_RULE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TERRITORY_ID" data-type="BIGINT" nullable="true"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMASRRuleUsers_PK" column="ID" sequence-generator="OMASRRuleUsers.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMASRRuleUsers_FK1" reference-table="OMASRAssignmentRule"
+                             local-column="ASSIGNMENT_RULE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMASRRuleUsers_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMASRRuleUsers_FK3" reference-table="OMCRMTerritory"
+                             local-column="TERRITORY_ID" reference-column="ID" constraint="ON-DELETE-SET-NULL"/>
+                <foreign-key name="OMASRRuleUsers_FK4" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+        </table>
+
+    </module>
+
+</metadata>

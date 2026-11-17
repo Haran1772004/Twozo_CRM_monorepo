@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_cdc_core">
+
+        <table name="MCDCConnectors">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="EVENT" data-type="SMALLINT" nullable="true"/>
+                <column name="ALIAS_NAME" data-type="CHAR" nullable="true" max-length="50"/>
+            </columns>
+            <primary-key name="MCDCConnectors_PK" column="ID" sequence-generator="MCDCConnectors.ID"/>
+            <unique-keys>
+                <unique-key name="MCDCConnectors_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MCDCTables">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="255"/>
+                <column name="CONNECTOR_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MCDCTables_PK" column="ID" sequence-generator="MCDCTables.ID"/>
+            <foreign-keys>
+                <foreign-key name="MCDCTables_FK1" reference-table="MCDCConnectors"
+                             local-column="CONNECTOR_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MCDCTables_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+
+</metadata>

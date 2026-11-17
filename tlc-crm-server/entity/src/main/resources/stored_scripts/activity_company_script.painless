@@ -1,0 +1,85 @@
+def territoryIds = params.territoryIds;
+def ownerId = params.ownerId;
+def sourceCompany = params._source.company;
+def sourceContact = params._source.contact;
+def sourceDeal = params._source.deal;
+def global = "global";
+def isCompanyTerritorial = "territory".equals(params.companyPermission);
+def isContactGlobal = "global".equals(params.contactPermission);
+def isCompanyFollower = params.isCompanyFollower;
+Map results = new HashMap();
+
+if (null != sourceCompany) {
+  def companyFollowers = sourceCompany.followerIds;
+
+  if ((isCompanyTerritorial && territoryIds.contains(sourceCompany.territoryId)) ||
+      ownerId == sourceCompany.ownerId || (isCompanyFollower && null != companyFollowers && companyFollowers.contains(ownerId))) {
+    Map companyFields = new HashMap();
+
+    companyFields.put("name", sourceCompany.name);
+    companyFields.put("website", sourceCompany.website);
+    companyFields.put("address", sourceCompany.address);
+    companyFields.put("id", sourceCompany.id);
+    results.put("company", companyFields);
+  }
+}
+
+if (isContactGlobal && null != sourceContact && !sourceContact.isEmpty()) {
+  def contactCompany = sourceContact.company;
+
+  if (null != contactCompany) {
+    def companyFollowers = contactCompany.followerIds;
+
+    if ((isCompanyTerritorial &&
+         territoryIds.contains(contactCompany.territoryId)) ||
+        ownerId == contactCompany.ownerId ||
+        (isCompanyFollower && null != companyFollowers &&
+         companyFollowers.contains(ownerId))) {
+      Map contactFields = new HashMap();
+      Map contactCompanyMap = new HashMap();
+
+      contactCompanyMap.put("name", contactCompany.name);
+      contactCompanyMap.put("id", contactCompany.id);
+      contactFields.put("company", contactCompanyMap);
+      results.put("contact", contactFields);
+    }
+  }
+}
+
+if (global.equals(params.dealPermission) && null != sourceDeal) {
+  Map dealFields = new HashMap();
+  def dealContact = sourceDeal.contact;
+  def dealCompany = sourceDeal.company;
+
+  if (isContactGlobal && null != dealContact && !dealContact.isEmpty()) {
+    Map dealContactMap = new HashMap();
+
+    dealContactMap.put("name", dealContact.name);
+    dealContactMap.put("id", dealContact.id);
+    dealFields.put("contact", dealContactMap);
+  }
+
+  if (null != dealCompany) {
+    def companyFollowers = dealCompany.followerIds;
+
+    if ((isCompanyTerritorial && territoryIds.contains(dealCompany.territoryId)) ||
+        ownerId == dealCompany.ownerId || (isCompanyFollower && null != companyFollowers && companyFollowers.contains(ownerId))) {
+      Map dealCompanyMap = new HashMap();
+
+      dealCompanyMap.put("name", dealCompany.name);
+      dealCompanyMap.put("id", dealCompany.id);
+      dealFields.put("company", dealCompanyMap);
+    }
+  }
+
+  if (!dealFields.isEmpty()) {
+    results.put("deal", dealFields);
+  }
+}
+
+if (results.isEmpty()) {
+  return null;
+} else {
+  return results;
+}
+

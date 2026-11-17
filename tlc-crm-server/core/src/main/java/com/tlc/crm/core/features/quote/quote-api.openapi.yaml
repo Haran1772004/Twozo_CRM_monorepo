@@ -1,0 +1,1028 @@
+openapi: 3.0.3
+info:
+  title: Quotation Management API
+  description: |
+    API for managing quotations including creating, retrieving, updating, drafting,
+    deleting, cloning, bulk operations, and listing quotations.
+    
+    All management operations are sent as POST requests to a single endpoint with a
+    `type` field in the request body that determines the operation.
+  version: 1.0.0
+
+servers:
+  - url: /api
+    description: Application server
+
+paths:
+  /quote/mgmt:
+    post:
+      summary: Quotation Management Operations
+      description: |
+        Single endpoint handling all quotation CRUD operations.
+        The `type` field in the request body determines the operation to perform.
+      operationId: quotationManagement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/CreateRequest'
+                - $ref: '#/components/schemas/GetRequest'
+                - $ref: '#/components/schemas/DraftRequest'
+                - $ref: '#/components/schemas/UpdateRequest'
+                - $ref: '#/components/schemas/DeleteRequest'
+                - $ref: '#/components/schemas/CloneRequest'
+                - $ref: '#/components/schemas/BulkCreateRequest'
+                - $ref: '#/components/schemas/BulkUpdateRequest'
+              discriminator:
+                propertyName: type
+                mapping:
+                  create: '#/components/schemas/CreateRequest'
+                  get: '#/components/schemas/GetRequest'
+                  draft: '#/components/schemas/DraftRequest'
+                  update: '#/components/schemas/UpdateRequest'
+                  delete: '#/components/schemas/DeleteRequest'
+                  clone: '#/components/schemas/CloneRequest'
+                  bCreate: '#/components/schemas/BulkCreateRequest'
+                  bUpdate: '#/components/schemas/BulkUpdateRequest'
+            examples:
+              create:
+                summary: Create a quotation
+                value:
+                  type: create
+                  data:
+                    dealId: 151
+              get:
+                summary: Get a quotation
+                value:
+                  type: get
+                  data:
+                    id: 1
+              draft:
+                summary: Draft a quotation
+                value:
+                  type: draft
+                  data:
+                    id: 1
+                    quoteJson:
+                      name: "CRM Deal Quotation"
+                      settings:
+                        language: { name: "English (United States)", id: 9 }
+                        locale: "US"
+                        currency: { code: "USD", id: 150 }
+                        quoteUrl: "http://example.com/api/quotation/download/1"
+                      formAttributes: []
+              update:
+                summary: Update a quotation
+                value:
+                  type: update
+                  data:
+                    id: 1
+                    quoteJson:
+                      name: "CRM Deal Quotation Updated"
+                      settings:
+                        language: { name: "English (United States)", id: 9 }
+                        locale: "US"
+                        currency: { code: "USD", id: 150 }
+                        quoteUrl: "http://example.com/api/quotation/download/1"
+                      formAttributes: []
+              delete:
+                summary: Delete a quotation
+                value:
+                  type: delete
+                  data:
+                    id: 1
+              clone:
+                summary: Clone a quotation
+                value:
+                  type: clone
+                  data:
+                    id: 1
+              bulkCreate:
+                summary: Bulk create quotations
+                value:
+                  type: bCreate
+                  data:
+                    quotations:
+                      - dealId: 151
+                      - dealId: 152
+              bulkUpdate:
+                summary: Bulk update quotations
+                value:
+                  type: bUpdate
+                  data:
+                    quotations:
+                      - id: 1
+                        quoteJson:
+                          name: "Updated Quote 1"
+                          settings: {}
+                          formAttributes: []
+                      - id: 2
+                        quoteJson:
+                          name: "Updated Quote 2"
+                          settings: {}
+                          formAttributes: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/CreateResponse'
+                  - $ref: '#/components/schemas/GetResponse'
+                  - $ref: '#/components/schemas/MessageResponse'
+                  - $ref: '#/components/schemas/CloneResponse'
+                  - $ref: '#/components/schemas/BulkCreateResponse'
+                  - $ref: '#/components/schemas/BulkUpdateResponse'
+              examples:
+                createSuccess:
+                  summary: Create success
+                  value:
+                    code: 0
+                    data:
+                      id: 1
+                      quoteJson:
+                        name: "CRM Deal"
+                        settings:
+                          language: { name: "English (United States)", id: 9 }
+                          locale: "US"
+                          currency: { code: "USD", id: 150 }
+                          quoteUrl: "http://example.com/api/quotation/download/1"
+                        formAttributes: []
+                      message: "Quotation created successfully"
+                draftSuccess:
+                  summary: Draft success
+                  value:
+                    code: 0
+                    data:
+                      message: "Quotation drafted successfully"
+                updateSuccess:
+                  summary: Update success
+                  value:
+                    code: 0
+                    data:
+                      message: "Quotation updated successfully"
+                deleteSuccess:
+                  summary: Delete success
+                  value:
+                    code: 0
+                    data:
+                      message: "Quotation deleted successfully"
+                cloneSuccess:
+                  summary: Clone success
+                  value:
+                    code: 0
+                    data:
+                      id: 2
+                      name: "CRM Deal"
+                      message: "Quotation cloned successfully"
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: -1
+                data:
+                  errorCode: "QUOTATION_CREATE_FAILED"
+                  errorSummary:
+                    error:
+                      code: "QUOTATION_CREATE_FAILED"
+                      key: "DATA_VALIDATION_FAILED"
+                    errors:
+                      - field: "name"
+                        message: "must not be null"
+
+  /quote/list:
+    post:
+      summary: List Quotations
+      description: |
+        Retrieves a paginated list of quotations with optional field selection,
+        sorting, filtering, and structure metadata fetching.
+      operationId: listQuotations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListRequest'
+            examples:
+              defaultFields:
+                summary: Fetch data with default fields
+                value:
+                  entityId: 151
+                  source: "deal"
+                  fetchStruct: false
+                  fetchData: true
+                  limit:
+                    start: 0
+                    count: 25
+              withStructure:
+                summary: Fetch structure and data
+                value:
+                  entityId: 151
+                  source: "deal"
+                  fetchStruct: true
+                  fetchData: true
+                  limit:
+                    start: 0
+                    count: 25
+              customFields:
+                summary: Fetch data with custom fields and sorting
+                value:
+                  entityId: 151
+                  source: "deal"
+                  fetchStruct: false
+                  fetchData: true
+                  fields:
+                    - field: "name"
+                      isEnabled: true
+                    - field: "amount"
+                      isEnabled: true
+                    - field: "status"
+                      isEnabled: true
+                  sort:
+                    - field: "createdAt"
+                      type: "desc"
+                  limit:
+                    start: 0
+                    count: 25
+              withFilter:
+                summary: Fetch data with filter ID
+                value:
+                  entityId: 151
+                  source: "deal"
+                  fetchStruct: false
+                  fetchData: true
+                  filterId: 101
+                  limit:
+                    start: 0
+                    count: 25
+      responses:
+        '200':
+          description: Successful list response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+              example:
+                code: 0
+                data:
+                  table:
+                    structure:
+                      columns:
+                        - name: "name"
+                          displayName: "Name"
+                          search: true
+                          hidden: false
+                          isSortable: true
+                          fieldType: "TEXT"
+                          isMandatoryField: true
+                          linkType: null
+                          isClickable: true
+                        - name: "amount"
+                          displayName: "Amount"
+                          search: false
+                          hidden: false
+                          isSortable: true
+                          fieldType: "DOUBLE"
+                          isMandatoryField: false
+                          linkType: null
+                        - name: "status"
+                          displayName: "Status"
+                          search: false
+                          hidden: false
+                          isSortable: true
+                          fieldType: "TEXT"
+                          isMandatoryField: false
+                          linkType: null
+                    data:
+                      - id: 1
+                        name: "CRM Deal"
+                        amount: 2346.25
+                        status: "DRAFT"
+                        currency: "USD"
+                        owner: 1001
+                        createdAt: 1776256244499
+                  totalCount: 1
+                  hasMore: false
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    # ============================================================
+    # Enumerations
+    # ============================================================
+    QuotationStatus:
+      type: string
+      enum:
+        - DRAFT
+        - PUBLISHED
+        - ACCEPTED
+        - REJECTED
+        - EXPIRED
+      description: |
+        - `DRAFT` — Quotation is saved but not finalized
+        - `PUBLISHED` — Quotation is finalized and shared with the buyer
+        - `ACCEPTED` — Buyer has accepted the quotation
+        - `REJECTED` — Buyer has rejected the quotation
+        - `EXPIRED` — Quotation has passed its expiration date
+
+    # ============================================================
+    # Core Models
+    # ============================================================
+    QuoteJson:
+      type: object
+      description: The fully resolved quote JSON structure containing all form attributes
+      properties:
+        name:
+          type: string
+          description: The name/title of the quotation
+          maxLength: 255
+        settings:
+          $ref: '#/components/schemas/QuoteSettings'
+        formAttributes:
+          type: array
+          description: Array of form section objects (Header, Parties, Summary, Line Items, Payments, Acceptance)
+          items:
+            $ref: '#/components/schemas/FormAttribute'
+
+    QuoteSettings:
+      type: object
+      description: Quote configuration settings
+      properties:
+        language:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Language display name
+            id:
+              type: integer
+              format: int64
+              description: Language identifier
+        locale:
+          type: string
+          description: Locale code (e.g., "US")
+        currency:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Currency ISO code (e.g., "USD")
+            id:
+              type: integer
+              format: int64
+              description: Currency identifier
+        quoteUrl:
+          type: string
+          format: uri
+          description: Public URL to access/download the quote
+
+    FormAttribute:
+      type: object
+      description: A section within the quote form (e.g., Header, Parties, Summary)
+      properties:
+        name:
+          type: string
+          description: Section display name
+        type:
+          type: string
+          description: Section type identifier
+          enum:
+            - HEADER
+            - PARTIES
+            - SUMMARY
+            - LINE_ITEMS
+            - PAYMENT
+            - ACCEPTANCE
+            - CUSTOM_SECTION
+        isEnabled:
+          type: boolean
+          description: Whether the section is enabled
+        canMakeHidden:
+          type: boolean
+          description: Whether the section can be toggled hidden
+      additionalProperties: true
+
+    Quotation:
+      type: object
+      description: Complete quotation entity
+      required:
+        - id
+        - name
+        - quoteJson
+        - amount
+        - owner
+        - createdBy
+        - expirationTime
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique quotation identifier
+        name:
+          type: string
+          description: Quotation name
+          maxLength: 255
+        number:
+          type: string
+          description: Auto-generated quotation number (e.g., "QT-001")
+          maxLength: 25
+        status:
+          $ref: '#/components/schemas/QuotationStatus'
+        amount:
+          type: number
+          format: double
+          description: Total quotation amount
+        currency:
+          type: string
+          description: Currency code
+        dealId:
+          type: integer
+          format: int64
+          description: Associated deal ID
+        owner:
+          type: integer
+          format: int64
+          description: Owner user ID
+        createdBy:
+          type: integer
+          format: int64
+          description: Creator user ID
+        createdTime:
+          type: integer
+          format: int64
+          description: Creation timestamp in milliseconds
+        expirationTime:
+          type: integer
+          format: int64
+          description: Expiration timestamp in milliseconds
+        quoteUrl:
+          type: string
+          format: uri
+          description: Public URL to access/download the quote
+        quoteJson:
+          $ref: '#/components/schemas/QuoteJson'
+
+    # ============================================================
+    # Management Request Schemas
+    # ============================================================
+    CreateRequest:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum: [create]
+        data:
+          type: object
+          required:
+            - dealId
+          properties:
+            dealId:
+              type: integer
+              format: int64
+              description: The ID of the deal to generate the quote from
+
+    GetRequest:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum: [get]
+        data:
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: The quotation ID to retrieve
+
+    DraftRequest:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum: [draft]
+        data:
+          type: object
+          required:
+            - id
+            - quoteJson
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: The quotation ID to draft
+            quoteJson:
+              $ref: '#/components/schemas/QuoteJson'
+
+    UpdateRequest:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum: [update]
+        data:
+          type: object
+          required:
+            - id
+            - quoteJson
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: The quotation ID to update
+            quoteJson:
+              $ref: '#/components/schemas/QuoteJson'
+
+    DeleteRequest:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum: [delete]
+        data:
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: The quotation ID to delete
+
+    CloneRequest:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum: [clone]
+        data:
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: The quotation ID to clone
+
+    BulkCreateRequest:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum: [bCreate]
+        data:
+          type: object
+          required:
+            - quotations
+          properties:
+            quotations:
+              type: array
+              description: Array of quotation creation data
+              items:
+                type: object
+                required:
+                  - dealId
+                properties:
+                  dealId:
+                    type: integer
+                    format: int64
+                    description: The deal ID to generate the quote from
+
+    BulkUpdateRequest:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum: [bUpdate]
+        data:
+          type: object
+          required:
+            - quotations
+          properties:
+            quotations:
+              type: array
+              description: Array of quotation update data
+              items:
+                type: object
+                required:
+                  - id
+                  - quoteJson
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    description: The quotation ID to update
+                  quoteJson:
+                    $ref: '#/components/schemas/QuoteJson'
+
+    # ============================================================
+    # List Request Schema
+    # ============================================================
+    ListRequest:
+      type: object
+      required:
+        - entityId
+        - source
+      properties:
+        entityId:
+          type: integer
+          format: int64
+          description: The ID of the parent entity (e.g., deal ID) to scope the quotation list
+        source:
+          type: string
+          description: The source entity type that the quotations belong to (e.g., "deal")
+        fetchStruct:
+          type: boolean
+          description: Whether to include the column structure metadata in the response
+          default: false
+        fetchData:
+          type: boolean
+          description: Whether to include the data rows in the response
+          default: true
+        fields:
+          type: array
+          description: Array of field objects specifying which columns to select and display
+          items:
+            $ref: '#/components/schemas/ListField'
+        sort:
+          type: array
+          description: Array of sort criteria objects
+          items:
+            $ref: '#/components/schemas/SortCriteria'
+        limit:
+          $ref: '#/components/schemas/PaginationLimit'
+        filterId:
+          type: integer
+          format: int64
+          description: ID of a saved filter to apply
+        criteria:
+          type: array
+          description: Array of inline filter criteria objects
+          items:
+            $ref: '#/components/schemas/FilterCriteria'
+        additionalCriteria:
+          type: array
+          description: Array of additional filter criteria applied alongside other filters
+          items:
+            $ref: '#/components/schemas/FilterCriteria'
+        filterCriteria:
+          type: object
+          description: Custom filter criteria object for advanced filtering
+          additionalProperties: true
+        ownerId:
+          type: integer
+          format: int64
+          description: Filter records by a specific owner user ID
+
+    ListField:
+      type: object
+      required:
+        - field
+      properties:
+        field:
+          type: string
+          description: The field name to select
+        isEnabled:
+          type: boolean
+          description: Whether the field is enabled for display
+          default: true
+        subFields:
+          type: array
+          description: Array of sub-field objects within a composite field
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The sub-field name to select
+
+    SortCriteria:
+      type: object
+      required:
+        - field
+        - type
+      properties:
+        field:
+          type: string
+          description: The field name to sort by
+        type:
+          type: string
+          enum: [asc, desc]
+          description: Sort direction
+
+    PaginationLimit:
+      type: object
+      required:
+        - start
+        - count
+      properties:
+        start:
+          type: integer
+          description: Zero-based offset for pagination
+        count:
+          type: integer
+          description: Maximum number of records to return per page
+
+    FilterCriteria:
+      type: object
+      required:
+        - field
+        - comparator
+        - value
+      properties:
+        field:
+          type: string
+          description: The field name to filter on
+        comparator:
+          type: string
+          description: The comparison operator (e.g., "is", "contains", "gt", "lt")
+        value:
+          description: The value to compare against
+          oneOf:
+            - type: string
+            - type: number
+            - type: boolean
+            - type: array
+              items: {}
+
+    # ============================================================
+    # Management Response Schemas
+    # ============================================================
+    CreateResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Response code (0 for success)
+          example: 0
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: The ID of the newly created quotation
+            quoteJson:
+              $ref: '#/components/schemas/QuoteJson'
+            message:
+              type: string
+              description: Success message
+              example: "Quotation created successfully"
+
+    GetResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Response code (0 for success)
+          example: 0
+        data:
+          type: object
+          properties:
+            quotation:
+              $ref: '#/components/schemas/Quotation'
+
+    MessageResponse:
+      type: object
+      description: Generic success response for draft, update, and delete operations
+      properties:
+        code:
+          type: integer
+          description: Response code (0 for success)
+          example: 0
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              description: Success message
+
+    CloneResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Response code (0 for success)
+          example: 0
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: The ID of the cloned quotation
+            name:
+              type: string
+              description: The name of the cloned quotation
+            message:
+              type: string
+              description: Success message
+              example: "Quotation cloned successfully"
+
+    BulkCreateResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Response code (0 for success)
+          example: 0
+        data:
+          type: object
+          properties:
+            createdRecords:
+              type: integer
+              description: Number of records created
+            quotations:
+              type: array
+              description: Array of created quotation IDs
+              items:
+                type: integer
+                format: int64
+            message:
+              type: string
+              description: Success message
+              example: "Quotation created successfully"
+
+    BulkUpdateResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Response code (0 for success)
+          example: 0
+        data:
+          type: object
+          properties:
+            updatedRecords:
+              type: integer
+              description: Number of records updated
+            quotations:
+              type: array
+              description: Array of updated quotation IDs
+              items:
+                type: integer
+                format: int64
+            message:
+              type: string
+              description: Success message
+              example: "Quotation updated successfully"
+
+    # ============================================================
+    # List Response Schema
+    # ============================================================
+    ListResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Response code (0 for success)
+          example: 0
+        data:
+          type: object
+          properties:
+            table:
+              type: object
+              properties:
+                structure:
+                  type: object
+                  description: Column structure metadata (present when fetchStruct is true)
+                  properties:
+                    columns:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/ColumnDefinition'
+                data:
+                  type: array
+                  description: Array of quotation data rows
+                  items:
+                    type: object
+                    additionalProperties: true
+            totalCount:
+              type: integer
+              description: Total number of matching records
+            hasMore:
+              type: boolean
+              description: Whether more records exist beyond the current page
+
+    ColumnDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Field identifier name
+        displayName:
+          type: string
+          description: Human-readable column header
+        search:
+          type: boolean
+          description: Whether the field is searchable
+        hidden:
+          type: boolean
+          description: Whether the field is hidden by default
+        isSortable:
+          type: boolean
+          description: Whether the field supports sorting
+        sort:
+          type: string
+          enum: [asc, desc]
+          description: Current sort direction (if applied)
+        fieldType:
+          type: string
+          description: Data type of the field
+          enum:
+            - TEXT
+            - DOUBLE
+            - DATE_TIME
+            - USER
+            - NUMBER
+        isMandatoryField:
+          type: boolean
+          description: Whether the field is always included in results
+        linkType:
+          type: string
+          nullable: true
+          description: Link type for clickable fields
+        isClickable:
+          type: boolean
+          description: Whether the field value is clickable/navigable
+
+    # ============================================================
+    # Error Response Schema
+    # ============================================================
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error response code (non-zero)
+          example: -1
+        data:
+          type: object
+          properties:
+            errorCode:
+              type: string
+              description: Machine-readable error code
+              example: "QUOTATION_CREATE_FAILED"
+            errorSummary:
+              type: object
+              properties:
+                error:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                      description: Error code identifier
+                    key:
+                      type: string
+                      description: Error key for i18n resolution
+                errors:
+                  type: array
+                  description: Detailed validation errors
+                  items:
+                    type: object
+                    properties:
+                      field:
+                        type: string
+                        description: Field that failed validation
+                      message:
+                        type: string
+                        description: Validation error message
+

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.5</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.tlc.crm</groupId>
+    <artifactId>server-starter</artifactId>
+    <version>2.34.0-SNAPSHOT</version>
+
+    <name>TLC CRM-SERVER Spring Starter</name>
+
+    <properties>
+        <java.version>17</java.version>
+
+        <tlc.components.starter.version>2.18.0-SNAPSHOT</tlc.components.starter.version>
+
+        <tlc.crm.common.version>6.26.0-SNAPSHOT</tlc.crm.common.version>
+        <tlc.crm.core.version>7.44.0-SNAPSHOT</tlc.crm.core.version>
+        <tlc.crm.entity.version>6.29.0-SNAPSHOT</tlc.crm.entity.version>
+        <tlc.crm.notifications.version>6.18.0-SNAPSHOT</tlc.crm.notifications.version>
+        <tlc.crm.workflow.version>2.26.0-SNAPSHOT</tlc.crm.workflow.version>
+        <tlc.crm.webform.version>5.15.0-SNAPSHOT</tlc.crm.webform.version>
+        <tlc.crm.icon.version>2.11.0-SNAPSHOT</tlc.crm.icon.version>
+        <tlc.crm.fields.version>1.19.0-SNAPSHOT</tlc.crm.fields.version>
+        <tlc.crm.security.version>1.29.0-SNAPSHOT</tlc.crm.security.version>
+        <tlc.crm.app.notification.version>1.8.0-SNAPSHOT</tlc.crm.app.notification.version>
+        <tlc.crm.analytics.version>2.10.0-SNAPSHOT</tlc.crm.analytics.version>
+        <tlc.crm.email.notification.version>1.12.0-SNAPSHOT</tlc.crm.email.notification.version>
+        <tlc.crm.product.package.version>2.3.0-SNAPSHOT</tlc.crm.product.package.version>
+        <tlc.crm.zapier.version>1.11.0-SNAPSHOT</tlc.crm.zapier.version>
+        <tlc.crm.email.core.version>1.9.0-SNAPSHOT</tlc.crm.email.core.version>
+        <tlc.crm.messenger.version>1.13.0-SNAPSHOT</tlc.crm.messenger.version>
+        <tlc.crm.plan.and.billing.version>1.9.0-SNAPSHOT</tlc.crm.plan.and.billing.version>
+        <tlc.crm.ai.version>1.1.0-SNAPSHOT</tlc.crm.ai.version>
+        <tlc.crm.conversation.handler.version>1.4.0-SNAPSHOT</tlc.crm.conversation.handler.version>
+        <tlc.crm.marketplace.version>1.3.0-SNAPSHOT</tlc.crm.marketplace.version>
+        <tlc.crm.auto.assignment.version>1.5.0-SNAPSHOT</tlc.crm.auto.assignment.version>
+        <tlc.crm.hospital.version>1.0.0-SNAPSHOT</tlc.crm.hospital.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>app-notification</artifactId>
+            <version>${tlc.crm.app.notification.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>fields</artifactId>
+            <version>${tlc.crm.fields.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>analytics</artifactId>
+            <version>${tlc.crm.analytics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>icon</artifactId>
+            <version>${tlc.crm.icon.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>common</artifactId>
+            <version>${tlc.crm.common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>entity</artifactId>
+            <version>${tlc.crm.entity.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>webform</artifactId>
+            <version>${tlc.crm.webform.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>core</artifactId>
+            <version>${tlc.crm.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>notifications</artifactId>
+            <version>${tlc.crm.notifications.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>security</artifactId>
+            <version>${tlc.crm.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>workflow</artifactId>
+            <version>${tlc.crm.workflow.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>email-notification</artifactId>
+            <version>${tlc.crm.email.notification.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>email-core</artifactId>
+            <version>${tlc.crm.email.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>product-package</artifactId>
+            <version>${tlc.crm.product.package.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>zapier</artifactId>
+            <version>${tlc.crm.zapier.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>messenger</artifactId>
+            <version>${tlc.crm.messenger.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>plan-and-billing</artifactId>
+            <version>${tlc.crm.plan.and.billing.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>ai</artifactId>
+            <version>${tlc.crm.ai.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>crm-marketplace</artifactId>
+            <version>${tlc.crm.marketplace.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>conversation-handler</artifactId>
+            <version>${tlc.crm.conversation.handler.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>auto-assignment</artifactId>
+            <version>${tlc.crm.auto.assignment.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>hospital</artifactId>
+            <version>${tlc.crm.hospital.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc</groupId>
+            <artifactId>components-starter</artifactId>
+            <version>${tlc.components.starter.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>twozo-mvn-artifactory</id>
+            <url>https://pkgs.dev.azure.com/twozo/TwozoCRM/_packaging/twozo-mvn-artifactory/maven/v1</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <repository>
+            <id>tlc.commons.mvn.builder.release</id>
+            <url>https://pkgs.dev.azure.com/twozo/TwozoCRM/_packaging/twozo-mvn-artifactory/maven/v1</url>
+        </repository>
+        <snapshotRepository>
+            <id>tlc.commons.builder.snapshot</id>
+            <url>https://pkgs.dev.azure.com/twozo/TwozoCRM/_packaging/twozo-mvn-artifactory/maven/v1</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.tlc.crm.server.starter.CrmServerLauncher</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.17.1</version>
+                <configuration>
+                    <generateBackupPoms>false</generateBackupPoms>
+                    <processAllModules>true</processAllModules>
+                    <processDependencies>true</processDependencies>
+                    <processParent>true</processParent>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

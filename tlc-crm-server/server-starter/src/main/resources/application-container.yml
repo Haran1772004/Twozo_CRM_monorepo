@@ -1,0 +1,949 @@
+logging:
+  level:
+    root: INFO
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger{35} - %msg%n"
+  file:
+    name: logs/twozo-crm.log
+
+tlc.config:
+  storage:
+    client: azure
+    azure:
+      accountName: crmuistorage49933
+      accountKey: ${ACCOUNT_KEY}
+      authType: CONNECTION_STRING
+      endpoint: DefaultEndpointsProtocol=https;AccountName=crmuistorage49933;AccountKey=EP73eCSJAWbrIXitcCinEqmRl1D9O1tIAKniog3sQgsmYcEVOq/Av3XLyQemt3sLdgm1AdLg+0no+AStLcaheQ==;EndpointSuffix=core.windows.net
+      containers:
+        - twozo-crm-test-storage:GENERAL
+        - twozo-crm-test-metadata:SCHEMA
+        - twozo-crm-test-event-stream:EVENT_STREAM
+      azurite:
+        enabled: false
+        endpoint: "http://azurite:10000/devstoreaccount1"
+    aws:
+      server: ${SERVER}
+      accessKey: ${ACCESS_KEY}
+      secretKey: ${SECRET_KEY}
+      bucket: twozo-dev
+      region: ap-south-1
+      authMethod: CUSTOM
+      httpClient:
+        maxConnection: 120
+        connectionTimeout: 10
+        acquisitionTimeout: 30
+      localstack:
+        enabled: false
+        server: http://localstack:4566
+
+  cache:
+    type: SINGLE
+    server: redis:6379
+    test-enabled: true
+
+  zookeeper:
+    server: zookeeper:2181
+    maxRetry: 3
+    retryWait: 1000
+    connectionTimeout: 5000
+    sessionTimeout: 500000
+
+  currency:
+    api:
+      url: http://data.fixer.io/api/
+      key: 7c032d617f9c75126402af7226b87b47
+    dev.mode: true
+
+  database-resource:
+    home: /opt/data
+    serverMode: container
+    storeType: local
+    snapshotPath: sql/snapshot
+
+  database:
+    oltp:
+      name: TLC
+      server: postgres:5432
+      username: postgres
+      password: Twozo@123
+      developmentModeEnabled: true
+      connectionPool:
+        name: crm-oltp-pool
+        max: 15
+        idle: 5
+        idle.timeout: 300000
+        maxLifetime: 1800000
+        connectionTimeout: 30000
+        leakDetectionThreshold: 60000
+#    olap:
+#      name: TLC
+#      username: default
+#      password: root123
+#      url: jdbc:clickhouse://clickhouse:8123/
+#      driver-class-name: com.clickhouse.jdbc.ClickHouseDriver
+#      admin:
+#        roletype: ADMIN
+#        username: default
+#        password: root123
+#      reader:
+#        roletype: READER
+#        username: default
+#        password: root123
+
+  notification:
+    twilio:
+      account.service.id: AC02ed63841097122e9913cd2b464a02ae
+      auth.token: 582b314b118caf7e3bdf33d51ef26c41
+      call:
+        pause.time.in.seconds: 2
+        twiml.app.service.id: AP6b0758a6f125280356ee8bcd1c7e9517
+        access.token.ttl: 300
+        allow.incoming.calls: true
+        api:
+          key.service.id: SK85fa9b780dd0e3e9d8d5ddd85c5261b8
+          secret.key.service.id: RUjNUG2awn1CYbz3ylZXCJt4OJauX5ZH
+        record:
+          url.domain: https://api.twilio.com
+          extension: mp3
+    call:
+      location.loader.iterations: 1
+    telecmi:
+      baseV2Url: https://rest.telecmi.com/v2
+      baseV3Url: https://rest.telecmi.com/v3
+      recordPath: /play?appid=%d&secret=%s&file=%s
+      webhookUrl: /api/telecmi/call/status/mgmt
+
+    mcube:
+      url:
+        common: ${TLC-CONFIG-NOTIFICATION-MCUBE-API-BASEURL}
+        config: ${TLC-CONFIG-NOTIFICATION-MCUBE-CONFIG-BASEURL}
+        webhook: ${TLC-CONFIG-NOTIFICATION-MCUBE-WEBHOOKURL}
+        recordPath: ${TLC-CONFIG-NOTIFICATION-MCUBE-RECORDPATH}
+
+    email:
+      smtp.gmail:
+        port: 465
+        host: smtp.gmail.com
+      imap.gmail:
+        port: 993
+        host: imap.gmail.com
+      sender:
+        address: testing@thelaunchclub.in
+        id: 76af0c70-a271-45a6-8e70-da99c88fa5ff
+      outlook:
+        tenant.id: 85f6c59e-93c9-4dea-8235-6170a11e5044
+
+    mailService:
+      client: sendGrid
+      from: billgates@twozo.live
+      ses:
+        accessKey: AKIA52M4ISOYENMMNPPF
+        secretKey: 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
+        region: ap-southeast-1
+        to: kishore@thelaunchclub.in
+      sendGrid:
+        apiKey: //Need to configure once the account is verified
+
+  iam:
+    redirectUrl:
+      server:
+        accountExists: /account-exists?email=
+        accountNotExists: /account-not-exists
+        completeSignup: /complete-signup
+      local:
+        accountExists: ${CLIENT_LOCAL_DOMAIN}/account-exists?email=
+        accountNotExists: ${CLIENT_LOCAL_DOMAIN}/account-not-exists
+        completeSignup: ${CLIENT_LOCAL_DOMAIN}/complete-signup
+        loginSuccess: ${CLIENT_LOCAL_DOMAIN}/
+
+  sync-service:
+    gmail:
+      name: Twozo
+      authority: https://accounts.google.com/o/oauth2/v2/auth
+      responseType: code
+      grantType: authorization_code
+      client:
+        id: 180451721138-2tvqi5co5to98qr3j70ab4dt9fj48sia.apps.googleusercontent.com
+        secret: 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
+      scope:
+        email: https://mail.google.com/ https://www.googleapis.com/auth/userinfo.email
+        calendar: https://www.googleapis.com/auth/calendar.events openid email
+        contact: https://www.googleapis.com/auth/contacts openid email
+      accessTokenUrl: https://accounts.google.com/o/oauth2/token
+      tokenInfoUrl: https://oauth2.googleapis.com/tokeninfo
+      redirectUrl:
+        email: http://localhost:8085/api/oauth/user/consent/google
+        calendar: http://localhost:8085/api/oauth/calendar/sync/google
+        contact: ${DOMAIN}/oauth/contact/sync/gmail
+      batch:
+        size:
+          message: 10
+          history: 10
+      pubSubTopic: projects/twozo-406110/topics/LocalV1
+
+      alias.createAlias:
+        prefix: emailvalidate2022+
+        suffix: '@gmail.com'
+
+    outlook:
+      client:
+        id: 07146aef-4bc8-46c1-82b3-8ece38e95393
+        secret: Wsb8Q~OeozuomHMa8aeRVRl20ICd8eEzV3QSNc4Y
+      authority: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+      responseType: code
+      grantType: authorization_code
+      accessTokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+      defaultScope: https://graph.microsoft.com/.default
+      commonAuthority: https://login.microsoftonline.com/common
+      tenantAuthority: https://login.microsoftonline.com/85f6c59e-93c9-4dea-8235-6170a11e5044
+      scope:
+        email: openid Mail.Send Mail.Read offline_access Mail.ReadWrite User.Read
+        calendar: openid Calendars.Read Calendars.Read.Shared Calendars.ReadWrite Calendars.ReadWrite.Shared User.Read offline_access
+        contact: Contacts.Read Contacts.ReadWrite openid offline_access
+      redirectUrl:
+        email: http://localhost:8085/api/oauth/user/consent/outlook
+        calendar: /oauth/calendar/sync/outlook
+        contact: /oauth/contact/sync/outlook
+      refreshTokenExpiryDays: 89
+
+      alias:
+        client:
+          id: a793d9da-d4f7-4f45-a353-2427d29dd798
+          secret: L2_8Q~6q4ZY8dgt1T08emkdR.wE1afMM4XEmQa5_
+        id: a17e95a6-f90c-4272-88c1-cade6225f5f7
+        createAlias:
+          prefix: smartbcc+
+          suffix: '@thelaunchclub.in'
+#        id: a17e95a6-f90c-4272-88c1-cade6225f5f7
+
+    facebook:
+      ui.dialog.endpoint: https://www.facebook.com/v22.0
+      graph.api.endpoint: https://graph.facebook.com/v22.0
+      app:
+        id: 634685675674973
+        secret: 6b9b4b7d5da333d76ff032197a9118ea
+      redirect.uri: /api/oauth/messenger/facebook
+      accessToken.uri: /oauth/access_token
+      webhook.verify.token: 27B46354-141F-420D-AF43-419B5AB93727
+      scopes: pages_show_list,pages_messaging,pages_manage_metadata,email,business_management
+      page.subscribed.fields: messages,message_echoes,message_edits,message_reactions,message_deliveries,message_reads
+      local.redirectUrl:
+        error: ${CLIENT_LOCAL_DOMAIN}/settings/channels?type=facebook_messenger&status=noPagesFound
+        sync: ${CLIENT_LOCAL_DOMAIN}/settings/channels?type=facebook_messenger&status=success
+        integration.failed: ${CLIENT_LOCAL_DOMAIN}/settings/channels?type=facebook_messenger&status=integrationFailed
+      server:
+        redirectUrl:
+          sync: /settings/channels?type=facebook_messenger&status=success
+          error: /settings/channels?type=facebook_messenger&status=noPagesFound
+          integration.failed: /settings/channels?type=facebook_messenger&status=integrationFailed
+
+    whatsapp:
+      graph.api.endpoint: https://graph.facebook.com/v23.0
+      app:
+        id: 1185727570266473
+        secret: b49155b5a0d2cae926f01288a0d231dc
+      config.id: 709650032037346
+      accessToken.uri: /oauth/access_token
+      webhook.verify.token: 27B46354-141F-420D-AF43-419B5AB93727
+
+    instagram:
+      ui.dialog.endpoint: https://www.facebook.com/v22.0
+      graph.api.endpoint: https://graph.facebook.com/v22.0
+      app:
+        id: 604826402251602
+        secret: 01839a63f9ffb96a156b20b861bdfd3f
+      redirect.uri: /api/oauth/messenger/instagram
+      accessToken.uri: /oauth/access_token
+      webhook.verify.token: 27B46354-141F-420D-AF43-419B5AB93727
+      scopes: pages_show_list,instagram_basic,instagram_manage_messages,business_management,pages_read_engagement,pages_manage_metadata
+      page.subscribed.fields: messages,message_reads
+      local.redirectUrl:
+        error: ${CLIENT_LOCAL_DOMAIN}/settings/channels?type=instagram_messenger&status=noPagesFound
+        sync: ${CLIENT_LOCAL_DOMAIN}/settings/channels?type=instagram_messenger&status=success
+        integration.failed: ${CLIENT_LOCAL_DOMAIN}/settings/channels?type=instagram_messenger&status=integrationFailed
+      server:
+        redirectUrl:
+          sync: /settings/channels?type=instagram_messenger&status=success
+          error: /settings/channels?type=instagram_messenger&status=noPagesFound
+          integration.failed: /settings/channels?type=instagram_messenger&status=integrationFailed
+
+    server:
+      redirectUrl:
+        unsubscribe:
+        sync: http://localhost:8085/settings/email?type=email_sync
+        tracking: http://localhost:8085/notifications/email/tracker
+        error: /settings/email?type=email_sync&syncStatus=syncedInSameOrg
+
+    local.redirectUrl:
+      sync: ${CLIENT_LOCAL_DOMAIN}/settings/email?type=email_sync
+      error: ${CLIENT_LOCAL_DOMAIN}/settings/email?type=email_sync&syncStatus=syncedInSameOrg
+
+  messenger-executor:
+    facebook:
+      webhook:
+        consumer:
+          max.records: 30
+          poll.duration: 1000
+          max.queue.size: 30
+          count: 3
+    whatsapp:
+      webhook:
+        consumer:
+          max.records: 30
+          poll.duration: 1000
+          max.queue.size: 30
+          count: 3
+    instagram:
+      webhook:
+        consumer:
+          max.records: 30
+          poll.duration: 1000
+          max.queue.size: 30
+          count: 3
+
+  queue:
+    consumerBufferBytes: 5000000
+    heartbeatInterval: 10000
+    sessionTimeout: 30000
+    maxPollInterval: 300000
+    provider: SelfManagedKafka
+    async:
+      offset:
+        writer:
+          pool: async-offset-writer-pool:3
+    kafka:
+      selfManaged:
+        server: PLAINTEXT://kafka:9092
+      managed:
+        server: ${MANAGED_KAFKA_SERVER_ENDPOINT}
+        security.protocol: SASL_SSL
+        provider: azure
+        aws:
+          sasl:
+            mechanism: AWS_MSK_IAM
+            jaas.config: software.amazon.msk.auth.iam.IAMLoginModule required;
+            client.callback.handler.class: software.amazon.msk.auth.iam.IAMClientCallbackHandler
+        azure:
+          sasl:
+            mechanism: OAUTHBEARER
+            jaas.config: org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
+            login.callback.handler.class: com.tlc.queue.internal.kafka.security.handler.AzureAuthCallbackHandler
+            auth.callback:
+              scope: https://local-test.servicebus.windows.net/.default
+              principal: azure-cli
+
+    topics:
+      - DATA_EXPORTER:1
+      - ORG_INITIATOR:1
+      - USER_DATA_MIGRATOR:1
+      - DATA_IMPORTER:2
+      - DATA_REVERT:1
+      - CONTACT_CREATE_EVENT:1
+      - CONTACT_DELETE_EVENT:1
+      - CONTACT_PUSH_EVENT:1
+      - CONTACT_STOP_SYNC_EVENT:1
+      - CONTACT_UPDATE_EVENT:1
+      - INDEX_ACTION_PERFORMER:3
+      - WEBFORM_SUBMIT_EVENT:1
+      - NOTIFICATION_STORAGE_EVENT:1
+      - ACTION_INITIATOR:1
+      - TRIGGER_INITIATOR:1
+      - EMAIL_SEND_REQUESTED:1
+      - EMAIL_SEND_ACTION_FAILED:1
+      - EMAIL_SYNC_RETRIEVED:1
+      - ATTACHMENT_UPLOAD_LISTENER:1
+      - ATTACHMENT_DELETE_LISTENER:1
+      - SEND_REQUEST_TO_PROVIDER:1
+      - CONTACT_UPDATE:1
+      - COMPANY_UPDATE:1
+      - DEAL_UPDATE:1
+      - PRODUCT_UPDATE:1
+      - ACTIVITY_UPDATE:1
+      - CONTACT_DELETE:1
+      - COMPANY_DELETE:1
+      - DEAL_DELETE:1
+      - PRODUCT_DELETE:1
+      - ACTIVITY_DELETE:1
+      - EMAIL_ALERT_EVENT:1
+      - SYNC_STATUS_UPDATE_REQUEST:1
+      - SMART_BCC_RETRIEVED:1
+      - SYNC_DATA_LOADER:3
+      - SMART_BCC_DATA_LOADER:1
+      - ZAP_EVENT_INITIATOR:1
+      - DELETE_REQUEST_TO_PROVIDER:1
+      - UPDATE_REQUEST_TO_PROVIDER:1
+      - FB_WEBHOOK_RESPONSE_PROCESSOR:3
+      - FB_WEBHOOK_DATA_CONSUMER:3
+      - TRANSACTIONAL_MAIL_SEND_REQUESTED:1
+      - ANALYTICS_EXPORT:1
+      - AUTO_SYNC_DATA_LOADER:1
+      - WA_WEBHOOK_DATA_CONSUMER:3
+      - WA_WEBHOOK_RESPONSE_PROCESSOR:3
+      - INSTAGRAM_WEBHOOK_RESPONSE_PROCESSOR:3
+      - INSTAGRAM_WEBHOOK_DATA_CONSUMER:3
+      - PAYER_CREATE_EVENT:1
+      - WEBHOOK_NOTIFICATION_RECEIVED:3
+      - CONTACT_CREATED:1
+      - COMPANY_CREATED:1
+      - DEAL_CREATED:1
+      - CALL_LOG_DELETE:1
+      - EMAIL_UPDATED:1
+      - EMAIL_DELETED:1
+      - DOMAIN_REQUEST_TO_PROVIDER:1
+      - DOMAIN_ACTION_REQUESTED:1
+      - QUOTA_DEAL_EVENT:1
+      - QUOTA_EVENT:1
+      - ORG_ONBOARDING_EVENT:1
+      - AGGREGATED_CDC_EVENT:2
+      - FAVOURITE_CONTACT_CREATE:1
+      - MARKETING_LIST_UPDATE:1
+      - MARKETING_LIST_CONTACT_TRANSFER_EVENT:1
+      - SEGMENT_RECOMPUTE_REQUESTED:1
+      - EMAIL_ACTION:1
+
+  aggregated-cdc-consumer:
+    count: 2
+
+  search:
+    provider: SelfManagedOpenSearch
+    env: ${spring.profiles.active}
+    openSearch:
+      selfManaged:
+        user: search-admin
+        url: http://opensearch:9200
+        password: dummy-password
+        server.enabled: false
+        security.enabled: false #TODO This will enable password less authentication and non ssl transport
+      managed:
+        domain: ${OPEN_SEARCH_SERVERLESS_DOMAIN}
+        signing.service: aoss
+        region: ap-south-1
+    consumer:
+      name: tlc-crm-core-index-action-request-consumer
+      max.records: 10
+      count: 3
+      poll.duration: 1000
+      max.queue.size: 10
+
+  scheduler:
+    pool: zk-health-checker:1,vertx-cluster-reboot:1,currency-exchange-rate-pool:1,org-initializer-pool:2,data-export-pool:5,data-import-pool:5,import-skip-file-pool:3,data-revert-pool:2,importable-file-reader-pool:5,scheduled-email-pool:1,user-sync-email-pool:1,email-trash-pool:1,user-data-migrator-pool:1,automation-trigger-pool:7,automation-action-pool:5,automation-history-cleaner-pool:1,email-sync-thread-pool:2,contact-pull-pool:1,contact-push-pool:1,contact-create-pool:1,contact-update-pool:1,contact-delete-pool:1,contact-sync-thread-pool:1,calendar-sync-thread-pool:1,index-action-performer-pool:3,notification-pool:1,email-sync-pool:1,notification-reminder-pool:1,webform-submission-request-handler-pool:1,contact-stop-sync-event-pool:1,scheduled-activity-status-pool:1,calendar-events-sync-pool:1,automation-entity-trigger-cleaner-pool:1,email-retrieval-thread-pool:1,action-limit-cleaner-pool:1,attachment-upload-handler-pool:5,email-auto-sync-thread-pool:2,dashboard-trash-pool:1,async-bulk-update-action-pool:5,provider-send-request-pool:1,async-bulk-delete-action-pool:5,sync-load-pool:3,email-send-thread-pool:1,email-sync-status-pool:1,auto-sync-load-pool:2,inbound-email-load-pool:1,zap-event-trigger-pool:2,call-completed-status-pool:2,fb-webhook-data-load-pool:3,token-refresh-pool:1,analytics-export-pool:1,email-auto-sync-event-pool:1,instagram-webhook-data-load-pool:3,wa-webhook-data-load-pool:3,payer-create-pool:1,plan-expiration-pool:1,assignment-executor-pool:2,notification-alert-monitor-pool:1,callLog_delete-action-pool:1,email-domain-event-pool:1,quota-deal-pool:1,quota-event-pool:1,analytics-dlq-pool:1,cdc-pool:2,cdc-dispatcher-pool:5,aggregated-cdc-pool:8,org-onboarding-pool:1,favourite_contact_create-action-pool:1,marketing-list-update-action-pool:1,marketing-list-transfer-pool:1,entity-insights-recompute-pool:1,email-bulk-update-action-pool:1,email-bulk-delete-action-pool:1,email-alert-event-pool:1,segment-recompute-pool:1,segment-recompute-consumer-pool:1,automation-delay-sweeper-pool:2,automation-wait-expiry-pool:2,automation-v2-trigger-pool:4
+  web:
+    csrf:
+      symmetricKey:
+        value: 2345678943234567886543456786543456654
+        security:
+          token.issuer: TWOZO:internal.security.twozo.in
+          keyGroup: CSRF
+      cookies:
+        name: X-CSRF-Token
+        sameSite: strict
+        maxAgeInSeconds: 600
+        version: 1
+      cache:
+        ttl: 600000
+
+    cookieDomain: .twozo.live
+    http.port: 8080
+    appDomain: ${LOCAL_DOMAIN}
+    allowedOrigins: http://localhost:8085
+    path.prefix: /api
+    app.name: CRM
+    default.domain: ${LOCAL_DOMAIN}
+    preflight.allowed.endpoints:
+      - path: /api/accounts/crm/signup
+      - path: /api/otp/mgmt
+        operations: generate,validate
+      - path: /api/accounts/organization
+        operations: completeSignup
+
+  web-client:
+    vertx:
+      cluster:
+        manager: zookeeper
+        hazelcast:
+          host: zookeeper
+          port: 5701
+        zookeeper:
+          host: zookeeper:2181
+          rootPath: io.vertx
+          initialSleepTime: 1000
+          maxTimes: 5
+
+  crm-common:
+    request.handler.pool:
+      single: crm-single-request-handler-pool:15
+      bulk: crm-bulk-request-handler-pool:5
+    event.handler.pool: crm-event-request-handler-pool:5
+    telecmi.event.handler.pool: telecmi-event-request-handler-pool:1
+    import.data.fetch.batch.size: 45
+    file.preview.redirect.url: /api/file/preview/
+
+    channelOTPVerification:
+      accountVerification:
+        email:
+          redirectUrl:
+            otpValidate: /api/otp/validate
+            signup: /complete-signup
+            login: /login
+            linkExpired: /otp/validate/linkExpired
+
+  external-identity:
+    oidc:
+      domain: ${LOCAL_DOMAIN}
+      responseType: code
+      grantType: authorization_code
+      scope: openid email profile
+      google:
+        client:
+          id: 180451721138-2tvqi5co5to98qr3j70ab4dt9fj48sia.apps.googleusercontent.com
+          secret: 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
+        authority: https://accounts.google.com/o/oauth2/v2/auth
+        jwksUrl: https://www.googleapis.com/oauth2/v3/certs
+        issuer: https://accounts.google.com
+        tokenUrl: https://oauth2.googleapis.com/token
+        userInfoUrl: https://openidconnect.googleapis.com/v1/userinfo
+        redirectUrl:
+          signup: /api/oidc/crm/signup/google
+          login: /api/oidc/crm/login/google
+      microsoft:
+        client:
+          id: 07146aef-4bc8-46c1-82b3-8ece38e95393
+          secret: kX~8Q~cWD-jAyk.26T-sq0yxs0UX4_VGjyNJhcs4
+        authority: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+        jwksUrl: https://login.microsoftonline.com/common/discovery/v2.0/keys
+        issuer: https://login.microsoftonline.com/common/v2.0
+        tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+        userInfoUrl: https://graph.microsoft.com/oidc/userinfo
+        redirectUrl:
+          signup: /api/oidc/crm/signup/microsoft
+          login: /api/oidc/crm/login/microsoft
+
+  calendar:
+    server.navigateUrl: ${LOCAL_DOMAIN}/settings/email?type=calendar_sync
+    redirectUrl:
+      sync: /settings/email?type=calendar_sync
+      error: /settings/email?type=calendar_sync&syncStatus=syncedInSameOrg
+
+  workflow-executor:
+    trigger:
+      consumer.count: 2
+      handler.pool: trigger-handler-pool:15
+      delegator.pool: trigger-delegator-pool:17
+    action:
+      controller.pool: workflow-action-controller-pool:5
+    delay:
+      sweeper.interval.ms: 20000
+      sweeper.batch.size: 500
+      resume.pool: workflow-delay-resume-pool:7
+    wait:
+      sweeper.interval.ms: 20000
+      sweeper.batch.size: 500
+      matcher.pool: workflow-wait-matcher-pool:10
+      expiry.pool: workflow-wait-expiry-pool:3
+
+  webform:
+    redirectUrl:
+      render: /api/webform/render/
+      submit: /api/webform/submit
+    domain: forms.thelaunchclub.in
+
+  crm-user:
+    server.redirectUrl:
+      invitation:
+        success: /setPassword
+        failure: /user/invite/linkExpired
+      resetPassword:
+        success: /resetPassword
+        failure: /resetPassword/linkExpired
+      validateLink: /api/validateLink
+
+  contact-sync:
+    server.navigateUrl: ${LOCAL_DOMAIN}/settings/email?type=contact_sync
+    redirectUrl:
+      sync: /settings/email?type=contact_sync
+      error: /settings/email?type=contact_sync&syncStatus=syncedInSameOrg
+
+  email:
+    addOnServices:
+      domain: '@twozo.net'
+      smartBcc:
+        alias:
+          prefix: smartbcc+
+      teamInbox:
+        alias:
+          prefix: teaminbox+
+        verification:
+          verifiedFromAddresses:
+            gmail: forwarding-noreply@google.com
+            outlook: no-reply@outlook.com, no-reply@microsoft.com, outlook-noreply@microsoft.com
+        local.redirectUrl:
+          success: ${CLIENT_LOCAL_DOMAIN}/settings/team-inbox
+          failure: ${CLIENT_LOCAL_DOMAIN}/team/inbox/verification/linkExpired
+          validateLink: ${CLIENT_LOCAL_DOMAIN}/api/email/teamInbox/validate
+        server.redirectUrl:
+          success: /settings/team-inbox
+          failure: /team/inbox/verification/linkExpired
+          validateLink: /api/email/teamInbox/validate
+
+    executor:
+      sync:
+        load:
+          thread:
+            name: email-load-sync-handler
+            pool.size: 10
+            daemon: false
+          consumer:
+            name: tlc-crm-email-core-sync-load-consumer
+            max.records: 10
+            count: 3
+            poll.duration: 1000
+            max.queue.size: 10
+
+      inbound:
+        load:
+          consumer:
+            name: tlc-crm-email-core-inbound-email-load-consumer
+            max.records: 10
+            poll.duration: 1000
+            max.queue.size: 10
+
+      auto-sync:
+        consumer:
+          name: tlc-crm-email-core-email-auto-sync-load-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+  entity-url:
+    contact: /contacts/
+    company: /companies/
+    deal: /deals/
+    product: /products/
+
+  analytics:
+    dashboard:
+      name.limit: 100
+      description.limit: 255
+      view.limit: 10
+    view:
+      name.limit: 100
+      position.limit: 10
+
+  async-bulk-action:
+    contact:
+      - event: update
+        topic: contact_update
+        threadPool: async-bulk-update-action-pool
+        taskController: contact-update-executor
+        consumer:
+          name: tlc-crm-core-contact-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+      - event: delete
+        topic: contact_delete
+        threadPool: async-bulk-delete-action-pool
+        taskController: contact-delete-executor
+        consumer:
+          name: tlc-crm-core-contact-delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+    company:
+      - event: update
+        topic: company_update
+        threadPool: async-bulk-update-action-pool
+        taskController: company-update-executor
+        consumer:
+          name: tlc-crm-core-company-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+      - event: delete
+        topic: company_delete
+        threadPool: async-bulk-delete-action-pool
+        taskController: company-delete-executor
+        consumer:
+          name: tlc-crm-core-company-delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+    deal:
+      - event: update
+        topic: deal_update
+        threadPool: async-bulk-update-action-pool
+        taskController: deal-update-executor
+        consumer:
+          name: tlc-crm-core-deal-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+      - event: delete
+        topic: deal_delete
+        threadPool: async-bulk-delete-action-pool
+        taskController: deal-delete-executor
+        consumer:
+          name: tlc-crm-core-deal-delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+    product:
+      - event: update
+        topic: product_update
+        threadPool: async-bulk-update-action-pool
+        taskController: product-update-executor
+        consumer:
+          name: tlc-crm-core-product-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+      - event: delete
+        topic: product_delete
+        threadPool: async-bulk-delete-action-pool
+        taskController: product-delete-executor
+        consumer:
+          name: tlc-crm-core-product-delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+    activity:
+      - event: update
+        topic: activity_update
+        threadPool: async-bulk-update-action-pool
+        taskController: activity-update-executor
+        consumer:
+          name: tlc-crm-core-activity-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+      - event: delete
+        topic: activity_delete
+        threadPool: async-bulk-delete-action-pool
+        taskController: activity-delete-executor
+        consumer:
+          name: tlc-crm-core-activity-delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+    callLog:
+      - event: delete
+        topic: call_log_delete
+        threadPool: callLog_delete-action-pool
+        taskController: callLog_delete-executor
+        consumer:
+          name: tlc-crm-core-callLog_delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+    favouriteContact:
+      - event: create
+        topic: favourite_contact_create
+        threadPool: favourite_contact_create-action-pool
+        taskController: favourite_contact_create-executor
+        consumer:
+          name: tlc-crm-core-favourite-contact-create-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+    marketingList:
+      - event: update
+        topic: marketing_list_update
+        threadPool: marketing-list-update-action-pool
+        taskController: marketing-list-update-executor
+        consumer:
+          name: tlc-crm-core-marketing-list-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+      - event: delete
+        topic: contact_delete
+
+    email:
+      - event: update
+        topic: email_updated
+        threadPool: email-bulk-update-action-pool
+        taskController: email-update-executor
+        consumer:
+          name: tlc-crm-core-email-update-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+      - event: delete
+        topic: email_deleted
+        threadPool: email-bulk-delete-action-pool
+        taskController: email-delete-executor
+        consumer:
+          name: tlc-crm-core-email-delete-consumer
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+    asyncBulkActionNames:
+      - contact
+      - company
+      - deal
+      - product
+      - activity
+      - callLog
+      - marketingList
+      - email
+      - favouriteContact
+
+
+  profile-picture:
+    redirectUrl:
+      user: /api/accounts/profile-picture/
+      source: /api/source/profile-picture/
+
+  data-export:
+    redirect-url:
+      fileDownload: /api/static/file/download/mgmt?id=
+
+  zapier:
+    redirect.url: https://zapier.com/apps/twozo-crm/integrations
+    event:
+      handler.pool: zap-event-handler-pool:7
+      consumer:
+        max.records: 10
+        poll.duration: 1000
+        max.queue.size: 10
+
+  auto-assignment:
+    event:
+      handler.pool: assignment-event-handler-pool:3
+      delegator.pool: assignment-event-delegator-pool:5
+      consumer:
+        max.records: 10
+        poll.duration: 1000
+        max.queue.size: 10
+
+  payment-gateway:
+    provider: PayU
+    url:
+      paymentLink: https://oneapi.payu.in
+      tokenGeneration: https://accounts.payu.in
+      redirection: /api/payment/redirect
+      client.redirection: /settings/account-settings?type=plans_and_billings
+    needPayerCreation: false
+    merchant.id: 13271017
+    client:
+      id: 91c560e301e8c969144b4f84be24f52d67f2cfcb6103905c37a20751240999b6
+      secret: a37fdafdd9364d87a753f7a4102e18dd7c95df5273fa618b675d2adcba4993df
+
+  ai:
+    provider: portae
+    portae:
+      apiKey: pk_dev_45347a625c644a65915df4efb1e0f111
+      planId: 69973e70739f1e60f235c909
+      url: https://api.portae.ai/api/v1
+      uri:
+        execute: /skill/execute
+  list-action:
+    field.selection.limit: 50
+    filter.limit: 16
+
+  quotation:
+    url:
+      preview: ${TLC-CONFIG-QUOTATION-PREVIEW-URL}
+      download: ${TLC-CONFIG-QUOTATION-DOWNLOAD-URL}
+      image.preview: ${TLC-CONFIG-QUOTATION-IMAGE-PREVIEW-URL}
+  invoice:
+    url:
+      preview: ${TLC-CONFIG-INVOICE-PREVIEW-URL}
+      download: ${TLC-CONFIG-INVOICE-DOWNLOAD-URL}
+
+  kafka-connect:
+    url: http://kafka-connect:8083/connectors/
+    connector:
+      source:
+        config:
+          connector.class: io.debezium.connector.postgresql.PostgresConnector
+          database.hostname: postgres
+          database.port: 5432
+          database.user: postgres
+          database.password: root123
+          database.dbname: TLC
+          plugin.name: pgoutput
+          topic.prefix: crm
+          publication.autocreate.mode: filtered
+          schema.include.list: public
+          snapshot.mode: initial
+          heartbeat.interval.ms: 20000
+          key.converter: org.apache.kafka.connect.json.JsonConverter
+          value.converter: org.apache.kafka.connect.json.JsonConverter
+          key.converter.schemas.enable: "false"
+          value.converter.schemas.enable: "false"
+          schema.history.internal.kafka.bootstrap.servers: kafka:9092
+      analytics.sink:
+        topic.partition: 2
+        config:
+          tasks.max: 1
+          connector.class: com.clickhouse.kafka.connect.ClickHouseSinkConnector
+          clickhouse.table.name.format": ${topic}
+          hostname: clickhouse
+          port: 8123
+          database: TLC
+          username: default
+          password: root123
+          auto.create.tables: false
+          batch.size: 1000
+          key.converter: org.apache.kafka.connect.storage.StringConverter
+          value.converter: org.apache.kafka.connect.json.JsonConverter
+          value.converter.schemas.enable: false
+          errors.tolerance: all
+          errors.log.enable: true
+          errors.log.include.messages: true
+          errors.deadletterqueue.topic.replication.factor: 1
+          errors.deadletterqueue.context.headers.enable: true
+
+  services:
+    enabled:
+      - storage
+      - cache
+      - zookeeper
+      - currency
+      - database
+      - database-resource
+      - notification
+      - email-app
+      - queue
+      - scheduler
+      - search
+      - web
+      - crm-common
+      - calendar
+      - workflow-executor
+      - webform
+      - crm-user
+      - contact-sync
+      - entity-url
+      - sync-service
+      - async-bulk-action
+      - data-export
+      - zapier
+      - email-executor
+      - email
+      - payment-gateway
+      - external-identity
+#      - ai
+#      - kafka-connect
+#      - cdc-core
+#      - olap
+      # Override leftover indexed entries inherited from application.yml.
+      - local-disabled-service
+      - local-disabled-service
+      - local-disabled-service
+      - local-disabled-service
+      - local-disabled-service
+      - local-disabled-service
+      - local-disabled-service

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dumpdata>
+
+    <module name="tlc_crm_Icon">
+        <MICIcon ID="MICIcon:ID:CO:1" NAME="search" DISPLAY_NAME="i18n.icon.name.search"/>
+        <MICIcon ID="MICIcon:ID:CO:2" NAME="call" DISPLAY_NAME="i18n.icon.name.call"/>
+        <MICIcon ID="MICIcon:ID:CO:3" NAME="add" DISPLAY_NAME="i18n.icon.name.add"/>
+        <MICIcon ID="MICIcon:ID:CO:4" NAME="company" DISPLAY_NAME="i18n.icon.name.company"/>
+        <MICIcon ID="MICIcon:ID:CO:5" NAME="contact" DISPLAY_NAME="i18n.icon.name.contact"/>
+        <MICIcon ID="MICIcon:ID:CO:6" NAME="copy" DISPLAY_NAME="i18n.icon.name.copy"/>
+        <MICIcon ID="MICIcon:ID:CO:7" NAME="custom" DISPLAY_NAME="i18n.icon.name.custom"/>
+        <MICIcon ID="MICIcon:ID:CO:8" NAME="calendar" DISPLAY_NAME="i18n.icon.name.calendar"/>
+        <MICIcon ID="MICIcon:ID:CO:9" NAME="deal" DISPLAY_NAME="i18n.icon.name.deal"/>
+        <MICIcon ID="MICIcon:ID:CO:10" NAME="edit" DISPLAY_NAME="i18n.icon.name.edit"/>
+        <MICIcon ID="MICIcon:ID:CO:11" NAME="export" DISPLAY_NAME="i18n.icon.name.export"/>
+        <MICIcon ID="MICIcon:ID:CO:12" NAME="file" DISPLAY_NAME="i18n.icon.name.file"/>
+        <MICIcon ID="MICIcon:ID:CO:13" NAME="info" DISPLAY_NAME="i18n.icon.name.info"/>
+        <MICIcon ID="MICIcon:ID:CO:14" NAME="kanban" DISPLAY_NAME="i18n.icon.name.kanban"/>
+        <MICIcon ID="MICIcon:ID:CO:15" NAME="lunch" DISPLAY_NAME="i18n.icon.name.lunch"/>
+        <MICIcon ID="MICIcon:ID:CO:16" NAME="mail" DISPLAY_NAME="i18n.icon.name.mail"/>
+        <MICIcon ID="MICIcon:ID:CO:17" NAME="meeting" DISPLAY_NAME="i18n.icon.name.meeting"/>
+        <MICIcon ID="MICIcon:ID:CO:18" NAME="note" DISPLAY_NAME="i18n.icon.name.note"/>
+        <MICIcon ID="MICIcon:ID:CO:19" NAME="time" DISPLAY_NAME="i18n.icon.name.time"/>
+        <MICIcon ID="MICIcon:ID:CO:20" NAME="favouriteOff" DISPLAY_NAME="i18n.icon.name.favourite.off"/>
+        <MICIcon ID="MICIcon:ID:CO:21" NAME="notification" DISPLAY_NAME="i18n.icon.name.notification"/>
+        <MICIcon ID="MICIcon:ID:CO:22" NAME="product" DISPLAY_NAME="i18n.icon.name.product"/>
+        <MICIcon ID="MICIcon:ID:CO:23" NAME="quote" DISPLAY_NAME="i18n.icon.name.quote"/>
+        <MICIcon ID="MICIcon:ID:CO:24" NAME="send" DISPLAY_NAME="i18n.icon.name.send"/>
+        <MICIcon ID="MICIcon:ID:CO:25" NAME="settings" DISPLAY_NAME="i18n.icon.name.settings"/>
+        <MICIcon ID="MICIcon:ID:CO:26" NAME="task" DISPLAY_NAME="i18n.icon.name.task"/>
+        <MICIcon ID="MICIcon:ID:CO:27" NAME="tick" DISPLAY_NAME="i18n.icon.name.tick"/>
+        <MICIcon ID="MICIcon:ID:CO:28" NAME="collaborator" DISPLAY_NAME="i18n.icon.name.collaborator"/>
+        <MICIcon ID="MICIcon:ID:CO:29" NAME="contactSynced" DISPLAY_NAME="i18n.icon.name.contactSynced"/>
+        <MICIcon ID="MICIcon:ID:CO:30" NAME="calendarSynced" DISPLAY_NAME="i18n.icon.name.calendarSynced"/>
+        <MICIcon ID="MICIcon:ID:CO:31" NAME="team" DISPLAY_NAME="i18n.icon.name.team"/>
+        <MICIcon ID="MICIcon:ID:CO:32" NAME="key" DISPLAY_NAME="i18n.icon.name.key"/>
+        <MICIcon ID="MICIcon:ID:CO:33" NAME="activity" DISPLAY_NAME="i18n.icon.name.activity"/>
+        <MICIcon ID="MICIcon:ID:CO:34" NAME="lost" DISPLAY_NAME="i18n.icon.name.lost"/>
+        <MICIcon ID="MICIcon:ID:CO:35" NAME="user" DISPLAY_NAME="i18n.icon.name.user"/>
+        <MICIcon ID="MICIcon:ID:CO:36" NAME="barChart" DISPLAY_NAME="i18n.icon.name.barChart"/>
+        <MICIcon ID="MICIcon:ID:CO:37" NAME="pieChart" DISPLAY_NAME="i18n.icon.name.pieChart"/>
+        <MICIcon ID="MICIcon:ID:CO:38" NAME="lineChart" DISPLAY_NAME="i18n.icon.name.lineChart"/>
+        <MICIcon ID="MICIcon:ID:CO:39" NAME="kpiCard" DISPLAY_NAME="i18n.icon.name.KPICard"/>
+        <MICIcon ID="MICIcon:ID:CO:40" NAME="conversation" DISPLAY_NAME="i18n.icon.name.conversation"/>
+        <MICIcon ID="MICIcon:ID:CO:41" NAME="areaChart" DISPLAY_NAME="i18n.icon.name.area.chart"/>
+        <MICIcon ID="MICIcon:ID:CO:42" NAME="donutChart" DISPLAY_NAME="i18n.icon.name.donut.chart"/>
+        <MICIcon ID="MICIcon:ID:CO:43" NAME="horizontalBarChart" DISPLAY_NAME="i18n.icon.name.horizontal.bar.chart"/>
+        <MICIcon ID="MICIcon:ID:CO:44" NAME="heatMap" DISPLAY_NAME="i18n.icon.name.heat.map"/>
+        <MICIcon ID="MICIcon:ID:CO:45" NAME="groupedBarChart" DISPLAY_NAME="i18n.icon.name.grouped.bar.chart"/>
+        <MICIcon ID="MICIcon:ID:CO:46" NAME="groupedHorizontalBarChart" DISPLAY_NAME="i18n.icon.name.grouped.horizontal.bar.chart"/>
+        <MICIcon ID="MICIcon:ID:CO:47" NAME="stackedBarChart" DISPLAY_NAME="i18n.icon.name.stacked.bar.chart"/>
+        <MICIcon ID="MICIcon:ID:CO:48" NAME="stackedHorizontalBarChart" DISPLAY_NAME="i18n.icon.name.stacked.horizontal.bar.chart"/>
+        <MICIcon ID="MICIcon:ID:CO:49" NAME="summaryTable" DISPLAY_NAME="i18n.icon.name.summary.table"/>
+        <MICIcon ID="MICIcon:ID:CO:50" NAME="facebook" DISPLAY_NAME="i18n.icon.name.facebook"/>
+        <MICIcon ID="MICIcon:ID:CO:51" NAME="whatsapp" DISPLAY_NAME="i18n.icon.name.whatsapp"/>
+        <MICIcon ID="MICIcon:ID:CO:52" NAME="instagram" DISPLAY_NAME="i18n.icon.name.instagram"/>
+        <MICIcon ID="MICIcon:ID:CO:53" NAME="archive" DISPLAY_NAME="i18n.icon.name.archive"/>
+        <MICIcon ID="MICIcon:ID:CO:54" NAME="bubbleChart" DISPLAY_NAME="i18n.icon.name.bubble.chart"/>
+
+        <MICIcon ID="MICIcon:ID:CO:55" NAME="incomingCall" DISPLAY_NAME="i18n.icon.name.incoming.call"/>
+        <MICIcon ID="MICIcon:ID:CO:56" NAME="outgoingCall" DISPLAY_NAME="i18n.icon.name.outgoing.call"/>
+        <MICIcon ID="MICIcon:ID:CO:57" NAME="missedIncomingCall" DISPLAY_NAME="i18n.icon.name.missed.incoming.call"/>
+        <MICIcon ID="MICIcon:ID:CO:58" NAME="unansweredOutgoingCall" DISPLAY_NAME="i18n.icon.name.unanswered.outgoing.call"/>
+
+        <MICIcon ID="MICIcon:ID:CO:59" NAME="home" DISPLAY_NAME="i18n.icon.name.menu.home"/>
+        <MICIcon ID="MICIcon:ID:CO:60" NAME="analytics" DISPLAY_NAME="i18n.icon.name.menu.analytics"/>
+        <MICIcon ID="MICIcon:ID:CO:61" NAME="invoice" DISPLAY_NAME="i18n.icon.name.invoice"/>
+    </module>
+
+    <module name="tlc_crm_IconType">
+        <MICIconType ID="MICIconType:ID:CO:1" NAME="activity"/>
+        <MICIconType ID="MICIconType:ID:CO:2" NAME="timeline"/>
+        <MICIconType ID="MICIconType:ID:CO:3" NAME="notification"/>
+        <MICIconType ID="MICIconType:ID:CO:4" NAME="chart"/>
+        <MICIconType ID="MICIconType:ID:CO:5" NAME="menu"/>
+    </module>
+
+    <module name="tlc_crm_IconHolder">
+                                          <!--  Activity Icons   -->
+        <MICIconHolder ID="MICIconHolder:ID:CO:1" ICON_ID="MICIcon:ID:CO:1" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:2" ICON_ID="MICIcon:ID:CO:2" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:3" ICON_ID="MICIcon:ID:CO:3" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:4" ICON_ID="MICIcon:ID:CO:4" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:5" ICON_ID="MICIcon:ID:CO:5" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:6" ICON_ID="MICIcon:ID:CO:6" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:7" ICON_ID="MICIcon:ID:CO:7" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:8" ICON_ID="MICIcon:ID:CO:8" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:9" ICON_ID="MICIcon:ID:CO:9" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:10" ICON_ID="MICIcon:ID:CO:10" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:11" ICON_ID="MICIcon:ID:CO:11" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:12" ICON_ID="MICIcon:ID:CO:12" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:13" ICON_ID="MICIcon:ID:CO:13" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:14" ICON_ID="MICIcon:ID:CO:14" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:15" ICON_ID="MICIcon:ID:CO:15" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:16" ICON_ID="MICIcon:ID:CO:16" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:17" ICON_ID="MICIcon:ID:CO:17" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:18" ICON_ID="MICIcon:ID:CO:18" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:19" ICON_ID="MICIcon:ID:CO:19" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:20" ICON_ID="MICIcon:ID:CO:20" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:21" ICON_ID="MICIcon:ID:CO:21" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:22" ICON_ID="MICIcon:ID:CO:22" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:23" ICON_ID="MICIcon:ID:CO:23" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:24" ICON_ID="MICIcon:ID:CO:24" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:25" ICON_ID="MICIcon:ID:CO:25" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:26" ICON_ID="MICIcon:ID:CO:26" TYPE_ID="MICIconType:ID:CO:1"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:27" ICON_ID="MICIcon:ID:CO:27" TYPE_ID="MICIconType:ID:CO:1"/>
+
+                                              <!--  Timeline Icons   -->
+        <MICIconHolder ID="MICIconHolder:ID:CO:51" ICON_ID="MICIcon:ID:CO:5" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:52" ICON_ID="MICIcon:ID:CO:9" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:53" ICON_ID="MICIcon:ID:CO:4" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:54" ICON_ID="MICIcon:ID:CO:18" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:55" ICON_ID="MICIcon:ID:CO:12" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:56" ICON_ID="MICIcon:ID:CO:8" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:57" ICON_ID="MICIcon:ID:CO:6" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:58" ICON_ID="MICIcon:ID:CO:34" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:59" ICON_ID="MICIcon:ID:CO:16" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:60" ICON_ID="MICIcon:ID:CO:35" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:61" ICON_ID="MICIcon:ID:CO:50" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:62" ICON_ID="MICIcon:ID:CO:51" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:63" ICON_ID="MICIcon:ID:CO:52" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:64" ICON_ID="MICIcon:ID:CO:53" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:65" ICON_ID="MICIcon:ID:CO:55" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:66" ICON_ID="MICIcon:ID:CO:56" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:67" ICON_ID="MICIcon:ID:CO:57" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:68" ICON_ID="MICIcon:ID:CO:58" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:69" ICON_ID="MICIcon:ID:CO:2" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:70" ICON_ID="MICIcon:ID:CO:22" TYPE_ID="MICIconType:ID:CO:2"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:71" ICON_ID="MICIcon:ID:CO:61" TYPE_ID="MICIconType:ID:CO:2"/>
+
+
+                                              <!--  Notification Icons   -->
+        <MICIconHolder ID="MICIconHolder:ID:CO:101" ICON_ID="MICIcon:ID:CO:5" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:102" ICON_ID="MICIcon:ID:CO:4" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:103" ICON_ID="MICIcon:ID:CO:9" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:104" ICON_ID="MICIcon:ID:CO:22" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:105" ICON_ID="MICIcon:ID:CO:16" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:106" ICON_ID="MICIcon:ID:CO:28" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:107" ICON_ID="MICIcon:ID:CO:29" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:108" ICON_ID="MICIcon:ID:CO:30" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:109" ICON_ID="MICIcon:ID:CO:31" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:110" ICON_ID="MICIcon:ID:CO:32" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:111" ICON_ID="MICIcon:ID:CO:33" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:112" ICON_ID="MICIcon:ID:CO:35" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:130" ICON_ID="MICIcon:ID:CO:40" TYPE_ID="MICIconType:ID:CO:3"/>
+
+        <MICIconHolder ID="MICIconHolder:ID:CO:141" ICON_ID="MICIcon:ID:CO:55" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:142" ICON_ID="MICIcon:ID:CO:56" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:143" ICON_ID="MICIcon:ID:CO:2" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:200" ICON_ID="MICIcon:ID:CO:18" TYPE_ID="MICIconType:ID:CO:3"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:201" ICON_ID="MICIcon:ID:CO:11" TYPE_ID="MICIconType:ID:CO:3"/>
+
+        <!--  Chart Icons   -->
+        <MICIconHolder ID="MICIconHolder:ID:CO:113" ICON_ID="MICIcon:ID:CO:36" TYPE_ID="MICIconType:ID:CO:4"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:114" ICON_ID="MICIcon:ID:CO:37" TYPE_ID="MICIconType:ID:CO:4"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:115" ICON_ID="MICIcon:ID:CO:38" TYPE_ID="MICIconType:ID:CO:4"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:116" ICON_ID="MICIcon:ID:CO:39" TYPE_ID="MICIconType:ID:CO:4"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:125" ICON_ID="MICIcon:ID:CO:41" TYPE_ID="MICIconType:ID:CO:4"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:126" ICON_ID="MICIcon:ID:CO:42" TYPE_ID="MICIconType:ID:CO:4"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:127" ICON_ID="MICIcon:ID:CO:43" TYPE_ID="MICIconType:ID:CO:4"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:128" ICON_ID="MICIcon:ID:CO:44" TYPE_ID="MICIconType:ID:CO:4"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:129" ICON_ID="MICIcon:ID:CO:45" TYPE_ID="MICIconType:ID:CO:4"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:134" ICON_ID="MICIcon:ID:CO:46" TYPE_ID="MICIconType:ID:CO:4"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:131" ICON_ID="MICIcon:ID:CO:47" TYPE_ID="MICIconType:ID:CO:4"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:132" ICON_ID="MICIcon:ID:CO:48" TYPE_ID="MICIconType:ID:CO:4"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:133" ICON_ID="MICIcon:ID:CO:49" TYPE_ID="MICIconType:ID:CO:4"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:135" ICON_ID="MICIcon:ID:CO:54" TYPE_ID="MICIconType:ID:CO:4"/>
+
+        <!--  Menu Icons   -->
+        <MICIconHolder ID="MICIconHolder:ID:CO:117" ICON_ID="MICIcon:ID:CO:5" TYPE_ID="MICIconType:ID:CO:5"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:118" ICON_ID="MICIcon:ID:CO:9" TYPE_ID="MICIconType:ID:CO:5"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:119" ICON_ID="MICIcon:ID:CO:33" TYPE_ID="MICIconType:ID:CO:5"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:120" ICON_ID="MICIcon:ID:CO:1" TYPE_ID="MICIconType:ID:CO:5"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:121" ICON_ID="MICIcon:ID:CO:22" TYPE_ID="MICIconType:ID:CO:5"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:122" ICON_ID="MICIcon:ID:CO:21" TYPE_ID="MICIconType:ID:CO:5"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:123" ICON_ID="MICIcon:ID:CO:25" TYPE_ID="MICIconType:ID:CO:5"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:124" ICON_ID="MICIcon:ID:CO:4" TYPE_ID="MICIconType:ID:CO:5"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:144" ICON_ID="MICIcon:ID:CO:59" TYPE_ID="MICIconType:ID:CO:5"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:145" ICON_ID="MICIcon:ID:CO:60" TYPE_ID="MICIconType:ID:CO:5"/>
+        <MICIconHolder ID="MICIconHolder:ID:CO:146" ICON_ID="MICIcon:ID:CO:2" TYPE_ID="MICIconType:ID:CO:5"/>
+    </module>
+</dumpdata>

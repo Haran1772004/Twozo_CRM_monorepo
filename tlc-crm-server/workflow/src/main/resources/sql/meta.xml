@@ -1,0 +1,998 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_crm_workflow">
+
+        <table name="MWFLActionSource">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="KCHAR" nullable="false" max-length="100"/>
+                <column name="ALIAS_NAME" data-type="CHAR" nullable="false" max-length="30"/>
+            </columns>
+            <primary-key name="MWFLActionSource_PK" column="ID" sequence-generator="MWFLActionSource.ID"/>
+            <unique-keys>
+                <unique-key name="MWFLActionSource_UK">
+                    <unique-key-column>ALIAS_NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLActionEvent">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="KCHAR" nullable="false" max-length="100"/>
+                <column name="ALIAS_NAME" data-type="CHAR" nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="MWFLActionEvent_PK" column="ID" sequence-generator="MWFLActionEvent.ID"/>
+            <unique-keys>
+                <unique-key name="MWFLActionEvent_UK">
+                    <unique-key-column>ALIAS_NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLTriggerActions">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TRIGGER_SOURCE_ID" data-type="SMALLINT" nullable="false"/>
+                <column name="ACTION_SOURCE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ACTION_EVENT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_ENABLED" data-type="BOOLEAN" nullable="false" default-value="true"/>
+            </columns>
+            <primary-key name="MWFLTriggerActions_PK" column="ID" sequence-generator="MWFLTriggerActions.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLTriggerActions_FK1" reference-table="MWFLActionEvent"
+                             local-column="ACTION_EVENT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLTriggerActions_FK2" reference-table="MWFLActionSource"
+                             local-column="ACTION_SOURCE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLTriggerActions_UK">
+                    <unique-key-column>TRIGGER_SOURCE_ID</unique-key-column>
+                    <unique-key-column>ACTION_SOURCE_ID</unique-key-column>
+                    <unique-key-column>ACTION_EVENT_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLFields">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="KCHAR" nullable="false" max-length="100"/>
+                <column name="ALIAS_NAME" data-type="CHAR" nullable="false" max-length="30"/>
+                <column name="FIELD_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONFIG" data-type="CHAR" nullable="true"/>
+                <column name="ACTION_SOURCE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLFields_PK" column="ID" sequence-generator="MWFLFields.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLFields_FK1" reference-table="METFieldType"
+                             local-column="FIELD_TYPE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLFields_FK2" reference-table="MWFLActionSource"
+                             local-column="ACTION_SOURCE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLFields_UK">
+                    <unique-key-column>ALIAS_NAME</unique-key-column>
+                    <unique-key-column>ACTION_SOURCE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLActionFields">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TRIGGER_ACTION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONFIG" data-type="CHAR" nullable="true"/>
+                <column name="FIELD_ID" data-type="BIGINT" nullable="true"/>
+                <column name="WORKFLOW_FIELD_ID" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="MWFLActionFields_PK" column="ID" sequence-generator="MWFLActionFields.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLActionFields_FK1" reference-table="OMETFields"
+                             local-column="FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLActionFields_FK2" reference-table="MWFLFields"
+                             local-column="WORKFLOW_FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLActionFields_FK3" reference-table="MWFLTriggerActions"
+                             local-column="TRIGGER_ACTION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLActionFields_UK1">
+                    <unique-key-column>TRIGGER_ACTION_ID</unique-key-column>
+                    <unique-key-column>FIELD_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MWFLActionFields_UK2">
+                    <unique-key-column>TRIGGER_ACTION_ID</unique-key-column>
+                    <unique-key-column>WORKFLOW_FIELD_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLStepOptions">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="KCHAR" nullable="false" max-length="100"/>
+                <column name="ALIAS_NAME" data-type="CHAR" nullable="false" max-length="50"/>
+                <column name="FIELD_ID" data-type="BIGINT" nullable="true"/>
+                <column name="WORKFLOW_FIELD_ID" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="MWFLStepOptions_PK" column="ID" sequence-generator="MWFLStepOptions.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLStepOptions_FK1" reference-table="OMETFields"
+                             local-column="FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLStepOptions_FK2" reference-table="MWFLFields"
+                             local-column="WORKFLOW_FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLStepOptions_UK1">
+                    <unique-key-column>ALIAS_NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLStepOptionFields">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ACTION_FIELD_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STEP_OPTION_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLStepOptionFields_PK" column="ID" sequence-generator="MWFLStepOptionFields.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLStepOptionFields_FK1" reference-table="MWFLActionFields"
+                             local-column="ACTION_FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLStepOptionFields_FK2" reference-table="MWFLStepOptions"
+                             local-column="STEP_OPTION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLStepOptionFields_UK">
+                    <unique-key-column>ACTION_FIELD_ID</unique-key-column>
+                    <unique-key-column>STEP_OPTION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLComparator">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="KCHAR" nullable="false" max-length="100"/>
+                <column name="ALIAS_NAME" data-type="CHAR" nullable="false" max-length="30"/>
+                <column name="HAS_VALUE" data-type="BOOLEAN" nullable="false" default-value="true"/>
+                <column name="CATEGORY" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLComparator_PK" column="ID" sequence-generator="MWFLComparator.ID"/>
+            <unique-keys>
+                <unique-key name="MWFLComparator_UK">
+                    <unique-key-column>NAME</unique-key-column>
+                    <unique-key-column>ALIAS_NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLFieldTypeComparator">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="FIELD_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="COMPARATOR_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLFieldTypeComparator_PK" column="ID" sequence-generator="MWFLFieldTypeComparator.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLFieldTypeComparator_FK1" reference-table="METFieldType"
+                             local-column="FIELD_TYPE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLFieldTypeComparator_FK2" reference-table="MWFLComparator"
+                             local-column="COMPARATOR_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLFieldTypeComparator_UK">
+                    <unique-key-column>FIELD_TYPE_ID</unique-key-column>
+                    <unique-key-column>COMPARATOR_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLTemplate">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="KCHAR" max-length="100" nullable="false"/>
+                <column name="DESCRIPTION" data-type="KCHAR" max-length="200" nullable="false"/>
+                <column name="CATEGORY" data-type="SMALLINT" nullable="false"/>
+                <column name="TRIGGER_EVENT" data-type="SMALLINT" nullable="false"/>
+                <column name="TRIGGER_SOURCE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLTemplate_PK" column="ID" sequence-generator="MWFLTemplate.ID"/>
+            <unique-keys>
+                <unique-key name="MWFLTemplate_UK">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLTemplateCriteriaSet">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CONNECTOR_ID" data-type="SMALLINT" nullable="true"/>
+                <column name="TEMPLATE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLTemplateCriteriaSet_PK" column="ID" sequence-generator="MWFLTemplateCriteriaSet.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLTemplateCriteriaSet_FK1" reference-table="MWFLTemplate"
+                             local-column="TEMPLATE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLTemplateCriteriaSet_UK">
+                    <unique-key-column>TEMPLATE_ID</unique-key-column>
+                    <unique-key-column>ORDER</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLTemplateCriteria">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TEMPLATE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="COMPARATOR_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONNECTOR_ID" data-type="SMALLINT" nullable="true"/>
+                <column name="SET_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLTemplateCriteria_PK" column="ID" sequence-generator="MWFLTemplateCriteria.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLTemplateCriteria_FK1" reference-table="MWFLTemplate"
+                             local-column="TEMPLATE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLTemplateCriteria_FK2" reference-table="MWFLComparator"
+                             local-column="COMPARATOR_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLTemplateCriteria_FK3" reference-table="MWFLTemplateCriteriaSet"
+                             local-column="SET_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLTemplateCriteria_UK">
+                    <unique-key-column>SET_ID</unique-key-column>
+                    <unique-key-column>ORDER</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLTemplateCriteriaValue">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CRITERIA_ID" data-type="BIGINT" nullable="false"/>
+                <column name="VALUE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="VALUE" data-type="CHAR" nullable="true" max-length="200"/>
+            </columns>
+            <primary-key name="MWFLTemplateCriteriaValue_PK" column="ID" sequence-generator="MWFLTemplateCriteriaValue.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLTemplateCriteriaValue_FK1" reference-table="MWFLTemplateCriteria"
+                             local-column="CRITERIA_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLTemplateCriteriaValue_UK">
+                    <unique-key-column>CRITERIA_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLTemplateSourceFieldCriteria">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CRITERIA_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLTemplateSourceFieldCriteria_PK" column="ID" sequence-generator="MWFLTemplateSourceFieldCriteria.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLTemplateSourceFieldCriteria_FK1" reference-table="MWFLTemplateCriteria"
+                             local-column="CRITERIA_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLTemplateSourceFieldCriteria_FK2" reference-table="OMETFields"
+                             local-column="FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLTemplateSourceFieldCriteria_UK">
+                    <unique-key-column>CRITERIA_ID</unique-key-column>
+                    <unique-key-column>FIELD_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLTemplateFieldCriteria">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CRITERIA_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLTemplateFieldCriteria_PK" column="ID" sequence-generator="MWFLTemplateFieldCriteria.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLTemplateFieldCriteria_FK1" reference-table="MWFLTemplateCriteria"
+                             local-column="CRITERIA_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLTemplateFieldCriteria_FK2" reference-table="MWFLFields"
+                             local-column="FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLTemplateFieldCriteria_UK">
+                    <unique-key-column>CRITERIA_ID</unique-key-column>
+                    <unique-key-column>FIELD_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLTemplateActions">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TEMPLATE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_MAPPING" data-type="TEXT" nullable="false"/>
+                <column name="ACTION_EVENT" data-type="BIGINT" nullable="false"/>
+                <column name="ACTION_SOURCE" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLTemplateActions_PK" column="ID" sequence-generator="MWFLTemplateActions.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLTemplateActions_FK1" reference-table="MWFLTemplate"
+                             local-column="TEMPLATE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLTemplateActions_FK2" reference-table="MWFLActionSource"
+                             local-column="ACTION_SOURCE" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLTemplateActions_FK3" reference-table="MWFLActionEvent"
+                             local-column="ACTION_EVENT" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMWFLWorkflow" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="OWNER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="DESCRIPTION" data-type="CHAR" nullable="true" max-length="255"/>
+                <column name="TEMPLATE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="TRIGGER_SOURCE" data-type="SMALLINT" nullable="false"/>
+                <column name="TRIGGER_EVENT" data-type="SMALLINT" nullable="false"/>
+                <column name="IS_ACTIVE" data-type="BOOLEAN" nullable="false"/>
+                <column name="CREATED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="MODIFIED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" default-value="false" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLWorkflow_PK" column="ID" sequence-generator="OMWFLWorkflow.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLWorkflow_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLWorkflow_FK2" reference-table="OMCRMUser"
+                             local-column="OWNER_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMWFLWorkflow_FK3" reference-table="MWFLTemplate"
+                             local-column="TEMPLATE_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMWFLCriteriaSet" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONNECTOR_ID" data-type="SMALLINT" nullable="true"/>
+                <column name="WORKFLOW_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLCriteriaSet_PK" column="ID" sequence-generator="OMWFLCriteriaSet.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLCriteriaSet_FK1" reference-table="OMWFLWorkflow"
+                             local-column="WORKFLOW_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLCriteriaSet_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMWFLCriteria" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="WORKFLOW_ID" data-type="BIGINT" nullable="false"/>
+                <column name="COMPARATOR_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONNECTOR_ID" data-type="SMALLINT" nullable="true"/>
+                <column name="SET_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLCriteria_PK" column="ID" sequence-generator="OMWFLCriteria.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLCriteria_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLCriteria_FK2" reference-table="OMWFLWorkflow"
+                             local-column="WORKFLOW_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLCriteria_FK3" reference-table="MWFLComparator"
+                             local-column="COMPARATOR_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMWFLCriteria_FK4" reference-table="OMWFLCriteriaSet"
+                             local-column="SET_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MWFLCriteriaValue">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CRITERIA_ID" data-type="BIGINT" nullable="false"/>
+                <column name="VALUE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="VALUE" data-type="CHAR" nullable="false" max-length="1000"/>
+            </columns>
+            <primary-key name="MWFLCriteriaValue_PK" column="ID" sequence-generator="MWFLCriteriaValue.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLCriteriaValue_FK1" reference-table="OMWFLCriteria"
+                             local-column="CRITERIA_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLCriteriaValue_UK">
+                    <unique-key-column>CRITERIA_ID</unique-key-column>
+                    <unique-key-column>VALUE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLSourceFieldCriteria">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CRITERIA_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLSourceFieldCriteria_PK" column="ID" sequence-generator="MWFLSourceFieldCriteria.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLSourceFieldCriteria_FK1" reference-table="OMWFLCriteria"
+                             local-column="CRITERIA_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLSourceFieldCriteria_FK2" reference-table="OMETFields"
+                             local-column="FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLSourceFieldCriteria_UK">
+                    <unique-key-column>CRITERIA_ID</unique-key-column>
+                    <unique-key-column>FIELD_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLFieldCriteria">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CRITERIA_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLFieldCriteria_PK" column="ID" sequence-generator="MWFLFieldCriteria.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLFieldCriteria_FK1" reference-table="OMWFLCriteria"
+                             local-column="CRITERIA_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLFieldCriteria_FK2" reference-table="MWFLFields"
+                             local-column="FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLFieldCriteria_UK">
+                    <unique-key-column>CRITERIA_ID</unique-key-column>
+                    <unique-key-column>FIELD_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMWFLActions" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="WORKFLOW_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ACTION_SOURCE" data-type="BIGINT" nullable="false"/>
+                <column name="ACTION_EVENT" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_MAPPING" data-type="TEXT" nullable="false"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLActions_PK" column="ID" sequence-generator="OMWFLActions.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLActions_FK1" reference-table="OMWFLWorkflow"
+                             local-column="WORKFLOW_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLActions_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLActions_FK3" reference-table="MWFLActionSource"
+                             local-column="ACTION_SOURCE" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLActions_FK4" reference-table="MWFLActionEvent"
+                             local-column="ACTION_EVENT" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMWFLFilter" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="FILTER_GROUP" data-type="SMALLINT" nullable="false"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLFilter_PK" column="ID" sequence-generator="OMWFLFilter.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLFilter_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLFilter_FK2" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMWFLFilterValues" type="11">
+             <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="VALUE" data-type="BIGINT" nullable="false"/>
+                <column name="FILTER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLFilterValues_PK" column="ID" sequence-generator="OMWFLFilterValues.ID"/>
+            <unique-keys>
+                <unique-key name="OMWFLFilterValues_UK">
+                    <unique-key-column>VALUE</unique-key-column>
+                    <unique-key-column>FILTER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMWFLFilterValues_FK1" reference-table="OMWFLFilter"
+                             local-column="FILTER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMWFLExecutionHistory" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="WORKFLOW_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="WORKFLOW_EXECUTED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="CRITERIA_EXECUTED_TIME" data-type="DATETIME" nullable="true"/>
+                <column name="CRITERIA_STATUS" data-type="SMALLINT" nullable="true"/>
+                <column name="WORKFLOW_STATE" data-type="TEXT" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLExecutionHistory_PK" column="ID" sequence-generator="OMWFLExecutionHistory.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLExecutionHistory_FK1" reference-table="OMWFLWorkflow"
+                             local-column="WORKFLOW_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLExecutionHistory_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMWFLActionExecutionHistory" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXECUTION_HISTORY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ACTION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ACTION_EXECUTED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="FAILURE_REASON" data-type="SMALLINT" nullable="true"/>
+            </columns>
+            <primary-key name="OMWFLActionExecutionHistory_PK" column="ID" sequence-generator="OMWFLActionExecutionHistory.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLActionExecutionHistory_FK1" reference-table="OMWFLExecutionHistory"
+                             local-column="EXECUTION_HISTORY_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLActionExecutionHistory_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMWFLActionExecutionHistory_UK1">
+                    <unique-key-column>EXECUTION_HISTORY_ID</unique-key-column>
+                    <unique-key-column>ACTION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+    </module>
+
+    <module name="module_crm_workflow_v2">
+
+        <table name="OMWFLWorkflowV2" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="OWNER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="DESCRIPTION" data-type="CHAR" nullable="true" max-length="255"/>
+                <column name="TRIGGER_SCOPE" data-type="SMALLINT" nullable="false"/>
+                <column name="TRIGGER_SOURCE" data-type="SMALLINT" nullable="false"/>
+                <column name="TRIGGER_EVENT" data-type="SMALLINT" nullable="false"/>
+                <column name="TEMPLATE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="IS_ACTIVE" data-type="BOOLEAN" nullable="false"/>
+                <column name="CREATED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="MODIFIED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" default-value="false" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLWorkflowV2_PK" column="ID" sequence-generator="OMWFLWorkflowV2.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLWorkflowV2_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLWorkflowV2_FK2" reference-table="OMCRMUser"
+                             local-column="OWNER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLWorkflowV2_FK3" reference-table="MWFLTemplate"
+                             local-column="TEMPLATE_ID" reference-column="ID" constraint="ON-DELETE-SET-NULL"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMWFLVersion" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="WORKFLOW_ID" data-type="BIGINT" nullable="false"/>
+                <column name="VERSION_NUMBER" data-type="INTEGER" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="INITIAL_NODE_ID" data-type="SMALLINT" nullable="true"/>
+                <column name="PUBLISHED_TIME" data-type="DATETIME" nullable="true"/>
+            </columns>
+            <primary-key name="OMWFLVersion_PK" column="ID" sequence-generator="OMWFLVersion.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLVersion_FK1" reference-table="OMWFLWorkflowV2"
+                             local-column="WORKFLOW_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLVersion_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMWFLVersion_UK1">
+                    <unique-key-column>WORKFLOW_ID</unique-key-column>
+                    <unique-key-column>VERSION_NUMBER</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMWFLTriggerUsers" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="WORKFLOW_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="VERSION_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLTriggerUsers_PK" column="ID" sequence-generator="OMWFLTriggerUsers.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLTriggerUsers_FK1" reference-table="OMWFLWorkflowV2"
+                             local-column="WORKFLOW_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLTriggerUsers_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLTriggerUsers_FK3" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLTriggerUsers_FK4" reference-table="OMWFLVersion"
+                             local-column="VERSION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMWFLTriggerUsers_UK1">
+                    <unique-key-column>VERSION_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMWFLNode" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="VERSION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CLIENT_KEY" data-type="CHAR" nullable="false" max-length="50"/>
+                <column name="NODE_TYPE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLNode_PK" column="ID" sequence-generator="OMWFLNode.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLNode_FK1" reference-table="OMWFLVersion"
+                             local-column="VERSION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLNode_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMWFLNode_UK1">
+                    <unique-key-column>VERSION_ID</unique-key-column>
+                    <unique-key-column>CLIENT_KEY</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLNodeEdge">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="FROM_NODE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TO_NODE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EDGE_TYPE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLNodeEdge_PK" column="ID" sequence-generator="MWFLNodeEdge.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLNodeEdge_FK1" reference-table="OMWFLNode"
+                             local-column="FROM_NODE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLNodeEdge_FK2" reference-table="OMWFLNode"
+                             local-column="TO_NODE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLNodeEdge_UK1">
+                    <unique-key-column>FROM_NODE_ID</unique-key-column>
+                    <unique-key-column>EDGE_TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMWFLNodeSpanConfig" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NODE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="AMOUNT" data-type="INTEGER" nullable="true"/>
+                <column name="UNIT" data-type="SMALLINT" nullable="false"/>
+                <column name="DUE_TIME" data-type="CHAR" nullable="true" max-length="10"/>
+                <column name="SKIP_WEEKENDS" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+            <primary-key name="OMWFLNodeSpanConfig_PK" column="ID" sequence-generator="OMWFLNodeSpanConfig.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLNodeSpanConfig_FK1" reference-table="OMWFLNode"
+                             local-column="NODE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLNodeSpanConfig_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMWFLNodeSpanConfig_UK1">
+                    <unique-key-column>NODE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMWFLNodeEvent" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NODE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONTEXT_TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="SOURCE_NODE_ID" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="OMWFLNodeEvent_PK" column="ID" sequence-generator="OMWFLNodeEvent.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLNodeEvent_FK1" reference-table="OMWFLNode"
+                             local-column="NODE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLNodeEvent_FK2" reference-table="OMWFLNode"
+                             local-column="SOURCE_NODE_ID" reference-column="ID" constraint="ON-DELETE-SET-NULL"/>
+                <foreign-key name="OMWFLNodeEvent_FK3" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMWFLNodeEvent_UK1">
+                    <unique-key-column>NODE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMWFLActionsV2" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NODE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ACTION_SOURCE" data-type="BIGINT" nullable="false"/>
+                <column name="ACTION_EVENT" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_MAPPING" data-type="TEXT" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLActionsV2_PK" column="ID" sequence-generator="OMWFLActionsV2.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLActionsV2_FK1" reference-table="OMWFLNode"
+                             local-column="NODE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLActionsV2_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLActionsV2_FK3" reference-table="MWFLActionSource"
+                             local-column="ACTION_SOURCE" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLActionsV2_FK4" reference-table="MWFLActionEvent"
+                             local-column="ACTION_EVENT" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMWFLActionsV2_UK1">
+                    <unique-key-column>NODE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMWFLCriteriaSetV2" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NODE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONNECTOR_ID" data-type="SMALLINT" nullable="true"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLCriteriaSetV2_PK" column="ID" sequence-generator="OMWFLCriteriaSetV2.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLCriteriaSetV2_FK1" reference-table="OMWFLNode"
+                             local-column="NODE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLCriteriaSetV2_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMWFLCriteriaV2" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NODE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SET_ID" data-type="BIGINT" nullable="false"/>
+                <column name="COMPARATOR_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONNECTOR_ID" data-type="SMALLINT" nullable="true"/>
+                <column name="ORDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLCriteriaV2_PK" column="ID" sequence-generator="OMWFLCriteriaV2.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLCriteriaV2_FK1" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLCriteriaV2_FK2" reference-table="OMWFLNode"
+                             local-column="NODE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLCriteriaV2_FK3" reference-table="MWFLComparator"
+                             local-column="COMPARATOR_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="OMWFLCriteriaV2_FK4" reference-table="OMWFLCriteriaSetV2"
+                             local-column="SET_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MWFLCriteriaValueV2">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CRITERIA_ID" data-type="BIGINT" nullable="false"/>
+                <column name="VALUE_ID" data-type="BIGINT" nullable="true"/>
+                <column name="VALUE" data-type="CHAR" nullable="false" max-length="1000"/>
+            </columns>
+            <primary-key name="MWFLCriteriaValueV2_PK" column="ID" sequence-generator="MWFLCriteriaValueV2.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLCriteriaValueV2_FK1" reference-table="OMWFLCriteriaV2"
+                             local-column="CRITERIA_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLCriteriaValueV2_UK">
+                    <unique-key-column>CRITERIA_ID</unique-key-column>
+                    <unique-key-column>VALUE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLSourceFieldCriteriaV2">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CRITERIA_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLSourceFieldCriteriaV2_PK" column="ID" sequence-generator="MWFLSourceFieldCriteriaV2.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLSourceFieldCriteriaV2_FK1" reference-table="OMWFLCriteriaV2"
+                             local-column="CRITERIA_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLSourceFieldCriteriaV2_FK2" reference-table="OMETFields"
+                             local-column="FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLSourceFieldCriteriaV2_UK">
+                    <unique-key-column>CRITERIA_ID</unique-key-column>
+                    <unique-key-column>FIELD_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MWFLFieldCriteriaV2">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CRITERIA_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIELD_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MWFLFieldCriteriaV2_PK" column="ID" sequence-generator="MWFLFieldCriteriaV2.ID"/>
+            <foreign-keys>
+                <foreign-key name="MWFLFieldCriteriaV2_FK1" reference-table="OMWFLCriteriaV2"
+                             local-column="CRITERIA_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MWFLFieldCriteriaV2_FK2" reference-table="MWFLFields"
+                             local-column="FIELD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MWFLFieldCriteriaV2_UK">
+                    <unique-key-column>CRITERIA_ID</unique-key-column>
+                    <unique-key-column>FIELD_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMWFLExecutionV2" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="WORKFLOW_ID" data-type="BIGINT" nullable="false"/>
+                <column name="VERSION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="NODE_CONTEXT_JSON" data-type="TEXT" nullable="true"/>
+                <column name="STARTED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="COMPLETED_TIME" data-type="DATETIME" nullable="true"/>
+            </columns>
+            <primary-key name="OMWFLExecutionV2_PK" column="ID" sequence-generator="OMWFLExecutionV2.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLExecutionV2_FK1" reference-table="OMWFLVersion"
+                             local-column="VERSION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLExecutionV2_FK2" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLExecutionV2_FK3" reference-table="OMCRMUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+
+            </foreign-keys>
+        </table>
+
+        <table name="OMWFLExecutionNode" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXECUTION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NODE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="STARTED_TIME" data-type="DATETIME" nullable="true"/>
+                <column name="COMPLETED_TIME" data-type="DATETIME" nullable="true"/>
+                <column name="FAILURE_REASON" data-type="SMALLINT" nullable="true"/>
+            </columns>
+            <primary-key name="OMWFLExecutionNode_PK" column="ID" sequence-generator="OMWFLExecutionNode.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLExecutionNode_FK1" reference-table="OMWFLExecutionV2"
+                             local-column="EXECUTION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLExecutionNode_FK2" reference-table="OMWFLNode"
+                             local-column="NODE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLExecutionNode_FK3" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMWFLExecutionNode_UK1">
+                    <unique-key-column>EXECUTION_ID</unique-key-column>
+                    <unique-key-column>NODE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMWFLExecutionScheduler" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXECUTION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NODE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SCHEDULE_TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="FIRE_AT" data-type="DATETIME" nullable="false"/>
+                <column name="CANCELLED" data-type="BOOLEAN" default-value="false" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLExecutionScheduler_PK" column="ID"
+                         sequence-generator="OMWFLExecutionScheduler.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLExecutionScheduler_FK1" reference-table="OMWFLExecutionV2"
+                             local-column="EXECUTION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLExecutionScheduler_FK2" reference-table="OMWFLNode"
+                             local-column="NODE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLExecutionScheduler_FK3" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMWFLExecutionWaitRegistration" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXECUTION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NODE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SOURCE_NODE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONTEXT_TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="CANCELLED" data-type="BOOLEAN" default-value="false" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLExecutionWaitRegistration_PK" column="ID" sequence-generator="OMWFLExecutionWaitRegistration.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLExecutionWaitRegistration_FK1" reference-table="OMWFLExecutionV2"
+                             local-column="EXECUTION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLExecutionWaitRegistration_FK2" reference-table="OMWFLNode"
+                             local-column="NODE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLExecutionWaitRegistration_FK3" reference-table="OMWFLNode"
+                             local-column="SOURCE_NODE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLExecutionWaitRegistration_FK4" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="OMWFLExecutionSourceEntity" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXECUTION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="NODE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ENTITY_JSON" data-type="TEXT" nullable="false"/>
+                <column name="ENTITY_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SOURCE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMWFLExecutionSourceEntity_PK" column="ID" sequence-generator="OMWFLExecutionSourceEntity.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMWFLExecutionSourceEntity_FK1" reference-table="OMWFLExecutionV2"
+                             local-column="EXECUTION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLExecutionSourceEntity_FK2" reference-table="OMWFLNode"
+                             local-column="NODE_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="OMWFLExecutionSourceEntity_FK3" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="OMWFLExecutionSourceEntity_UK1">
+                    <unique-key-column>EXECUTION_ID</unique-key-column>
+                    <unique-key-column>NODE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+</metadata>

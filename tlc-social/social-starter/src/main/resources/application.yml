@@ -1,0 +1,304 @@
+spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-source-enabled: ${SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCE_ENABLED:true}
+          credential:
+            managed-identity-enabled: true
+          property-sources:
+            - name: social-config
+              endpoint: ${SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_ENDPOINT}
+              secret-keys:
+                - TLC-CONFIG-DATABASE-NAME
+                - TLC-CONFIG-DATABASE-SERVER
+                - TLC-CONFIG-DATABASE-USERNAME
+                - TLC-CONFIG-DATABASE-PASSWORD
+                - TLC-CONFIG-STORAGE-AWS-ACCESSKEY
+                - TLC-CONFIG-STORAGE-AWS-SERVER
+                - TLC-CONFIG-STORAGE-AWS-SECRETKEY
+                - TLC-CONFIG-STORAGE-AWS-BUCKET
+                - TLC-CONFIG-STORAGE-AWS-REGION
+                - TLC-CONFIG-STORAGE-AZURE-ACCOUNTNAME
+                - TLC-CONFIG-STORAGE-AZURE-ACCOUNTKEY
+                - TLC-CONFIG-STORAGE-AZURE-ENDPOINT
+                - TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-0
+                - TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-1
+                - TLC-CONFIG-STORAGE-AZURE-AZURITE-ENDPOINT
+                - TLC-CONFIG-STORAGE-AZURE-AUTHTYPE
+                - TLC-CONFIG-CACHE-PASSWORD
+                - TLC-CONFIG-CACHE-SERVER
+                - TLC-CONFIG-ZOOKEEPER-SERVER
+                - TLC-CONFIG-SOCIAL-FACEBOOK-GRAPH-API-ENDPOINT
+                - TLC-CONFIG-SOCIAL-INSTAGRAM-GRAPH-API-ENDPOINT
+                - TLC-CONFIG-SOCIAL-FACEBOOK-PAGE-SUBSCRIBED-FIELDS
+                - TLC-CONFIG-SOCIAL-WHATSAPP-APP-ID
+                - TLC-CONFIG-SOCIAL-WHATSAPP-APP-SECRET
+                - TLC-CONFIG-SOCIAL-WHATSAPP-GRAPH-API-ENDPOINT
+                - TLC-CONFIG-SYNC-SERVICE-WHATSAPP-ACCESS-CONFIG-ID
+                - TLC-CONFIG-SOCIAL-INSTAGRAM-PAGE-SUBSCRIBED-FIELDS
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-REDIRECT-URI
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-WEBHOOK-VERIFY-TOKEN
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-UI-DIALOG-ENDPOINT
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-APP-SECRET
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-SCOPES
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-PAGE-SUBSCRIBED-FIELDS
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-APP-ID
+                - TLC-CONFIG-SYNC-SERVICE-FACEBOOK-ACCESS-TOKEN-URI
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-REDIRECT-URI
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-SCOPES
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-PAGE-SUBSCRIBED-FIELDS
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-UI-DIALOG-ENDPOINT
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-GRAPH-API-ENDPOINT
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-APP-ID
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-APP-SECRET
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-ACCESS-TOKEN-URI
+                - TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-WEBHOOK-VERIFY-TOKEN
+                - TLC-CONFIG-SYNC-SERVICE-WHATSAPP-APP-ID
+                - TLC-CONFIG-SYNC-SERVICE-WHATSAPP-APP-SECRET
+                - TLC-CONFIG-SYNC-SERVICE-WHATSAPP-ACCESS-TOKEN-URI
+                - TLC-CONFIG-SYNC-SERVICE-WHATSAPP-WEBHOOK-VERIFY-TOKEN
+                - TLC-CONFIG-QUEUE-PROVIDER
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-SERVER
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-MECHANISM
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-JAAS-CONFIG
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-CLIENT-CALLBACK-HANDLER-CLASS
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-MECHANISM
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-JAAS-CONFIG
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-LOGIN-CALLBACK-HANDLER-CLASS
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-OAUTHBEARER-TOKEN-ENDPOINT-URL
+                - TLC-CONFIG-QUEUE-KAFKA-SELFMANAGED-SERVER
+                - TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-AUTH-CALLBACK-SCOPE
+                - TLC-CONFIG-WEB-DEFAULT-DOMAIN
+                - TLC-CONFIG-WEB-ALLOWEDORIGINS
+                - TLC-CONFIG-WEB-CLIENT-VERTX-CLUSTER-HAZELCAST-HOST
+  application.name: twozo-social
+  profiles.active: ${SPRING_PROFILES_ACTIVE}
+
+logging:
+  level:
+    root: INFO
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger{35} - %msg%n"
+  file:
+    name: logs/twozo-social.log
+
+tlc.config:
+  storage:
+    client: ${TLC_CONFIG_STORAGE_CLIENT}
+    azure:
+      accountName: ${TLC-CONFIG-STORAGE-AZURE-ACCOUNTNAME}
+      accountKey: ${TLC-CONFIG-STORAGE-AZURE-ACCOUNTKEY}
+      endpoint: ${TLC-CONFIG-STORAGE-AZURE-ENDPOINT}
+      authType: ${TLC-CONFIG-STORAGE-AZURE-AUTHTYPE}
+      containers:
+        - ${TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-0}
+        - ${TLC-CONFIG-STORAGE-AZURE-CONTAINERS-INDEX-1}
+      azurite:
+        enabled: ${TLC_CONFIG_STORAGE_AZURE_AZURITE_ENABLED}
+        endpoint: ${TLC-CONFIG-STORAGE-AZURE-AZURITE-ENDPOINT}
+    aws:
+      server: ${TLC-CONFIG-STORAGE-AWS-SERVER}
+      accessKey: ${TLC-CONFIG-STORAGE-AWS-ACCESSKEY}
+      secretKey: ${TLC-CONFIG-STORAGE-AWS-SECRETKEY}
+      bucket: ${TLC-CONFIG-STORAGE-AWS-BUCKET}
+      region: ${TLC-CONFIG-STORAGE-AWS-REGION}
+      authMethod: ${TLC_CONFIG_STORAGE_AWS_AUTHMETHOD}
+
+  cache:
+    type: ${TLC_CONFIG_CACHE_TYPE}
+    scheme: ${TLC_CONFIG_CACHE_SCHEME}
+    server: ${TLC-CONFIG-CACHE-SERVER}
+    password: ${TLC-CONFIG-CACHE-PASSWORD}
+    test-enabled: ${TLC_CONFIG_CACHE_TEST_ENABLED}
+
+  zookeeper:
+    server: ${TLC-CONFIG-ZOOKEEPER-SERVER}
+    maxRetry: 3
+    retryWait: 1000
+    connectionTimeout: 5000
+    sessionTimeout: 500000
+
+  database:
+    oltp:
+      name: ${TLC-CONFIG-DATABASE-NAME}
+      server: ${TLC-CONFIG-DATABASE-SERVER}
+      username: ${TLC-CONFIG-DATABASE-USERNAME}
+      password: ${TLC-CONFIG-DATABASE-PASSWORD}
+      developmentModeEnabled: ${TLC_CONFIG_DATABASE_DEVELOPMENTMODEENABLED}
+      connectionPool:
+        name: social-oltp-pool
+        max: 8
+        idle: 3
+        idle.timeout: 300000
+        maxLifetime: 1800000
+        connectionTimeout: 30000
+        leakDetectionThreshold: 60000
+
+  database-resource:
+    home: ${TLC_CONFIG_DATABASE_RESOURCE_HOME:twozo}
+    storeType: ${TLC_CONFIG_DATABASE_RESOURCE_STORETYPE:remote}
+    snapshotPath: sql/snapshot
+    serverMode: ${TLC_CONFIG_DATABASE_RESOURCE_SERVERMODE}
+
+  social:
+    facebook:
+      graph.api.endpoint: ${TLC-CONFIG-SOCIAL-FACEBOOK-GRAPH-API-ENDPOINT}
+      token.expiry.days: 59
+      page:
+        token.lock.count: 10
+        subscribed.fields: ${TLC-CONFIG-SOCIAL-FACEBOOK-PAGE-SUBSCRIBED-FIELDS}
+    instagram:
+      graph.api.endpoint: ${TLC-CONFIG-SOCIAL-INSTAGRAM-GRAPH-API-ENDPOINT}
+      token.expiry.days: 59
+      page:
+        token.lock.count: 10
+        subscribed.fields: ${TLC-CONFIG-SOCIAL-INSTAGRAM-PAGE-SUBSCRIBED-FIELDS}
+
+    whatsapp:
+      graph.api.endpoint: ${TLC-CONFIG-SOCIAL-WHATSAPP-GRAPH-API-ENDPOINT}
+      token.expiry.days: 59
+      app:
+        id: ${TLC-CONFIG-SOCIAL-WHATSAPP-APP-ID}
+        secret: ${TLC-CONFIG-SOCIAL-WHATSAPP-APP-SECRET}
+      accessToken.uri: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-ACCESS-TOKEN-URI}
+
+  sync-service:
+    facebook:
+      ui.dialog.endpoint: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-UI-DIALOG-ENDPOINT}
+      graph.api.endpoint: ${TLC-CONFIG-SOCIAL-FACEBOOK-GRAPH-API-ENDPOINT}
+      app:
+        id: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-APP-ID}
+        secret: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-APP-SECRET}
+      redirect.uri: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-REDIRECT-URI}
+      accessToken.uri: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-ACCESS-TOKEN-URI}
+      webhook.verify.token: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-WEBHOOK-VERIFY-TOKEN}
+      scopes: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-SCOPES}
+      page.subscribed.fields: ${TLC-CONFIG-SYNC-SERVICE-FACEBOOK-PAGE-SUBSCRIBED-FIELDS}
+
+    instagram:
+      ui.dialog.endpoint: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-UI-DIALOG-ENDPOINT}
+      graph.api.endpoint: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-GRAPH-API-ENDPOINT}
+      app:
+        id: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-APP-ID}
+        secret: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-APP-SECRET}
+      redirect.uri: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-REDIRECT-URI}
+      accessToken.uri: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-ACCESS-TOKEN-URI}
+      webhook.verify.token: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-WEBHOOK-VERIFY-TOKEN}
+      scopes: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-SCOPES}
+      page.subscribed.fields: ${TLC-CONFIG-SYNC-SERVICE-INSTAGRAM-PAGE-SUBSCRIBED-FIELDS}
+
+    whatsapp:
+      graph.api.endpoint: ${TLC-CONFIG-SOCIAL-WHATSAPP-GRAPH-API-ENDPOINT}
+      token.expiry.days: 59
+      app:
+        id: ${TLC-CONFIG-SYNC-SERVICE-WHATSAPP-APP-ID}
+        secret: ${TLC-CONFIG-SYNC-SERVICE-WHATSAPP-APP-SECRET}
+      config.id: ${TLC-CONFIG-SYNC-SERVICE-WHATSAPP-ACCESS-CONFIG-ID}
+      accessToken.uri: ${TLC-CONFIG-SYNC-SERVICE-WHATSAPP-ACCESS-TOKEN-URI}
+      webhook.verify.token: ${TLC-CONFIG-SYNC-SERVICE-WHATSAPP-WEBHOOK-VERIFY-TOKEN}
+
+  scheduler:
+    pool: zk-health-checker:1,vertx-cluster-reboot:1,token-refresh-pool:1,fb-webhook-data-consume-pool:3,instagram-webhook-data-consume-pool:3,wa-webhook-data-consume-pool:3,wa-template-sync-pool:1
+
+  messenger-executor:
+    request.handler.pool: social-request-handler-pool:5
+    facebook:
+      webhook:
+        consumer:
+          max.records: 30
+          poll.duration: 1000
+          max.queue.size: 30
+          count: 3
+    instagram:
+      webhook:
+        consumer:
+          max.records: 30
+          poll.duration: 1000
+          max.queue.size: 30
+          count: 3
+    whatsapp:
+      webhook:
+        consumer:
+          max.records: 30
+          poll.duration: 1000
+          max.queue.size: 30
+          count: 3
+      template:
+        consumer:
+          max.records: 10
+          poll.duration: 1000
+          max.queue.size: 10
+
+  queue:
+    consumerBufferBytes: 5000000
+    heartbeatInterval: 10000
+    sessionTimeout: 30000
+    maxPollInterval: 300000
+    provider: ${TLC-CONFIG-QUEUE-PROVIDER}
+    async:
+      offset:
+        writer:
+          pool: async-offset-writer-pool:3
+    kafka:
+      selfManaged:
+        server: ${TLC-CONFIG-QUEUE-KAFKA-SELFMANAGED-SERVER}
+      managed:
+        server: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-SERVER}
+        security.protocol: ${TLC_CONFIG_QUEUE_KAFKA_MANAGED_SECURITY_PROTOCOL}
+        provider: ${TLC_CONFIG_QUEUE_KAFKA_MANAGED_PROVIDER}
+        aws:
+          sasl:
+            mechanism: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-MECHANISM}
+            jaas.config: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-JAAS-CONFIG}
+            client.callback.handler.class: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AWS-SASL-CLIENT-CALLBACK-HANDLER-CLASS}
+        azure:
+          sasl:
+            mechanism: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-MECHANISM}
+            jaas.config: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-JAAS-CONFIG}
+            login.callback.handler.class: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-LOGIN-CALLBACK-HANDLER-CLASS}
+            oauthbearer.token.endpoint.url: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-OAUTHBEARER-TOKEN-ENDPOINT-URL}
+            auth.callback:
+              scope: ${TLC-CONFIG-QUEUE-KAFKA-MANAGED-AZURE-SASL-AUTH-CALLBACK-SCOPE}
+              principal: azure-cli
+    topics:
+      - FB_WEBHOOK_RESPONSE_PROCESSOR:3
+      - FB_WEBHOOK_DATA_CONSUMER:3
+      - INSTAGRAM_WEBHOOK_RESPONSE_PROCESSOR:3
+      - INSTAGRAM_WEBHOOK_DATA_CONSUMER:3
+      - WA_WEBHOOK_DATA_CONSUMER:3
+      - WA_WEBHOOK_RESPONSE_PROCESSOR:3
+      - WA_TEMPLATE_SYNC_PROCESSOR:1
+
+  web:
+    http.port: ${TLC_CONFIG_WEB_HTTP_PORT}
+    path.prefix: /api/social
+    app.name: SOCIAL
+
+  web-client:
+    vertx:
+      cluster:
+        manager: ${TLC_CONFIG_WEB_CLIENT_VERTX_CLUSTER_MANAGER}
+        hazelcast:
+          host: ${TLC-CONFIG-WEB-CLIENT-VERTX-CLUSTER-HAZELCAST-HOST}
+          port: ${TLC_CONFIG_WEB_CLIENT_VERTX_CLUSTER_HAZELCAST_PORT}
+        zookeeper:
+          host: ${TLC-CONFIG-ZOOKEEPER-SERVER}
+          rootPath: io.vertx
+          initialSleepTime: 1000
+          maxTimes: 5
+
+  services:
+    enabled:
+      - storage
+      - cache
+      - database
+      - database-resource
+      - scheduler
+      - zookeeper
+      - web
+      - web-client
+      - social
+      - sync-service
+      - token-refresh
+      - queue

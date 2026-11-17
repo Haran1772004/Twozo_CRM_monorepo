@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+    <module name="tlc_crm_fields">
+
+        <table name="METFieldType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" max-length="125" nullable="false"/>
+                <column name="DISPLAY_NAME" data-type="KCHAR" nullable="false"/>
+                <column name="CONFIG" data-type="CHAR" nullable="true"/>
+                <column name="IS_COMMON" data-type="BOOLEAN" default-value="true"/>
+                <column name="PLACEHOLDER" data-type="KCHAR" nullable="true" max-length="100"/>
+            </columns>
+            <primary-key name="METFieldType_PK" column="ID" sequence-generator="METFieldType.ID"/>
+            <unique-keys>
+                <unique-key name="METFieldType_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="METFieldSubType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="125"/>
+                <column name="DISPLAY_NAME" data-type="KCHAR" nullable="false"/>
+                <column name="FIELD_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TYPE" data-type="INTEGER" nullable="false"/>
+                <column name="CONFIG" data-type="CHAR" nullable="true"/>
+                <column name="INPUT_TYPE" data-type="CHAR" nullable="false"/>
+                <column name="PLACEHOLDER" data-type="KCHAR" nullable="false" max-length="100"/>
+            </columns>
+            <primary-key name="METFieldSubType_PK" column="ID" sequence-generator="METFieldSubType.ID"/>
+            <foreign-keys>
+                <foreign-key name="METFieldSubType_FK1" reference-table="METFieldType" local-column="FIELD_TYPE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="METFieldSubType_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                    <unique-key-column>FIELD_TYPE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="METSource">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="50"/>
+                <column name="IS_COMMON" data-type="BOOLEAN" nullable="false" default-value="true"/>
+                <column name="IS_FILTERABLE" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="DISPLAY_NAME" data-type="KCHAR" nullable="false" max-length="50"/>
+                <column name="IS_IMPORTABLE" data-type="BOOLEAN" nullable="false" default-value="false"/>
+            </columns>
+            <primary-key name="METSource_PK" column="ID" sequence-generator="METSource.ID"/>
+            <unique-keys>
+                <unique-key name="METSource_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="METFieldStore">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="FIELD_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SOURCE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="COLUMN" data-type="CHAR" nullable="false" max-length="125"/>
+                <column name="TABLE_NAME" data-type="CHAR" nullable="true" max-length="125"/>
+                <column name="RANGE" data-type="CHAR" nullable="true" max-length="20"/>
+                <column name="COLUMN_RANGE" data-type="CHAR" nullable="true" default-value="1-1" max-length="20"/>
+                <column name="TABLE_RANGE" data-type="CHAR" nullable="true" default-value="1-1" max-length="20"/>
+                <column name="IS_PERSISTENT" data-type="BOOLEAN" nullable="true" default-value="false"/>
+            </columns>
+            <primary-key name="METFieldStore_PK" column="ID" sequence-generator="METFieldStore.ID"/>
+            <foreign-keys>
+                <foreign-key name="METFieldStore_FK1" reference-table="METSource" local-column="SOURCE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="METFieldStore_FK2" reference-table="METFieldType" local-column="FIELD_TYPE_ID"
+                             reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="METFieldStore_UK1">
+                    <unique-key-column>SOURCE_ID</unique-key-column>
+                    <unique-key-column>FIELD_TYPE_ID</unique-key-column>
+                    <unique-key-column>IS_PERSISTENT</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="METSourceDependentFieldType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="FIELD_TYPE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SOURCE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="METSourceDependentFieldType_PK" column="ID" sequence-generator="METSourceDependentFieldType.ID"/>
+            <foreign-keys>
+                <foreign-key name="METSourceDependentFieldType_FK1" reference-table="METSource" local-column="SOURCE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="METSourceDependentFieldType_FK2" reference-table="METFieldType" local-column="FIELD_TYPE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="METSourceDependentFieldType_UK1">
+                    <unique-key-column>SOURCE_ID</unique-key-column>
+                    <unique-key-column>FIELD_TYPE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="OMETTimeRange" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FROM" data-type="TIME" nullable="false"/>
+                <column name="TO" data-type="TIME" nullable="false"/>
+            </columns>
+            <primary-key name="OMETTimeRange_PK" column="ID" sequence-generator="OMETTimeRange.ID"/>
+            <foreign-keys>
+                <!-- <foreign-key name="OMETTimeRange_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                              reference-column="ID" constraint="ON-DELETE-CASCADE" /> -->
+            </foreign-keys>
+        </table>
+
+        <table name="OMETDateRange" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FROM" data-type="DATE" nullable="false"/>
+                <column name="TO" data-type="DATE" nullable="false"/>
+            </columns>
+            <primary-key name="OMETDateRange_PK" column="ID" sequence-generator="OMETDateRange.ID"/>
+            <foreign-keys>
+                <!-- <foreign-key name="OMETDateRange_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                              reference-column="ID" constraint="ON-DELETE-CASCADE" /> -->
+            </foreign-keys>
+        </table>
+
+        <table name="OMETDateTimeRange" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FROM" data-type="DATETIME" nullable="false"/>
+                <column name="TO" data-type="DATETIME" nullable="false"/>
+            </columns>
+            <primary-key name="OMETDateTimeRange_PK" column="ID" sequence-generator="OMETDateTimeRange.ID"/>
+            <foreign-keys>
+                <!-- <foreign-key name="OMETDateTimeRange_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                              reference-column="ID" constraint="ON-DELETE-CASCADE" /> -->
+            </foreign-keys>
+        </table>
+
+        <table name="OMETEmail" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TYPE" data-type="INTEGER" nullable="false"/>
+                <column name="VALUE" data-type="CHAR" nullable="false" max-length="356"/>
+            </columns>
+            <primary-key name="OMETEmail_PK" column="ID" sequence-generator="OMETEmail.ID"/>
+            <indexes>
+                <index name="OMETEmail_Idx1">
+                    <index-column>VALUE</index-column>
+                </index>
+            </indexes>
+            <foreign-keys>
+                <!-- <foreign-key name="OMETEmail_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                              reference-column="ID" constraint="ON-DELETE-CASCADE" /> -->
+            </foreign-keys>
+        </table>
+
+        <table name="OMETPhone" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="TYPE" data-type="INTEGER" nullable="false"/>
+                <column name="NUMBER" data-type="CHAR" nullable="false" max-length="25"/>
+                <column name="COUNTRY_ID" data-type="INTEGER" nullable="true"/>
+            </columns>
+            <primary-key name="OMETPhone_PK" column="ID" sequence-generator="OMETPhone.ID"/>
+            <indexes>
+                <index name="OMETPhone_Idx1">
+                    <index-column>NUMBER</index-column>
+                </index>
+            </indexes>
+            <foreign-keys>
+                <!-- <foreign-key name="OMETPhone_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                              reference-column="ID" constraint="ON-DELETE-CASCADE" /> -->
+            </foreign-keys>
+        </table>
+
+        <table name="OMETAddress" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CITY" data-type="CHAR" nullable="true" max-length="125"/>
+                <column name="STATE" data-type="CHAR" nullable="true" max-length="125"/>
+                <column name="COUNTRY" data-type="INTEGER" nullable="true"/>
+                <column name="ZIPCODE" data-type="CHAR" nullable="true" max-length="25"/>
+                <column name="ADDRESS_LINE1" data-type="CHAR" nullable="true" max-length="300"/>
+                <column name="ADDRESS_LINE2" data-type="CHAR" nullable="true" max-length="300"/>
+                <column name="LATITUDE" data-type="DECIMAL" precision="8" scale="6" nullable="true"/>
+                <column name="LONGITUDE" data-type="DECIMAL" precision="9" scale="6" nullable="true"/>
+            </columns>
+            <primary-key name="OMETAddress_PK" column="ID" sequence-generator="OMETAddress.ID"/>
+            <foreign-keys>
+                <!-- <foreign-key name="OMETAddress_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                              reference-column="ID" constraint="ON-DELETE-CASCADE" /> -->
+            </foreign-keys>
+        </table>
+
+        <table name="OMETMonetary" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CURRENCY_ID" data-type="SMALLINT" nullable="false"/>
+                <column name="VALUE" data-type="DECIMAL" precision="17" scale="4" nullable="false"/>
+            </columns>
+            <primary-key name="OMETMonetary_PK" column="ID" sequence-generator="OMETMonetary.ID"/>
+            <foreign-keys>
+                <!-- <foreign-key name="OMETMonetary_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                              reference-column="ID" constraint="ON-DELETE-CASCADE" /> -->
+            </foreign-keys>
+        </table>
+
+        <table name="OMETSourceSettings" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="true"/>
+                <column name="ALTERNATE_NAME" data-type="CHAR" nullable="true" max-length="50"/>
+                <column name="SOURCE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_ENABLED" data-type="BOOLEAN" nullable="false"/>
+                <column name="CONFIG" data-type="CHAR" nullable="true"/>
+            </columns>
+            <unique-keys>
+                <unique-key name="OMETSourceSettings_UK1">
+                    <unique-key-column>ALTERNATE_NAME</unique-key-column>
+                    <unique-key-column>ORG_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <primary-key name="OMETSourceSettings_PK" column="ID" sequence-generator="OMETSourceSettings.ID"/>
+            <foreign-keys>
+                <foreign-key name="OMETSourceSettings_FK1" reference-table="METSource" local-column="SOURCE_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <!--                <foreign-key name="OMETSourceSettings_FK2" reference-table="FGOrganisation"-->
+                <!--                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>-->
+            </foreign-keys>
+        </table>
+
+        <table name="OMETSummaryFieldUserPreference" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SOURCE_ID" data-type="SMALLINT" nullable="false"/>
+                <column name="PREFERENCE" data-type="TEXT" nullable="false"/>
+                <column name="CREATED_AT" data-type="BIGINT" nullable="false"/>
+                <column name="UPDATED_AT" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="OMETSummaryFieldUserPreference_PK" column="ID" sequence-generator="OMETSummaryFieldUserPreference.ID"/>
+            <unique-keys>
+                <unique-key name="OMETSummaryFieldUserPreference_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                    <unique-key-column>SOURCE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="OMETSummaryFieldUserPreference_FK1" reference-table="FGOrganisation" local-column="ORG_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                 <foreign-key name="OMETSummaryFieldUserPreference_FK2" reference-table="OMCRMUser" local-column="USER_ID"
+                             reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+    </module>
+</metadata>

@@ -1,0 +1,546 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Twozo CRM Integration API",
+    "version": "1.0.0",
+    "description": "The CRM Integration API allows seamless management of contacts, companies, deals, products, notes, tags, and followers. It supports creating, updating, mapping, and associating CRM entities for smooth automation and integration with external systems like Zapier."
+  },
+  "paths": {
+    "/api/accounts/crm/login": {
+      "post": {
+        "tags": [
+          "Login Management"
+        ],
+        "summary": "Login to CRM account",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "password": {
+                        "type": "string",
+                        "format": "password"
+                      }
+                    },
+                    "required": [
+                      "email",
+                      "password"
+                    ]
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              },
+              "example": {
+                "data": {
+                  "email": "sampe@yarn.com",
+                  "password": "Yarn@123"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/accounts/crm/signup": {
+      "post": {
+        "tags": [
+          "Signup Management"
+        ],
+        "summary": "Signup for a new CRM account",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "email": {
+                            "type": "string",
+                            "format": "email"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "password": {
+                            "type": "string",
+                            "format": "password"
+                          },
+                          "confirmPassword": {
+                            "type": "string",
+                            "format": "password"
+                          }
+                        },
+                        "required": [
+                          "email",
+                          "name",
+                          "password",
+                          "confirmPassword"
+                        ]
+                      },
+                      "organization": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "jobRole": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "jobRole"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "user",
+                      "organization"
+                    ]
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              },
+              "example": {
+                "data": {
+                  "user": {
+                    "email": "sampe@yarn.com",
+                    "name": "Sample Yarn",
+                    "password": "Yarn@123",
+                    "confirmPassword": "Yarn@123"
+                  },
+                  "organization": {
+                    "name": "Yarn Inc",
+                    "jobRole": "CEO"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signup successful"
+          }
+        }
+      }
+    },
+    "/api/zap/user/authenticate": {
+      "post": {
+        "tags": [
+          "Zapier Management"
+        ],
+        "summary": "Authenticate user",
+        "description": "Authenticates the user and returns a success message.",
+        "requestBody": {
+          "description": "Empty request body",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": { }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "success"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/zap/dropdown": {
+      "post": {
+        "tags": [
+          "Zapier Management"
+        ],
+        "summary": "Get dropdown list",
+        "description": "Returns a paginated dropdown list based on the provided name.",
+        "requestBody": {
+          "description": "Pagination and dropdown type",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "lifeCycleStageList"
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "example": 50
+                  }
+                },
+                "required": [
+                  "page",
+                  "name",
+                  "limit"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with dropdown list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "list": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "Lead"
+                              },
+                              "id": {
+                                "type": "integer",
+                                "example": 25
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/zap/event/webhook": {
+      "post": {
+        "tags": [
+          "Zapier Management"
+        ],
+        "summary": "Subscribe or unsubscribe webhook",
+        "description": "Subscribes or unsubscribes a webhook for a specific event type.",
+        "requestBody": {
+          "description": "Webhook subscription data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "subscribe",
+                    "description": "Type of the operation: subscribe or unsubscribe"
+                  },
+                  "zapId": {
+                    "type": "integer",
+                    "example": 12345,
+                    "description": "Zapier Zap ID"
+                  },
+                  "hookUrl": {
+                    "type": "string",
+                    "example": "https://hooks.zapier.com/hooks/catch/123456/abcde",
+                    "description": "Zapier target webhook URL"
+                  },
+                  "event": {
+                    "$ref": "#/components/schemas/ZapWebhookEventType"
+                  }
+                },
+                "required": [
+                  "type",
+                  "zapId",
+                  "hookUrl",
+                  "event"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Webhook subscription response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 4
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Webhook subscription success"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/zap/action/mgmt": {
+      "post": {
+        "tags": [
+          "Zapier Management"
+        ],
+        "summary": "Manage Zap Action",
+        "description": "Creates, updates, or maps notes, tags, followers, and products to deals based on the provided event type.",
+        "requestBody": {
+          "description": "Action management data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "create",
+                      "update",
+                      "mapNote",
+                      "mapTag",
+                      "mapFollower",
+                      "addProductToDeal"
+                    ],
+                    "description": "Type of the operation:\n- create\n- update\n- mapNote\n- mapTag\n- mapFollower\n- addProductToDeal",
+                    "example": "addProductToDeal"
+                  },
+                  "struct": {
+                    "type": "object",
+                    "example": {
+                      "productId": 123,
+                      "dealId": 456
+                    },
+                    "description": "Payload for the entity creation, update, or mapping"
+                  },
+                  "event": {
+                    "$ref": "#/components/schemas/ZapActionEventType"
+                  }
+                },
+                "required": [
+                  "type",
+                  "struct",
+                  "event"
+                ]
+              },
+              "examples": {
+                "CreateContact": {
+                  "summary": "Create a contact",
+                  "value": {
+                    "type": "create",
+                    "event": 1,
+                    "struct": {
+                      "name": "John Doe",
+                      "email": "johndoe@example.com"
+                    }
+                  }
+                },
+                "UpdateContact": {
+                  "summary": "Update a contact",
+                  "value": {
+                    "type": "update",
+                    "event": 2,
+                    "struct": {
+                      "contactId": 1234,
+                      "name": "John Doe Updated",
+                      "email": "johnupdated@example.com"
+                    }
+                  }
+                },
+                "MapNote": {
+                  "summary": "Map a note",
+                  "value": {
+                    "type": "mapNote",
+                    "event": 13,
+                    "struct": {
+                      "note": "This is a note example",
+                      "contactId": 1234
+                    }
+                  }
+                },
+                "MapTag": {
+                  "summary": "Map a tag",
+                  "value": {
+                    "type": "mapTag",
+                    "event": 18,
+                    "struct": {
+                      "tag": "VIP",
+                      "contactId": 1234
+                    }
+                  }
+                },
+                "MapFollower": {
+                  "summary": "Map a follower",
+                  "value": {
+                    "type": "mapFollower",
+                    "event": 15,
+                    "struct": {
+                      "userId": 5678,
+                      "contactId": 1234
+                    }
+                  }
+                },
+                "AddProductToDeal": {
+                  "summary": "Add a product to a deal",
+                  "value": {
+                    "type": "addProductToDeal",
+                    "event": 11,
+                    "struct": {
+                      "productId": 123,
+                      "dealId": 456
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Action management response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "entity created successfully"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ZapWebhookEventType": {
+        "type": "integer",
+        "enum": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "description": "Event type:\n1 - CONTACT_ADDED\n2 - CONTACT_UPDATED\n3 - COMPANY_ADDED\n4 - COMPANY_UPDATED\n5 - DEAL_ADDED\n6 - DEAL_UPDATED\n7 - UPDATE_DEAL_STAGE\n8 - ACTIVITY_ADDED\n9 - ACTIVITY_UPDATED\n10 - PRODUCT_ADDED\n11 - PRODUCT_UPDATED",
+        "example": 4
+      },
+      "ZapActionEventType": {
+        "type": "integer",
+        "enum": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "description": "Event type:\n1 - CREATE_CONTACT\n2 - UPDATE_CONTACT\n3 - CREATE_COMPANY\n4 - UPDATE_COMPANY\n5 - CREATE_DEAL\n6 - UPDATE_DEAL\n7 - CREATE_PRODUCT\n8 - UPDATE_PRODUCT\n9 - CREATE_ACTIVITY\n10 - UPDATE_ACTIVITY\n11 - ADD_PRODUCT_TO_DEAL\n12 - ADD_NOTE_TO_CONTACT\n13 - ADD_NOTE_TO_COMPANY\n14 - ADD_NOTE_TO_DEAL\n15 - ADD_FOLLOWER_TO_CONTACT\n16 - ADD_FOLLOWER_TO_COMPANY\n17 - ADD_FOLLOWER_TO_DEAL\n18 - ADD_TAGS_TO_CONTACT\n19 - ADD_TAGS_TO_COMPANY\n20 - ADD_TAGS_TO_DEAL",
+        "example": 11
+      }
+    }
+  }
+}

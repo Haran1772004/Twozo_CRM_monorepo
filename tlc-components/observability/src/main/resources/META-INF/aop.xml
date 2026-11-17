@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aspectj>
+
+    <!-- Declare the aspect you want to apply -->
+    <aspects>
+        <aspect name="com.tlc.observability.internal.aspect.MetricsAspect"/>
+        <aspect name="com.tlc.observability.internal.aspect.MeasureTimeAspect"/>
+        <aspect name="com.tlc.observability.internal.aspect.InvocationCountTrackerAspect"/>
+        <aspect name="com.tlc.observability.internal.aspect.TraceMethodExecutionAspect"/>
+    </aspects>
+
+    <!-- https://eclipse.dev/aspectj/doc/latest/devguide/ltw.html#ltw -->
+    <!-- Weaver Configuration -->
+    <weaver options="-verbose">
+
+        <!-- Include classes only from com.tlc and com.twozo packages -->
+        <include within="com.tlc..*"/>
+        <include within="com.twozo..*"/>
+
+        <!-- Exclude all other packages from weaving -->
+        <exclude within="**"/>
+
+    </weaver>
+
+</aspectj>

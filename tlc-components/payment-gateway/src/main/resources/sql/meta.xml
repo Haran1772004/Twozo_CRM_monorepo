@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_payment_gateway">
+
+        <table name="MPGPayer">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="APPLICATION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="REFERENCE_ID" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="LOCAL_IDENTITY" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="IDENTITY_TYPE" data-type="CHAR" nullable="false" max-length="50"/>
+            </columns>
+            <primary-key name="MPGPayer_PK" column="ID" sequence-generator="MPGPayer.ID"/>
+            <foreign-keys>
+                <foreign-key name="MPGPayer_AppId_FK" reference-table="TZApplication"
+                             local-column="APPLICATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MPGPayer_UK1">
+                    <unique-key-column>APPLICATION_ID</unique-key-column>
+                    <unique-key-column>IDENTITY_TYPE</unique-key-column>
+                    <unique-key-column>LOCAL_IDENTITY</unique-key-column>
+                </unique-key>
+
+                <unique-key name="MPGPayer_UK2">
+                    <unique-key-column>REFERENCE_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+    </module>
+</metadata>

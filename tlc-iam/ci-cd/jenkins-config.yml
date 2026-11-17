@@ -1,0 +1,9 @@
+project:
+  name: tlc-iam
+git:
+  url: 'https://github.com/thelaunchclub/tlc-iam'
+  secret: 'Git-No-Expiry-Key'
+maven:
+  settings: 'twozo-mvn-settings'
+sonar:
+  secret: 'SONAR_SECRET_TOKEN'

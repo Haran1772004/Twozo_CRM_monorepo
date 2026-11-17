@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+    <module name="module_iam_server">
+
+        <table name="MIAMOrganization">
+            <columns>
+                <column name="ID" data-type="BIGINT" nullable="false"/>
+                <column name="NAME" data-type="CHAR" nullable="true" max-length="255"/>
+                <column name="ORG_SIZE" data-type="SMALLINT" nullable="true"/>
+                <column name="USERS_SIZE" data-type="SMALLINT" nullable="true"/>
+                <column name="INDUSTRY_TYPE" data-type="SMALLINT" nullable="true"/>
+                <column name="IS_ACTIVE" data-type="BOOLEAN" nullable="false" max-length="320"/>
+                <column name="OWNER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CREATED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="MODIFIED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="STATE" data-type="SMALLINT" nullable="false"/>
+                <column name="STATE_UPDATED_TIME" data-type="DATETIME" nullable="false"/>
+            </columns>
+            <primary-key name="MIAMOrganization_PK" column="ID" sequence-generator="MIAMOrganization.ID"/>
+            <!--  <foreign-keys>
+                  <foreign-key name="MIAMOrganization_FK2" reference-table="MIAMOUser"
+                               local-column="OWNER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+              </foreign-keys>-->
+
+        </table>
+
+        <table name="MIAMOUser" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FIRST_NAME" data-type="CHAR" nullable="false" max-length="255"/>
+                <column name="LAST_NAME" data-type="CHAR" nullable="true" max-length="255"/>
+                <column name="EMAIL" data-type="CHAR" nullable="false" max-length="320"/>
+                <column name="IS_EMAIL_VERIFIED" data-type="BOOLEAN" default-value="false" nullable="false" />
+                <column name="MOBILE_NUMBER" data-type="CHAR" nullable="true"/>
+                <column name="IS_MOBILE_NUMBER_VERIFIED" data-type="BOOLEAN" default-value="false" nullable="false" />
+                <column name="PASSWORD" data-type="CHAR" nullable="false" />
+                <column name="IDP_USER_ID" data-type="CHAR" nullable="true"/>
+                <column name="HAS_ACTIVE_PASSWORD" data-type="BOOLEAN" default-value="true" nullable="false"/>
+                <column name="CREATED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="USER_TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="LOCALE" data-type="CHAR" nullable="false" max-length="10"/>
+                <column name="STATE" data-type="SMALLINT" nullable="false"/>
+                <column name="STATE_UPDATED_TIME" data-type="DATETIME" nullable="true"/>
+                <column name="JOB_TITLE" data-type="CHAR" nullable="true" max-length="255"/>
+                <column name="LAST_LOGIN_TIME" data-type="DATETIME" nullable="true"/>
+                <!--TODO add an enum class and use its id to locale column-->
+            </columns>
+            <primary-key name="MIAMOUser_PK" column="ID" sequence-generator="MIAMOUser.ID"/>
+            <unique-keys>
+                <unique-key name="MIAMOUser_UK1">
+                    <unique-key-column>EMAIL</unique-key-column>
+                </unique-key>
+                <unique-key name="MIAMOUser_UK2">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>MOBILE_NUMBER</unique-key-column>
+                </unique-key>
+                <unique-key name="MIAMOUser_UK3">
+                    <unique-key-column>IDP_USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MIAMOUser_FK1" reference-table="MIAMOrganization"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MIAMOSession" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CREATED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="OS" data-type="CHAR" nullable="false" max-length="20"/>
+                <column name="ACCESS_DEVICE" data-type="CHAR" nullable="false" max-length="30"/>
+                <column name="BROWSER" data-type="CHAR" nullable="false" max-length="30"/>
+            </columns>
+            <primary-key name="MIAMOSession_PK" column="ID" sequence-generator="MIAMOSession.ID"/>
+            <foreign-keys>
+                <foreign-key name="MIAMOSession_FK1" reference-table="MIAMOrganization"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MIAMOSession_FK2" reference-table="MIAMOUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MIAMOProfilePicture" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORIGINAL_EXTENSION" data-type="SMALLINT" nullable="false"/>
+                <column name="ORIGINAL_SIZE" data-type="INTEGER" nullable="false"/>
+                <column name="THUMBNAIL_SIZE" data-type="INTEGER" nullable="false"/>
+                <column name="ORIGINAL_FILE_ID" data-type="BIGINT" nullable="false"/>
+                <column name="THUMBNAIL_FILE_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MIAMOProfilePicture_PK" column="ID" sequence-generator="MIAMOProfilePicture.ID"/>
+            <unique-keys>
+                <unique-key name="MIAMOProfilePicture_UK1">
+                    <unique-key-column>USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MIAMOProfilePicture_FK1" reference-table="MIAMOrganization"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MIAMOProfilePicture_FK2" reference-table="MIAMOUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MIAMOApiKeyStore" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT" nullable="false"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="API_KEY" data-type="CHAR" nullable="false" max-length="100"/>
+                <column name="CREATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="UPDATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="EXPIRATION_TIME" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MIAMOApiKeyStore_PK" column="ID" sequence-generator="MIAMOApiKeyStore.ID"/>
+            <foreign-keys>
+                <foreign-key name="MIAMOApiKeyStore_FK1" reference-table="MIAMOrganization"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MIAMOApiKeyStore_FK2" reference-table="MIAMOUser"
+                             local-column="USER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <unique-keys>
+                <unique-key name="MIAMOApiKeyStore_UK1">
+                    <unique-key-column>ORG_ID</unique-key-column>
+                    <unique-key-column>USER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <indexes>
+                <index name="MIAMOApiKeyStore_Idx1">
+                    <index-column>API_KEY</index-column>
+                </index>
+            </indexes>
+        </table>
+
+    </module>
+
+</metadata>

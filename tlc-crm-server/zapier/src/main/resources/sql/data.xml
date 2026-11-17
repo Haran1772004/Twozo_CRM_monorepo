@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dumpdata>
+
+    <module name="crm_zapier">
+
+        <MZAPFields ID="MZAPFields:ID:CO:1" NAME="i18n.zapier.field.note" ALIAS_NAME="note"
+                    FIELD_TYPE_ID="METFieldType:ID:CO:2" CONFIG="{&quot;required&quot; : true}"/>
+        <MZAPFields ID="MZAPFields:ID:CO:2" NAME="i18n.zapier.field.contact.placeholder" ALIAS_NAME="contact"
+                    FIELD_TYPE_ID="METFieldType:ID:CO:8" CONFIG="{&quot;required&quot; : true}"/>
+        <MZAPFields ID="MZAPFields:ID:CO:3" NAME="i18n.zapier.field.company.placeholder" ALIAS_NAME="company"
+                    FIELD_TYPE_ID="METFieldType:ID:CO:7" CONFIG="{&quot;required&quot; : true}"/>
+        <MZAPFields ID="MZAPFields:ID:CO:4" NAME="i18n.zapier.field.deal.placeholder" ALIAS_NAME="deal"
+                    FIELD_TYPE_ID="METFieldType:ID:CO:25" CONFIG="{&quot;required&quot; : true}"/>
+        <MZAPFields ID="MZAPFields:ID:CO:5" NAME="i18n.zapier.field.product.placeholder" ALIAS_NAME="product"
+                    FIELD_TYPE_ID="METFieldType:ID:CO:26" CONFIG="{&quot;required&quot; : true}"/>
+        <MZAPFields ID="MZAPFields:ID:CO:6" NAME="i18n.zapier.field.product.unit.price" ALIAS_NAME="unitPrice"
+                    FIELD_TYPE_ID="METFieldType:ID:CO:3" CONFIG="{&quot;required&quot; : true}"/>
+        <MZAPFields ID="MZAPFields:ID:CO:7" NAME="i18n.zapier.field.product.quantity" ALIAS_NAME="quantity"
+                    FIELD_TYPE_ID="METFieldType:ID:CO:3" CONFIG="{&quot;required&quot; : true}"/>
+        <MZAPFields ID="MZAPFields:ID:CO:8" NAME="i18n.zapier.field.tag" ALIAS_NAME="tag"
+                    FIELD_TYPE_ID="METFieldType:ID:CO:5" CONFIG="{&quot;required&quot; : true}"/>
+        <MZAPFields ID="MZAPFields:ID:CO:9" NAME="i18n.zapier.field.followers" ALIAS_NAME="follower"
+                    FIELD_TYPE_ID="METFieldType:ID:CO:31" CONFIG="{&quot;required&quot; : true}"/>
+
+        <!--Add product to deal-->
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:1" ZAP_FIELD_ID="MZAPFields:ID:CO:4" ACTION_ID="11"/>
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:2" ZAP_FIELD_ID="MZAPFields:ID:CO:5" ACTION_ID="11"/>
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:3" ZAP_FIELD_ID="MZAPFields:ID:CO:6" ACTION_ID="11"/>
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:4" ZAP_FIELD_ID="MZAPFields:ID:CO:7" ACTION_ID="11"/>
+
+        <!--Add note to contact-->
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:7" ZAP_FIELD_ID="MZAPFields:ID:CO:1" ACTION_ID="12"/>
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:8" ZAP_FIELD_ID="MZAPFields:ID:CO:2" ACTION_ID="12"/>
+
+        <!--Add note to company-->
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:11" ZAP_FIELD_ID="MZAPFields:ID:CO:1" ACTION_ID="13"/>
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:12" ZAP_FIELD_ID="MZAPFields:ID:CO:3" ACTION_ID="13"/>
+
+        <!--Add note to deal-->
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:15" ZAP_FIELD_ID="MZAPFields:ID:CO:1" ACTION_ID="14"/>
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:16" ZAP_FIELD_ID="MZAPFields:ID:CO:4" ACTION_ID="14"/>
+
+        <!--Add tags to contact-->
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:20" ZAP_FIELD_ID="MZAPFields:ID:CO:8" ACTION_ID="18"/>
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:21" ZAP_FIELD_ID="MZAPFields:ID:CO:2" ACTION_ID="18"/>
+
+        <!--Add tags to company-->
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:24" ZAP_FIELD_ID="MZAPFields:ID:CO:8" ACTION_ID="19"/>
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:25" ZAP_FIELD_ID="MZAPFields:ID:CO:3" ACTION_ID="19"/>
+
+        <!--Add tags to deal-->
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:27" ZAP_FIELD_ID="MZAPFields:ID:CO:8" ACTION_ID="20"/>
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:28" ZAP_FIELD_ID="MZAPFields:ID:CO:4" ACTION_ID="20"/>
+
+        <!--Add followers to contact-->
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:31" ZAP_FIELD_ID="MZAPFields:ID:CO:9" ACTION_ID="15"/>
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:32" ZAP_FIELD_ID="MZAPFields:ID:CO:2" ACTION_ID="15"/>
+
+        <!--Add followers to company-->
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:37" ZAP_FIELD_ID="MZAPFields:ID:CO:9" ACTION_ID="16"/>
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:38" ZAP_FIELD_ID="MZAPFields:ID:CO:3" ACTION_ID="16"/>
+
+        <!--Add followers to deal-->
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:41" ZAP_FIELD_ID="MZAPFields:ID:CO:9" ACTION_ID="17"/>
+        <MZAPActionFields ID="MZAPActionFields:ID:CO:42" ZAP_FIELD_ID="MZAPFields:ID:CO:4" ACTION_ID="17"/>
+
+    </module>
+
+</dumpdata>

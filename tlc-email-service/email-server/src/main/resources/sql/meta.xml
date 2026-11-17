@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="module_email_server">
+
+        <table name="MEMAddress">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="EMAIL_ADDRESS" data-type="CHAR" nullable="false" max-length="320"/>
+            </columns>
+            <primary-key name="MEMAddress_PK" column="ID" sequence-generator="MEMAddress.ID"/>
+            <unique-keys>
+                <unique-key name="MEMAddress_UK1">
+                    <unique-key-column>EMAIL_ADDRESS</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MEMSyncSettings">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONFIG" data-type="CHAR" nullable="true"/>
+                <column name="DATE_CONFIG" data-type="TEXT" nullable="true"/>
+                <column name="CONNECTION_STATE" data-type="SMALLINT" nullable="false"/>
+                <column name="IS_SYNC_ENABLED" data-type="BOOLEAN" nullable="false"/>
+                <column name="CREATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="LAST_SYNC_TIME" data-type="BIGINT" nullable="true"/>
+                <column name="SYNC_STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="IS_DRAFT_ENABLED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="PROVIDER" data-type="SMALLINT" nullable="true"/>
+            </columns>
+            <primary-key name="MEMSyncSettings_PK" column="ID" sequence-generator="MEMSyncSettings.ID"/>
+            <unique-keys>
+                <unique-key name="MEMSyncSettings_UK1">
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MEMSyncSettings_FK1" reference-table="MEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMThread">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="SUBJECT" data-type="TEXT" nullable="true" max-length="998"/>
+                <column name="HAS_ACTIVE_MESSAGES" data-type="BOOLEAN" default-value="true"/>
+                <column name="HAS_ATTACHMENTS" data-type="BOOLEAN" default-value="false"/>
+                <column name="HAS_DRAFTS" data-type="BOOLEAN" default-value="false"/>
+                <column name="IS_ARCHIVED" data-type="BOOLEAN" default-value="false"/>
+                <column name="HAS_AWAITING_MESSAGES" data-type="BOOLEAN" default-value="false" nullable="false"/>
+                <column name="IS_STARRED" data-type="BOOLEAN" default-value="false"/>
+                <column name="HAS_BOUNCED_MESSAGES" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="SYNCED_EMAIL_ID" data-type="BIGINT" nullable="true"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="MEMThread_PK" column="ID" sequence-generator="MEMThread.ID"/>
+            <foreign-keys>
+                <foreign-key name="MEMThread_FK" reference-table="MEMSyncSettings"
+                             local-column="SYNCED_EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MEMThread_FK1" reference-table="MEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMConversation">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="SUBJECT" data-type="TEXT" nullable="true" max-length="998"/>
+                <column name="CONTENT" data-type="TEXT" nullable="true"/>
+                <column name="PREVIEW_CONTENT" data-type="CHAR" nullable="true" max-length="120"/>
+                <column name="CREATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="UPDATED_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="STATE" data-type="SMALLINT" nullable="false"/>
+                <column name="IS_INITIAL_MESSAGE" data-type="BOOLEAN" nullable="false"/>
+                <column name="MESSAGE_CATEGORY" data-type="SMALLINT" nullable="false"/>
+                <column name="IS_READ" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="THREAD_ID" data-type="BIGINT" nullable="false"/>
+                <column name="IS_BOUNCED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="IS_SCHEDULED" data-type="BOOLEAN" nullable="false" default-value="false"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="true"/>
+                <column name="IS_ARCHIVED" data-type="BOOLEAN" default-value="false"/>
+                <column name="IS_STARRED" data-type="BOOLEAN" default-value="false"/>
+                <column name="IS_ACTIVE" data-type="BOOLEAN" default-value="true"/>
+                <column name="IS_DELETED" data-type="BOOLEAN" default-value="false"/>
+                <column name="SYNCED_EMAIL_ID" data-type="BIGINT" nullable="true"/>
+            </columns>
+            <primary-key name="MEMConversation_PK" column="ID" sequence-generator="MEMConversation.ID"/>
+            <foreign-keys>
+                <foreign-key name="MEMConversation_FK" reference-table="MEMThread"
+                             local-column="THREAD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MEMConversation_FK1" reference-table="MEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MEMConversation_FK2" reference-table="MEMSyncSettings"
+                             local-column="SYNCED_EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <indexes>
+                <index name="MEMConversation_Idx1">
+                    <index-column>CREATED_TIME</index-column>
+                </index>
+            </indexes>
+        </table>
+
+        <table name="MEMExternalMessage">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="MESSAGE_ID" data-type="CHAR" nullable="false" max-length="995"/>
+                <column name="MESSAGE_CATEGORY" data-type="SMALLINT" nullable="false"/>
+                <column name="ALTERNATE_ID" data-type="CHAR" nullable="true" max-length="995"/>
+                <column name="CONVERSATION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONVERSATION_THREAD_ID" data-type="CHAR" nullable="true" max-length="995"/>
+                <column name="PARENT_FOLDER_ID" data-type="CHAR" nullable="true" max-length="255"/>
+                <column name="SYNCED_EMAIL_ID" data-type="BIGINT" nullable="true"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="true"/>
+                <column name="RETURN_PATH" data-type="TEXT" nullable="true" max-length="300"/>
+                <column name="IN_REPLY_TO" data-type="TEXT" nullable="true" max-length="300"/>
+                <column name="REFERENCES" data-type="TEXT" nullable="true" max-length="300"/>
+                <column name="REPLY_TO_ADDRESS" data-type="TEXT" nullable="true" max-length="300"/>
+                <column name="INTERNAL_MESSAGE_ID" data-type="CHAR" nullable="true" max-length="1000"/>
+                <column name="INTERNAL_DRAFT_ID" data-type="CHAR" nullable="true" max-length="1000"/>
+                <column name="TRACKING_ID" data-type="CHAR" nullable="true" max-length="1000"/>
+            </columns>
+            <primary-key name="MEMExternalMessage_PK" column="ID" sequence-generator="MEMExternalMessage.ID"/>
+            <unique-keys>
+                <unique-key name="MEMExternalMessage_UK1">
+                    <unique-key-column>MESSAGE_ID</unique-key-column>
+                    <unique-key-column>MESSAGE_CATEGORY</unique-key-column>
+                    <unique-key-column>ALTERNATE_ID</unique-key-column>
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                </unique-key>
+                <unique-key name="MEMExternalMessage_UK2">
+                    <unique-key-column>CONVERSATION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MEMExternalMessage_FK1" reference-table="MEMConversation"
+                             local-column="CONVERSATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MEMExternalMessage_FK2" reference-table="MEMSyncSettings"
+                             local-column="SYNCED_EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MEMExternalMessage_FK3" reference-table="MEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+            <indexes>
+                <index name="MEMExternalMessage_Idx1">
+                    <index-column>MESSAGE_ID</index-column>
+                </index>
+                <index name="MEMExternalMessage_Idx2">
+                    <index-column>ALTERNATE_ID</index-column>
+                </index>
+                <index name="MEMExternalMessage_Idx3">
+                    <index-column>INTERNAL_MESSAGE_ID</index-column>
+                </index>
+                <index name="MEMExternalMessage_Idx4">
+                    <index-column>INTERNAL_DRAFT_ID</index-column>
+                </index>
+            </indexes>
+        </table>
+
+        <table name="MEMReference">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="PARENT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CHILD_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MEMReference_PK" column="ID" sequence-generator="MEMReference.ID"/>
+            <unique-keys>
+                <unique-key name="MEMReference_UK1">
+                    <unique-key-column>PARENT_ID</unique-key-column>
+                    <unique-key-column>CHILD_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MEMReference_FK1" reference-table="MEMExternalMessage"
+                             local-column="PARENT_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MEMReference_FK2" reference-table="MEMExternalMessage"
+                             local-column="CHILD_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMConversationRecipients">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="CONVERSATION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="true"/>
+                <column name="TYPE" data-type="INTEGER" nullable="false"/>
+            </columns>
+            <primary-key name="MEMConversationRecipients_PK" column="ID"
+                         sequence-generator="MEMConversationRecipients.ID"/>
+            <unique-keys>
+                <unique-key name="MEMConversationRecipients_UK1">
+                    <unique-key-column>CONVERSATION_ID</unique-key-column>
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                    <unique-key-column>TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MEMConversationRecipients_FK1" reference-table="MEMConversation"
+                             local-column="CONVERSATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MEMConversationRecipients_FK2" reference-table="MEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMConversationAttachment">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="SYNCED_EMAIL_ID" data-type="BIGINT" nullable="true"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="true"/>
+                <column name="CONVERSATION_ID" data-type="BIGINT" nullable="false"/>
+                <column name="ATTACHMENT_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MEMConversationAttachment_PK" column="ID"
+                         sequence-generator="MEMConversationAttachment.ID"/>
+            <foreign-keys>
+                <foreign-key name="MEMConversationAttachment_FK1" reference-table="MEMConversation"
+                             local-column="CONVERSATION_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MEMConversationAttachment_FK2" reference-table="MEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+                <foreign-key name="MEMConversationAttachment_FK3" reference-table="MEMSyncSettings"
+                             local-column="SYNCED_EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMSyncedEmailConversations">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="SYNCED_EMAIL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONVERSATION_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+
+            <primary-key name="MEMSyncedEmailConversations_PK" column="ID" sequence-generator="MEMSyncedEmailConversations.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="MEMSyncedEmailConversations_FK1" local-column="SYNCED_EMAIL_ID"
+                             reference-table="MEMSyncSettings" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+
+                <foreign-key name="MEMSyncedEmailConversations_FK2" local-column="CONVERSATION_ID"
+                             reference-table="MEMConversation" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <unique-keys>
+                <unique-key name="MEMSyncedEmailConversations_UK1">
+                    <unique-key-column>SYNCED_EMAIL_ID</unique-key-column>
+                    <unique-key-column>CONVERSATION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+
+        <!-- WebHook SQL Meta -->
+
+        <table name="MEMEmailWebHookReceiver">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EXPIRY_TIME" data-type="BIGINT" nullable="false"/>
+                <column name="PROVIDER_ID" data-type="SMALLINT" nullable="false"/>
+            </columns>
+            <primary-key name="MEMEmailWebHookReceiver_PK" column="ID"
+                         sequence-generator="MEMEmailWebHookReceiver.ID"/>
+            <indexes>
+                <index name="MEMEmailWebHookReceiver_Idx1">
+                    <index-column>EXPIRY_TIME</index-column>
+                </index>
+            </indexes>
+            <unique-keys>
+                <unique-key name="MEMEmailWebHookReceiver_UK1">
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MEMEmailWebHookReceiver_FK1" reference-table="MEMAddress"
+                             local-column="EMAIL_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMOutlookWebHookReceiver">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="SUBSCRIPTION_ID" data-type="CHAR" nullable="false"/>
+                <column name="WEBHOOK_RECEIVER_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MEMOutlookWebHookReceiver_PK" column="ID"
+                         sequence-generator="MEMOutlookWebHookReceiver.ID"/>
+            <indexes>
+                <index name="MEMOutlookWebHookReceiver_Idx1">
+                    <index-column>SUBSCRIPTION_ID</index-column>
+                </index>
+            </indexes>
+            <unique-keys>
+                <unique-key name="MEMOutlookWebHookReceiver_UK1">
+                    <unique-key-column>WEBHOOK_RECEIVER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MEMOutlookWebHookReceiver_FK1" reference-table="MEMEmailWebHookReceiver"
+                             local-column="WEBHOOK_RECEIVER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMGoogleWebHookReceiver">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="WEBHOOK_RECEIVER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="HISTORY_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+            <primary-key name="MEMGoogleWebHookReceiver_PK" column="ID"
+                         sequence-generator="MEMGoogleWebHookReceiver.ID"/>
+            <indexes>
+                <index name="MEMGoogleWebHookReceiver_Idx1">
+                    <index-column>HISTORY_ID</index-column>
+                </index>
+            </indexes>
+            <unique-keys>
+                <unique-key name="MEMGoogleWebHookReceiver_UK1">
+                    <unique-key-column>WEBHOOK_RECEIVER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+            <foreign-keys>
+                <foreign-key name="MEMGoogleWebHookReceiver_FK1" reference-table="MEMEmailWebHookReceiver"
+                             local-column="WEBHOOK_RECEIVER_ID" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMServer">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="HOST" data-type="CHAR" nullable="false"/>
+                <column name="PORT" data-type="INTEGER" nullable="false"/>
+                <column name="PROTOCOL" data-type="SMALLINT" nullable="false"/>
+                <column name="SECURITY_MODE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+
+            <primary-key name="MEMServer_PK" column="ID" sequence-generator="MEMServer.ID"/>
+
+            <unique-keys>
+                <unique-key name="MEMServer_UK1">
+                    <unique-key-column>PROTOCOL</unique-key-column>
+                    <unique-key-column>HOST</unique-key-column>
+                    <unique-key-column>PORT</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MEMServerAuthType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="SERVER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="AUTH_TYPE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+
+            <primary-key name="MEMServerAuthType_PK" column="ID" sequence-generator="MEMServerAuthType.ID"/>
+
+            <unique-keys>
+                <unique-key name="MEMServerAuthType_UK1">
+                    <unique-key-column>SERVER_ID</unique-key-column>
+                    <unique-key-column>AUTH_TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+
+            <foreign-keys>
+                <foreign-key name="MEMServerAuthType_FK1" local-column="SERVER_ID"
+                             reference-table="MEMServer" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMEmailServerConfig">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="SERVER_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+
+            <primary-key name="MEMEmailServerConfig_PK" column="ID" sequence-generator="MEMEmailServerConfig.ID"/>
+
+            <unique-keys>
+                <unique-key name="MEMEmailServerConfig_UK1">
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                    <unique-key-column>SERVER_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+
+            <foreign-keys>
+                <foreign-key name="MEMEmailServerConfig_FK1" local-column="EMAIL_ID"
+                             reference-table="MEMAddress" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+
+                <foreign-key name="MEMEmailServerConfig_FK2" local-column="SERVER_ID"
+                             reference-table="MEMServer" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMEmailAuthType">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="false"/>
+                <column name="AUTH_TYPE" data-type="SMALLINT" nullable="false"/>
+            </columns>
+
+            <primary-key name="MEMEmailAuthType_PK" column="ID" sequence-generator="MEMEmailAuthType.ID"/>
+
+            <unique-keys>
+                <unique-key name="MEMEmailAuthType_UK1">
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                    <unique-key-column>AUTH_TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+
+            <foreign-keys>
+                <foreign-key name="MEMEmailAuthType_FK1" local-column="EMAIL_ID"
+                             reference-table="MEMAddress" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMPasswordAuthCredentials">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="AUTH_ID" data-type="BIGINT" nullable="false"/>
+                <column name="USER_NAME" data-type="CHAR" nullable="false"/>
+                <column name="PASSWORD" data-type="CHAR" nullable="false"/>
+            </columns>
+
+            <primary-key name="MEMPasswordAuthCredentials_PK" column="ID" sequence-generator="MEMPasswordAuthCredentials.ID"/>
+
+            <unique-keys>
+                <unique-key name="MEMPasswordAuthCredentials_UK1">
+                    <unique-key-column>AUTH_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+
+            <foreign-keys>
+                <foreign-key name="MEMPasswordAuthCredentials_FK1" local-column="AUTH_ID"
+                             reference-table="MEMEmailAuthType" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MEMDomain">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" size="255" nullable="false"/>
+                <column name="EXTERNAL_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+
+            <primary-key name="MEMDomain_PK" column="ID" sequence-generator="MEMDomain.ID"/>
+
+            <unique-keys>
+                <unique-key name="MEMDomain_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+
+        <table name="MEMDomainDNSRecords">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="DOMAIN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="HOST" data-type="CHAR" size="255" nullable="false"/>
+                <column name="VALUE" data-type="CHAR" size="1024" nullable="false"/>
+                <column name="RECORD_TYPE" data-type="SMALLINT" nullable="false"/>
+                <column name="CATEGORY" data-type="SMALLINT" nullable="false"/>
+                <column name="STATUS" data-type="SMALLINT" nullable="false"/>
+                <column name="PROVIDER" data-type="SMALLINT" nullable="false"/>
+            </columns>
+
+            <primary-key name="MEMDomainDNSRecords_PK" column="ID" sequence-generator="MEMDomainDNSRecords.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="MEMDomainDNSRecords_FK1" local-column="DOMAIN_ID"
+                             reference-table="MEMDomain" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <unique-keys>
+                <unique-key name="MEMDomainDNSRecords_UK1">
+                    <unique-key-column>DOMAIN_ID</unique-key-column>
+                    <unique-key-column>HOST</unique-key-column>
+                    <unique-key-column>RECORD_TYPE</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MEMDomainSenders">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="DOMAIN_ID" data-type="BIGINT" nullable="false"/>
+                <column name="EMAIL_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+
+            <primary-key name="MEMDomainSenders_PK" column="ID" sequence-generator="MEMDomainSenders.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="MEMDomainSenders_FK1" local-column="DOMAIN_ID"
+                             reference-table="MEMDomain" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+
+                <foreign-key name="MEMDomainSenders_FK2" local-column="EMAIL_ID"
+                             reference-table="MEMAddress" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <unique-keys>
+                <unique-key name="MEMDomainSenders_UK1">
+                    <unique-key-column>DOMAIN_ID</unique-key-column>
+                    <unique-key-column>EMAIL_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+        <table name="MEMDomainSenderConversation">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="SENDER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="CONVERSATION_ID" data-type="BIGINT" nullable="false"/>
+            </columns>
+
+            <primary-key name="MEMDomainSenderConversation_PK" column="ID" sequence-generator="MEMDomainSenderConversation.ID"/>
+
+            <foreign-keys>
+                <foreign-key name="MEMDomainSenderConversation_FK1" local-column="SENDER_ID"
+                             reference-table="MEMDomainSenders" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+
+                <foreign-key name="MEMDomainSenderConversation_FK2" local-column="CONVERSATION_ID"
+                             reference-table="MEMConversation" reference-column="ID" constraint="ON-DELETE-CASCADE"/>
+            </foreign-keys>
+
+            <unique-keys>
+                <unique-key name="MEMDomainSenderConversation_UK1">
+                    <unique-key-column>SENDER_ID</unique-key-column>
+                    <unique-key-column>CONVERSATION_ID</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+
+    </module>
+</metadata>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+
+    <module name="marketplace">
+
+        <table name="MKPApps">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="NAME" data-type="CHAR" nullable="false" max-length="255"/>
+                <column name="DISPLAY_NAME" data-type="KCHAR" nullable="false" max-length="500"/>
+                <column name="DESCRIPTION" data-type="KCHAR" nullable="true" max-length="1000"/>
+            </columns>
+            <primary-key name="MKPApps_PK" column="ID" sequence-generator="MKPApps.ID"/>
+            <indexes>
+                <index name="MKPApps_Idx1">
+                    <index-column>NAME</index-column>
+                </index>
+            </indexes>
+            <unique-keys>
+                <unique-key name="MKPApps_UK1">
+                    <unique-key-column>NAME</unique-key-column>
+                </unique-key>
+            </unique-keys>
+        </table>
+
+    </module>
+
+</metadata>
