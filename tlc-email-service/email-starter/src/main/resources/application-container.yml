@@ -75,7 +75,7 @@ tlc.config:
       name: TLC
       server: postgres:5432
       username: postgres
-      password: Twozo@123
+      password: root123
       developmentModeEnabled: true
       connectionPool:
         name: crm-oltp-pool

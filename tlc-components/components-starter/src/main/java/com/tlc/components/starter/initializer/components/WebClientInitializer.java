@@ -97,13 +97,6 @@ final class WebClientInitializer extends AbstractModuleInitializer {
         }
     }
 
-    void startRecoveryMonitoring() {
-        final VertxClient webClientService = webClientServiceRegistry.get();
-        if (webClientService != null) {
-            webClientService.startRecoveryMonitoring();
-        }
-    }
-
     /**
      * Fetches the {@link EventListener} registered {@link Class} files and organizes them into a map ordered by module.
      *

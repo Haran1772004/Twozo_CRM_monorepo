@@ -43,12 +43,11 @@ public class SignUpManagement extends RegistrationAction {
         final Optional<Category> accountVerificationCategory = otpRequestManager
                 .getCategory(CommonFields.CRM, CommonFields.ACCOUNT_VERIFICATION);
 
-        // if (accountVerificationCategory.isPresent() &&
-        // !otpRequestManager.isReceiverVerified(data.getJsonObject(UserFields.USER).getString(UserFields.EMAIL),
-        // Channel.EMAIL, accountVerificationCategory.get())) {
-        // throw ErrorCode.get(IamErrorCodes.EMAIL_IS_NOT_VERIFIED,
-        // "i18n.iam.user.email.address.not.verified");
-        // }
+        if (accountVerificationCategory.isPresent() &&
+                !otpRequestManager.isReceiverVerified(data.getJsonObject(UserFields.USER).getString(UserFields.EMAIL),
+                        Channel.EMAIL, accountVerificationCategory.get())) {
+            throw ErrorCode.get(IamErrorCodes.EMAIL_IS_NOT_VERIFIED, "i18n.iam.user.email.address.not.verified");
+        }
         data.put(IamFields.APPLICATION, request.getParameter(IamFields.APPLICATION));
         data.put(OrganizationFields.USER_AGENT, request.getUserAgent().toJson());
 

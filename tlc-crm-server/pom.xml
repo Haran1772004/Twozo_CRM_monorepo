@@ -378,7 +378,6 @@
         <module>notifications</module>
         <module>workflow</module>
         <module>icon</module>
-        <module>hospital</module>
         <module>security</module>
         <module>messenger</module>
         <module>zapier</module>

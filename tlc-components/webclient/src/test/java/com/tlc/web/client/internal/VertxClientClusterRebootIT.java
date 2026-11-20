@@ -320,7 +320,6 @@ public final class VertxClientClusterRebootIT {
         final VertxClient client = new VertxClient();
         WebClientServiceRegistry.getInstance().register(client);
         client.start(configurations);
-        client.startRecoveryMonitoring();
         return client;
     }
 

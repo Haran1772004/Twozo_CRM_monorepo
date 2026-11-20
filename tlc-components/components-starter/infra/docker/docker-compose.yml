@@ -174,7 +174,6 @@ services:
           memory: 1g
 
   kafka-connect:
-    profiles: ["connect"]
     image: confluentinc/cp-kafka-connect:7.6.0
     container_name: kafka-connect
     depends_on:
@@ -203,7 +202,6 @@ services:
       CONNECT_PLUGIN_PATH: /plugins
 
   opensearch:
-    profiles: ["search"]
     image: opensearchproject/opensearch:2.13.0
     pull_policy: if_not_present
     container_name: opensearch-local
@@ -287,7 +285,7 @@ services:
           memory: 256m
 
   clickhouse:
-    image: clickhouse/clickhouse-server:26.8
+    image: clickhouse/clickhouse-server:latest
     pull_policy: if_not_present
     container_name: clickhouse-local
     ports:
@@ -298,7 +296,7 @@ services:
       - CLICKHOUSE_PASSWORD=root@123
       - CLICKHOUSE_DB=olap
     volumes:
-      - clickhouse_data_268_test:/var/lib/clickhouse
+      - clickhouse_data:/var/lib/clickhouse
     healthcheck:
       test: ["CMD-SHELL", "wget -nv -t1 --spider http://localhost:8123/ping || exit 1"]
       interval: 10s
@@ -328,6 +326,8 @@ services:
       postgres:
         condition: service_healthy
       zookeeper:
+        condition: service_healthy
+      opensearch:
         condition: service_healthy
       kafka:
         condition: service_healthy
@@ -566,4 +566,4 @@ volumes:
   kafka_data:
   zookeeper_data:
   zookeeper_logs:
-  clickhouse_data_268_test:
+  clickhouse_data:
