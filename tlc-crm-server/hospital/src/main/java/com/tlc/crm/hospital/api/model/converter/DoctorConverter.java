@@ -13,7 +13,9 @@ import java.util.Collections;
 import java.util.Objects;
 
 /**
- * Converts Doctor request data to and from API JSON.
+ * Converts doctor request data to and from API JSON.
+ *
+ * @author haris
  */
 public class DoctorConverter extends EntityConverter<Doctor> {
 
@@ -29,10 +31,22 @@ public class DoctorConverter extends EntityConverter<Doctor> {
         userService = UserService.getInstance();
     }
 
+    /**
+     * Returns the shared doctor converter instance.
+     *
+     * @return the doctor converter
+     */
     public static DoctorConverter getInstance() {
         return Instance.INSTANCE;
     }
 
+    /**
+     * Converts doctor JSON into a new or existing doctor model.
+     *
+     * @param converterConfig the organization and user context for conversion
+     * @param jsonObject the doctor payload
+     * @return the converted doctor
+     */
     @Override
     public Doctor convert(final ConverterConfig converterConfig, final JsonObject jsonObject) {
         final Long orgId = converterConfig.orgId();
@@ -65,6 +79,12 @@ public class DoctorConverter extends EntityConverter<Doctor> {
         return doctor;
     }
 
+    /**
+     * Converts a doctor model into its API JSON representation.
+     *
+     * @param doctor the doctor to convert
+     * @return the doctor payload
+     */
     @Override
     public JsonObject convert(final Doctor doctor) {
         final JsonObject jsonObject = Json.object();

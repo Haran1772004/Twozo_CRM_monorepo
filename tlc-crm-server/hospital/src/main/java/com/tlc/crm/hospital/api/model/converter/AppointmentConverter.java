@@ -17,7 +17,9 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Converts Appointment request data to and from API JSON.
+ * Converts appointment request data to and from API JSON.
+ *
+ * @author haris
  */
 public class AppointmentConverter extends EntityConverter<Appointment> {
 
@@ -33,16 +35,29 @@ public class AppointmentConverter extends EntityConverter<Appointment> {
         userService = UserService.getInstance();
     }
 
+    /**
+     * Returns the shared appointment converter instance.
+     *
+     * @return the appointment converter
+     */
     public static AppointmentConverter getInstance() {
         return Instance.INSTANCE;
     }
 
+    /**
+     * Converts appointment JSON into a new or existing appointment model.
+     *
+     * @param converterConfig the organization and user context for conversion
+     * @param jsonObject the appointment payload
+     * @return the converted appointment
+     */
     @Override
     public Appointment convert(final ConverterConfig converterConfig, final JsonObject jsonObject) {
         final Long orgId = converterConfig.orgId();
         final Long id = jsonObject.optNullableValue("id", null);
         final Appointment appointment = Objects.nonNull(id)
-                ? appointmentManager.get(orgId, id) : new Appointment();
+                ? appointmentManager.get(orgId, id)
+                : new Appointment();
         final CrmUser currentUser = userService.getUser(orgId, converterConfig.ownerId());
 
         appointment.setOrgId(orgId);
@@ -65,11 +80,13 @@ public class AppointmentConverter extends EntityConverter<Appointment> {
         }
         if (jsonObject.containsKey("startTime")) {
             appointment.setStartTime(jsonObject.isKeyPresentWithNullValue("startTime")
-                    ? null : new DateTime(jsonObject.getLong("startTime")));
+                    ? null
+                    : new DateTime(jsonObject.getLong("startTime")));
         }
         if (jsonObject.containsKey("duration")) {
             appointment.setDuration(jsonObject.isKeyPresentWithNullValue("duration")
-                    ? null : jsonObject.getInt("duration"));
+                    ? null
+                    : jsonObject.getInt("duration"));
         }
         if (jsonObject.containsKey("status")) {
             appointment.setStatus(parseStatus(jsonObject));
@@ -78,6 +95,12 @@ public class AppointmentConverter extends EntityConverter<Appointment> {
         return appointment;
     }
 
+    /**
+     * Converts an appointment model into its API JSON representation.
+     *
+     * @param appointment the appointment to convert
+     * @return the appointment payload
+     */
     @Override
     public JsonObject convert(final Appointment appointment) {
         final JsonObject jsonObject = Json.object();
@@ -86,10 +109,12 @@ public class AppointmentConverter extends EntityConverter<Appointment> {
         jsonObject.put("patientId", appointment.getPatientId());
         jsonObject.put("doctorId", appointment.getDoctorId());
         jsonObject.put("startTime", Objects.isNull(appointment.getStartTime())
-                ? null : appointment.getStartTime().getTimeStamp());
+                ? null
+                : appointment.getStartTime().getTimeStamp());
         jsonObject.put("duration", appointment.getDuration());
         jsonObject.put("status", Objects.isNull(appointment.getStatus())
-                ? null : appointment.getStatus().name());
+                ? null
+                : appointment.getStatus().name());
         return jsonObject;
     }
 

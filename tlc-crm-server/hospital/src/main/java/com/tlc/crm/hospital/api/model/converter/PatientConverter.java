@@ -14,7 +14,9 @@ import java.util.Collections;
 import java.util.Objects;
 
 /**
- * Converts Patient request data to and from API JSON.
+ * Converts patient request data to and from API JSON.
+ *
+ * @author haris
  */
 public class PatientConverter extends EntityConverter<Patient> {
 
@@ -30,10 +32,22 @@ public class PatientConverter extends EntityConverter<Patient> {
         userService = UserService.getInstance();
     }
 
+    /**
+     * Returns the shared patient converter instance.
+     *
+     * @return the patient converter
+     */
     public static PatientConverter getInstance() {
         return Instance.INSTANCE;
     }
 
+    /**
+     * Converts patient JSON into a new or existing patient model.
+     *
+     * @param converterConfig the organization and user context for conversion
+     * @param jsonObject the patient payload
+     * @return the converted patient
+     */
     @Override
     public Patient convert(final ConverterConfig converterConfig, final JsonObject jsonObject) {
         final Long orgId = converterConfig.orgId();
@@ -58,7 +72,8 @@ public class PatientConverter extends EntityConverter<Patient> {
         }
         if (jsonObject.containsKey("dateOfBirth")) {
             patient.setDateOfBirth(jsonObject.isKeyPresentWithNullValue("dateOfBirth")
-                    ? null : new Date(jsonObject.getLong("dateOfBirth")));
+                    ? null
+                    : new Date(jsonObject.getLong("dateOfBirth")));
         }
         if (jsonObject.containsKey("phone")) {
             patient.setPhone(jsonObject.optNullableValue("phone", patient.getPhone()));
@@ -67,6 +82,12 @@ public class PatientConverter extends EntityConverter<Patient> {
         return patient;
     }
 
+    /**
+     * Converts a patient model into its API JSON representation.
+     *
+     * @param patient the patient to convert
+     * @return the patient payload
+     */
     @Override
     public JsonObject convert(final Patient patient) {
         final JsonObject jsonObject = Json.object();
@@ -74,7 +95,8 @@ public class PatientConverter extends EntityConverter<Patient> {
         jsonObject.put("orgId", patient.orgId());
         jsonObject.put("fullName", patient.getFullName());
         jsonObject.put("dateOfBirth", Objects.isNull(patient.getDateOfBirth())
-                ? null : patient.getDateOfBirth().getTimeStamp());
+                ? null
+                : patient.getDateOfBirth().getTimeStamp());
         jsonObject.put("phone", patient.getPhone());
         return jsonObject;
     }

@@ -24,9 +24,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author hari
- *         Saves and reads appointments and checks their patient, doctor, and
- *         schedule.
+ * Persists and retrieves appointments and validates their patient, doctor, and
+ * schedule.
+ *
+ * @author haris
  */
 public class AppointmentManager extends AbstractConfigManager<Appointment> {
 
@@ -44,15 +45,22 @@ public class AppointmentManager extends AbstractConfigManager<Appointment> {
         doctorManager = DoctorManager.getInstance();
     }
 
+    /**
+     * Returns the shared appointment manager instance.
+     *
+     * @return the appointment manager
+     */
     public static AppointmentManager getInstance() {
         return Instance.INSTANCE;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Table getTable() {
         return Table.get(MHOAPPOINTMENT.TABLE_NAME);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Collection<Appointment> get(final Long orgId, final Collection<Long> ids) {
         if (ids.isEmpty()) {
@@ -65,11 +73,13 @@ public class AppointmentManager extends AbstractConfigManager<Appointment> {
         return dataContainer.getRows(table).map(this::convertRowToModel).toList();
     }
 
+    /** {@inheritDoc} */
     @Override
     public Collection<Appointment> partialGet(final Long orgId, final Collection<Long> ids) {
         return get(orgId, ids);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Appointment create(final Appointment appointment) {
         validateReferences(appointment);
@@ -101,6 +111,7 @@ public class AppointmentManager extends AbstractConfigManager<Appointment> {
         return appointment;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected ProcessOutcome update(final Long orgId, final Collection<Appointment> appointments) {
         final ProcessOutcome processOutcome = new ProcessOutcome();
@@ -176,6 +187,14 @@ public class AppointmentManager extends AbstractConfigManager<Appointment> {
         }
     }
 
+    /**
+     * Checks whether a scheduled appointment overlaps an existing appointment
+     * for the same patient or doctor in the organization.
+     *
+     * @param orgId the organization identifier
+     * @param appointment the appointment to check
+     * @return {@code true} if a conflicting scheduled appointment exists
+     */
     public boolean hasScheduleConflict(final Long orgId, final Appointment appointment) {
         if (appointment.getStatus() != Appointment.Status.SCHEDULED) {
             return false;
@@ -206,6 +225,15 @@ public class AppointmentManager extends AbstractConfigManager<Appointment> {
         return intervalsOverlap(start, end, existingStartTime, existingEndTime);
     }
 
+    /**
+     * Determines whether two half-open time intervals overlap.
+     *
+     * @param firstStart the first interval's start, inclusive
+     * @param firstEnd the first interval's end, exclusive
+     * @param secondStart the second interval's start, inclusive
+     * @param secondEnd the second interval's end, exclusive
+     * @return {@code true} if the intervals overlap
+     */
     static boolean intervalsOverlap(final long firstStart, final long firstEnd,
             final long secondStart, final long secondEnd) {
         return firstStart < secondEnd && secondStart < firstEnd;

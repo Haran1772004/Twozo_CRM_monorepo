@@ -7,19 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Activator of the hospital bundle.
+ * Manages lifecycle logging for the hospital OSGi bundle.
  *
  * @author Haris
  * @version 1.0
- */
-/*
- * Yes. If the hospital module needs setup or cleanup, it can do that when it
- * starts or stops—for example, register a listener at startup and unregister it
- * at shutdown.
- * 
- * Normal work, like creating a patient or appointment, should happen when the
- * app receives a request, not in the activator. Also, since we haven’t wired
- * the module into the server, this activator won’t run yet.
  */
 public class HospitalActivator extends TlcActivator {
 

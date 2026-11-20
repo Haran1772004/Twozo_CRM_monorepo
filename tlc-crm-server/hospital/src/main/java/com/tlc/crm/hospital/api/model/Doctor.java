@@ -19,6 +19,7 @@ import jakarta.validation.constraints.Size;
 @FieldsValidator(groups = {Create.class, Update.class}, message = "i18n.entity.fields.validation.failed")
 public class Doctor extends Entity {
 
+    /** Entity type identifier used by the CRM entity framework. */
     public static final String ENTITY_TYPE = "Doctor";
 
     @NotNull(groups = {Update.class, Delete.class}, message = "i18n.doctor.invalid.id")
@@ -40,60 +41,97 @@ public class Doctor extends Entity {
 
     private boolean notifiable;
 
+    /** Creates a doctor model with no field values set. */
     public Doctor() {
         super(ENTITY_TYPE);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Long id() {
         return id;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setId(final Long id) {
         this.id = id;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getName() {
         return fullName;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Object identity() {
         return null;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean notifiable() {
         return notifiable;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setNotifiable(final boolean notifiable) {
         this.notifiable = notifiable;
     }
 
+    /**
+     * Returns the doctor's full name.
+     *
+     * @return the full name
+     */
     public String getFullName() {
         return fullName;
     }
 
+    /**
+     * Sets the doctor's full name.
+     *
+     * @param fullName the full name
+     */
     public void setFullName(final String fullName) {
         this.fullName = fullName;
     }
 
+    /**
+     * Returns the doctor's specialty.
+     *
+     * @return the specialty
+     */
     public String getSpecialty() {
         return specialty;
     }
 
+    /**
+     * Sets the doctor's specialty.
+     *
+     * @param specialty the specialty
+     */
     public void setSpecialty(final String specialty) {
         this.specialty = specialty;
     }
 
+    /**
+     * Returns the doctor's phone number.
+     *
+     * @return the phone number, or {@code null} if it is not set
+     */
     public String getPhone() {
         return phone;
     }
 
+    /**
+     * Sets the doctor's phone number.
+     *
+     * @param phone the phone number, or {@code null} to clear it
+     */
     public void setPhone(final String phone) {
         this.phone = phone;
     }

@@ -22,7 +22,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Saves and reads doctor records.
+ * Persists and retrieves doctor records.
+ *
+ * @author haris
  */
 public class DoctorManager extends AbstractConfigManager<Doctor> {
 
@@ -33,15 +35,22 @@ public class DoctorManager extends AbstractConfigManager<Doctor> {
     private DoctorManager() {
     }
 
+    /**
+     * Returns the shared doctor manager instance.
+     *
+     * @return the doctor manager
+     */
     public static DoctorManager getInstance() {
         return Instance.INSTANCE;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Table getTable() {
         return Table.get(MHODOCTOR.TABLE_NAME);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Collection<Doctor> get(final Long orgId, final Collection<Long> ids) {
         if (ids.isEmpty()) {
@@ -54,11 +63,13 @@ public class DoctorManager extends AbstractConfigManager<Doctor> {
         return dataContainer.getRows(table).map(this::convertRowToModel).toList();
     }
 
+    /** {@inheritDoc} */
     @Override
     public Collection<Doctor> partialGet(final Long orgId, final Collection<Long> ids) {
         return get(orgId, ids);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Doctor create(final Doctor doctor) {
         final Table table = getTable();
@@ -85,6 +96,7 @@ public class DoctorManager extends AbstractConfigManager<Doctor> {
         return doctor;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected ProcessOutcome update(final Long orgId, final Collection<Doctor> doctors) {
         final ProcessOutcome processOutcome = new ProcessOutcome();
@@ -128,7 +140,8 @@ public class DoctorManager extends AbstractConfigManager<Doctor> {
         if (!failedEntries.isEmpty()) {
             processOutcome.setErrorSummary(new ErrorSummary(
                     new ErrorDescriptor(ErrorCode.get(CommonErrorCodes.UPDATE_ACTION_FAILED,
-                            "i18n.common.update.failed")), failedEntries));
+                            "i18n.common.update.failed")),
+                    failedEntries));
         }
 
         return processOutcome;

@@ -10,6 +10,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="entity (1) (com.tlc.crm)" />
+        <module name="reports" />
         <module name="iam-starter" />
         <module name="email-starter" />
         <module name="ui-client" />
@@ -19,12 +20,12 @@
         <module name="file-starter" />
         <module name="entity" />
       </profile>
-      <profile name="Annotation profile for email-service" enabled="true">
+      <profile name="Annotation profile for file-storage-server" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.48/lombok-1.18.48.jar" />
+          <entry name="/home/haris/.m2/repository/org/projectlombok/lombok/1.18.48/lombok-1.18.48.jar" />
         </processorPath>
         <module name="cluster" />
         <module name="validator" />
@@ -48,8 +49,8 @@
         <module name="fields" />
         <module name="notifications" />
         <module name="social-client" />
-        <module name="server" />
         <module name="email-server" />
+        <module name="server" />
         <module name="file-client" />
         <module name="sync-service-oauth" />
         <module name="webclient" />
@@ -72,6 +73,7 @@
         <module name="client" />
         <module name="app-notification" />
         <module name="file-server" />
+        <module name="hospital" />
         <module name="social-common" />
         <module name="email-core" />
         <module name="identity-provider" />
@@ -91,7 +93,6 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="goals" target="17" />
-      <module name="reports" target="17" />
       <module name="resilience" target="17" />
       <module name="webclient-api" target="25" />
       <module name="webclient-bom" target="1.5" />
