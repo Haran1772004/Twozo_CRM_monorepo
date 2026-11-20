@@ -65,7 +65,7 @@ tlc.config:
       name: TLC
       server: postgres:5432
       username: postgres
-      password: root123
+      password: Twozo@123
       developmentModeEnabled: true
       connectionPool:
         name: crm-oltp-pool
@@ -412,7 +412,7 @@ tlc.config:
         user: search-admin
         url: http://opensearch:9200
         password: dummy-password
-        server.enabled: true
+        server.enabled: false
         security.enabled: false #TODO This will enable password less authentication and non ssl transport
       managed:
         domain: ${OPEN_SEARCH_SERVERLESS_DOMAIN}
@@ -448,7 +448,7 @@ tlc.config:
     allowedOrigins: http://localhost:8085
     path.prefix: /api
     app.name: CRM
-    default.domain: #configure based on the environment
+    default.domain: ${LOCAL_DOMAIN}
     preflight.allowed.endpoints:
       - path: /api/accounts/crm/signup
       - path: /api/otp/mgmt
@@ -939,3 +939,11 @@ tlc.config:
 #      - kafka-connect
 #      - cdc-core
 #      - olap
+      # Override leftover indexed entries inherited from application.yml.
+      - local-disabled-service
+      - local-disabled-service
+      - local-disabled-service
+      - local-disabled-service
+      - local-disabled-service
+      - local-disabled-service
+      - local-disabled-service

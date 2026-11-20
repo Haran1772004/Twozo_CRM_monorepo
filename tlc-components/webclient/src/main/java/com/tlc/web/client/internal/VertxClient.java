@@ -77,6 +77,12 @@ public class VertxClient implements Service, VertxLifecycle {
         recoveryCoordinator.resetForStart();
 
         runUnderLifecycleLock(() -> joinCluster(configurations));
+    }
+
+    /**
+     * Starts periodic cluster health checks after application event listeners are registered.
+     */
+    public void startRecoveryMonitoring() {
         runUnderLifecycleLock(recoveryCoordinator::registerScheduler);
     }
 

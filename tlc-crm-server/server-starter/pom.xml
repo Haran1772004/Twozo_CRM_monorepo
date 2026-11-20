@@ -41,6 +41,7 @@
         <tlc.crm.conversation.handler.version>1.4.0-SNAPSHOT</tlc.crm.conversation.handler.version>
         <tlc.crm.marketplace.version>1.3.0-SNAPSHOT</tlc.crm.marketplace.version>
         <tlc.crm.auto.assignment.version>1.5.0-SNAPSHOT</tlc.crm.auto.assignment.version>
+        <tlc.crm.hospital.version>1.0.0-SNAPSHOT</tlc.crm.hospital.version>
     </properties>
 
     <dependencies>
@@ -162,6 +163,12 @@
             <groupId>com.tlc.crm</groupId>
             <artifactId>auto-assignment</artifactId>
             <version>${tlc.crm.auto.assignment.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tlc.crm</groupId>
+            <artifactId>hospital</artifactId>
+            <version>${tlc.crm.hospital.version}</version>
         </dependency>
 
         <dependency>

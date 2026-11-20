@@ -32,6 +32,7 @@ public enum CrmServerModules implements Modules {
     PLAN_AND_BILLING("plan-and-billing", "com.tlc.crm.plan.and.billing"),
     CONVERSATION_HANDLER("conversation", "com.tlc.crm.conversation.handler"),
     AI("ai", "com.tlc.crm.ai"),
+    HOSPITAL("hospital", "com.tlc.crm.hospital"),
     ;
 
     private final String artifactId;
