@@ -116,6 +116,10 @@ public final class ComponentsInitializer extends AbstractModuleInitializer {
         mcpInitializer.postInitialize();
     }
 
+    public void startClusterRecoveryMonitoring() {
+        webClientInitializer.startRecoveryMonitoring();
+    }
+
     @Override
     protected boolean isServiceEnabled() {
         return true;

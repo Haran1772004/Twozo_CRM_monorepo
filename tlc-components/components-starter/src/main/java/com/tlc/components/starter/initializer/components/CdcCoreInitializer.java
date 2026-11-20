@@ -47,7 +47,7 @@ public class CdcCoreInitializer extends AbstractModuleInitializer {
      */
     @Override
     public void postInitialize() {
-        if (isServiceEnabled()) {
+        if (isServiceEnabled() && isServiceEnabled(ComponentsStarterFields.KAFKA_CONNECT)) {
             final CdcResourceRegistrar cdcResourceRegistrar = CdcResourceRegistrar.getInstance();
 
             for (final Map.Entry<Modules, Collection<Class<?>>> registeredClassesByModule : fetchRegisteredClasses().entrySet()) {
@@ -71,7 +71,7 @@ public class CdcCoreInitializer extends AbstractModuleInitializer {
      */
     @Override
     public void shutdown() {
-        if (isServiceEnabled()) {
+        if (isServiceEnabled() && isServiceEnabled(ComponentsStarterFields.KAFKA_CONNECT)) {
             final CdcResourceRegistrar cdcResourceRegistrar = CdcResourceRegistrar.getInstance();
 
             for (final Map.Entry<Modules, Collection<Class<?>>> registeredClassesByModule : fetchRegisteredClasses().entrySet()) {

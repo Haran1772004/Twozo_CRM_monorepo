@@ -1,3 +1,4 @@
+# Maven output
 **/target/
 *.class
 **/bin/

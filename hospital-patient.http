@@ -1,0 +1,83 @@
+### Local CRM API through the Nginx proxy (Compose host port 8080).
+### For direct CRM access, change baseUrl to http://localhost:8181/api.
+@baseUrl = http://localhost:8080/api
+@application = REPLACE_WITH_CONFIGURED_APPLICATION
+@email = REPLACE_WITH_LOGIN_EMAIL
+@password = REPLACE_WITH_LOGIN_PASSWORD
+@token = REPLACE_WITH_ACCESS_TOKEN
+@patientId = 1
+
+### Login. Copy the accessToken cookie value from the response into @token.
+POST {{baseUrl}}/accounts/{{application}}/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "data": {
+    "email": "{{email}}",
+    "password": "{{password}}"
+  }
+}
+
+### Get a patient. Use an existing patient ID.
+POST {{baseUrl}}/hospital/patient/mgmt
+Content-Type: application/json
+Cookie: accessToken={{token}}
+
+{
+  "type": "get",
+  "data": {
+    "id": {{patientId}}
+  }
+}
+
+### Create a patient. This writes a new record.
+POST {{baseUrl}}/hospital/patient/mgmt
+Content-Type: application/json
+Cookie: accessToken={{token}}
+
+{
+  "type": "create",
+  "data": {
+    "fullName": "Debug Test Patient",
+    "phone": "555-0100"
+  }
+}
+
+### Update a patient. Replace patientId with an existing test patient ID.
+POST {{baseUrl}}/hospital/patient/mgmt
+Content-Type: application/json
+Cookie: accessToken={{token}}
+
+{
+  "type": "update",
+  "data": {
+    "id": {{patientId}},
+    "fullName": "Updated Debug Test Patient",
+    "phone": "555-0101"
+  }
+}
+
+### Check an existing patient's existence.
+POST {{baseUrl}}/hospital/patient/mgmt
+Content-Type: application/json
+Cookie: accessToken={{token}}
+
+{
+  "type": "exists",
+  "data": {
+    "id": {{patientId}}
+  }
+}
+
+### Delete is destructive. Replace with a disposable test patient ID.
+POST {{baseUrl}}/hospital/patient/mgmt
+Content-Type: application/json
+Cookie: accessToken={{token}}
+
+{
+  "type": "delete",
+  "data": {
+    "id": {{patientId}}
+  }
+}

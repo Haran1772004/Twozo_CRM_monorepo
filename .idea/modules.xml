@@ -2,34 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/tlc-components/attachment/attachment.iml" filepath="$PROJECT_DIR$/tlc-components/attachment/attachment.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/azure.iml" filepath="$PROJECT_DIR$/.idea/azure.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-iam/client/client.iml" filepath="$PROJECT_DIR$/tlc-iam/client/client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-crm-server/common/common.iml" filepath="$PROJECT_DIR$/tlc-crm-server/common/common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-crm-server/core/core.iml" filepath="$PROJECT_DIR$/tlc-crm-server/core/core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-email-service/email-client/email-client.iml" filepath="$PROJECT_DIR$/tlc-email-service/email-client/email-client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-email-service/email-common/email-common.iml" filepath="$PROJECT_DIR$/tlc-email-service/email-common/email-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-crm-server/email-core/email-core.iml" filepath="$PROJECT_DIR$/tlc-crm-server/email-core/email-core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-crm-server/email-notification/email-notification.iml" filepath="$PROJECT_DIR$/tlc-crm-server/email-notification/email-notification.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-email-service/email-server/email-server.iml" filepath="$PROJECT_DIR$/tlc-email-service/email-server/email-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-email-service/email-starter/email-starter.iml" filepath="$PROJECT_DIR$/tlc-email-service/email-starter/email-starter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-crm-server/entity/entity (2) (com.tlc.crm).iml" filepath="$PROJECT_DIR$/tlc-crm-server/entity/entity (2) (com.tlc.crm).iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-components/features/features (1) (com.tlc).iml" filepath="$PROJECT_DIR$/tlc-components/features/features (1) (com.tlc).iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-crm-server/features/features (2) (com.tlc.crm).iml" filepath="$PROJECT_DIR$/tlc-crm-server/features/features (2) (com.tlc.crm).iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-storage-server/client/file-client.iml" filepath="$PROJECT_DIR$/tlc-storage-server/client/file-client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-storage-server/server/file-server.iml" filepath="$PROJECT_DIR$/tlc-storage-server/server/file-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-iam/common/iam-common.iml" filepath="$PROJECT_DIR$/tlc-iam/common/iam-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-iam/iam-starter/iam-starter.iml" filepath="$PROJECT_DIR$/tlc-iam/iam-starter/iam-starter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-crm-server/messenger/messenger.iml" filepath="$PROJECT_DIR$/tlc-crm-server/messenger/messenger.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-components/notification/notification.iml" filepath="$PROJECT_DIR$/tlc-components/notification/notification.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-crm-server/notifications/notifications.iml" filepath="$PROJECT_DIR$/tlc-crm-server/notifications/notifications.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-components/queue/queue.iml" filepath="$PROJECT_DIR$/tlc-components/queue/queue.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-iam/server/server.iml" filepath="$PROJECT_DIR$/tlc-iam/server/server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-crm-server/server-starter/server-starter.iml" filepath="$PROJECT_DIR$/tlc-crm-server/server-starter/server-starter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-social/social-common/social-common.iml" filepath="$PROJECT_DIR$/tlc-social/social-common/social-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-social/social-starter/social-starter.iml" filepath="$PROJECT_DIR$/tlc-social/social-starter/social-starter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-components/web/web.iml" filepath="$PROJECT_DIR$/tlc-components/web/web.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tlc-crm-server/webform/webform.iml" filepath="$PROJECT_DIR$/tlc-crm-server/webform/webform.iml" />
     </modules>
   </component>
 </project>
