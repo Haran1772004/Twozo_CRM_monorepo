@@ -13,7 +13,7 @@
                 <column name="MODIFIED_TIME" data-type="DATETIME" nullable="false"/>
                 <column name="CREATED_BY" data-type="BIGINT" nullable="false"/>
                 <column name="UPDATED_BY" data-type="BIGINT" nullable="false"/>
-                <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="true"/>
+                <!-- <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="true"/> -->
             </columns>
             <primary-key name="MHOPatient_PK" column="ID" sequence-generator="MHOPatient.ID"/>
             <foreign-keys>
@@ -40,7 +40,7 @@
                 <column name="MODIFIED_TIME" data-type="DATETIME" nullable="false"/>
                 <column name="CREATED_BY" data-type="BIGINT" nullable="false"/>
                 <column name="UPDATED_BY" data-type="BIGINT" nullable="false"/>
-                <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="true"/>
+                <!-- <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="true"/> -->
             </columns>
             <primary-key name="MHODoctor_PK" column="ID" sequence-generator="MHODoctor.ID"/>
             <foreign-keys>
@@ -69,7 +69,7 @@
                 <column name="MODIFIED_TIME" data-type="DATETIME" nullable="false"/>
                 <column name="CREATED_BY" data-type="BIGINT" nullable="false"/>
                 <column name="UPDATED_BY" data-type="BIGINT" nullable="false"/>
-                <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="true"/>
+                <!-- <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="true"/> -->
             </columns>
             <primary-key name="MHOAppointment_PK" column="ID" sequence-generator="MHOAppointment.ID"/>
             <foreign-keys>
