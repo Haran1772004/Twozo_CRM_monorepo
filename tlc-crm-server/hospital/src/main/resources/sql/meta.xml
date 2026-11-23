@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+    <module name="module_crm_hospital">
+        <table name="MHOPatient" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="OWNER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FULL_NAME" data-type="CHAR" nullable="false" max-length="255"/>
+                <column name="DATE_OF_BIRTH" data-type="DATE" nullable="true"/>
+                <column name="PHONE" data-type="CHAR" nullable="true" max-length="32"/>
+                <column name="CREATED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="MODIFIED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="CREATED_BY" data-type="BIGINT" nullable="false"/>
+                <column name="UPDATED_BY" data-type="BIGINT" nullable="false"/>
+                <!-- <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="true"/> -->
+            </columns>
+            <primary-key name="MHOPatient_PK" column="ID" sequence-generator="MHOPatient.ID"/>
+            <foreign-keys>
+                <foreign-key name="MHOPatient_Org_FK" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="MHOPatient_Owner_FK" reference-table="OMCRMUser"
+                             local-column="OWNER_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="MHOPatient_CreatedBy_FK" reference-table="OMCRMUser"
+                             local-column="CREATED_BY" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="MHOPatient_UpdatedBy_FK" reference-table="OMCRMUser"
+                             local-column="UPDATED_BY" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MHODoctor" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="OWNER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="FULL_NAME" data-type="CHAR" nullable="false" max-length="255"/>
+                <column name="SPECIALTY" data-type="CHAR" nullable="false" max-length="255"/>
+                <column name="PHONE" data-type="CHAR" nullable="true" max-length="32"/>
+                <column name="CREATED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="MODIFIED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="CREATED_BY" data-type="BIGINT" nullable="false"/>
+                <column name="UPDATED_BY" data-type="BIGINT" nullable="false"/>
+                <!-- <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="true"/> -->
+            </columns>
+            <primary-key name="MHODoctor_PK" column="ID" sequence-generator="MHODoctor.ID"/>
+            <foreign-keys>
+                <foreign-key name="MHODoctor_Org_FK" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="MHODoctor_Owner_FK" reference-table="OMCRMUser"
+                             local-column="OWNER_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="MHODoctor_CreatedBy_FK" reference-table="OMCRMUser"
+                             local-column="CREATED_BY" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="MHODoctor_UpdatedBy_FK" reference-table="OMCRMUser"
+                             local-column="UPDATED_BY" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+        </table>
+
+        <table name="MHOAppointment" type="11">
+            <columns>
+                <column name="ID" data-type="BIGINT"/>
+                <column name="ORG_ID" data-type="BIGINT" nullable="false"/>
+                <column name="OWNER_ID" data-type="BIGINT" nullable="false"/>
+                <column name="PATIENT_ID" data-type="BIGINT" nullable="false"/>
+                <column name="DOCTOR_ID" data-type="BIGINT" nullable="false"/>
+                <column name="START_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="DURATION" data-type="INTEGER" nullable="false"/>
+                <column name="STATUS" data-type="CHAR" nullable="false" max-length="16"/>
+                <column name="CREATED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="MODIFIED_TIME" data-type="DATETIME" nullable="false"/>
+                <column name="CREATED_BY" data-type="BIGINT" nullable="false"/>
+                <column name="UPDATED_BY" data-type="BIGINT" nullable="false"/>
+                <!-- <column name="LAST_ASSIGNED_AT" data-type="DATETIME" nullable="true"/> -->
+            </columns>
+            <primary-key name="MHOAppointment_PK" column="ID" sequence-generator="MHOAppointment.ID"/>
+            <foreign-keys>
+                <foreign-key name="MHOAppointment_Org_FK" reference-table="FGOrganisation"
+                             local-column="ORG_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="MHOAppointment_Owner_FK" reference-table="OMCRMUser"
+                             local-column="OWNER_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="MHOAppointment_Patient_FK" reference-table="MHOPatient"
+                             local-column="PATIENT_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="MHOAppointment_Doctor_FK" reference-table="MHODoctor"
+                             local-column="DOCTOR_ID" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="MHOAppointment_CreatedBy_FK" reference-table="OMCRMUser"
+                             local-column="CREATED_BY" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+                <foreign-key name="MHOAppointment_UpdatedBy_FK" reference-table="OMCRMUser"
+                             local-column="UPDATED_BY" reference-column="ID" constraint="ON-DELETE-RESTRICT"/>
+            </foreign-keys>
+        </table>
+    </module>
+</metadata>

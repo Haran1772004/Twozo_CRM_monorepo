@@ -380,7 +380,9 @@ public class CoreServiceInitializer implements ServiceInitializer {
 
         /* CRM Analytics Caches & Listeners */
         crmAnalyticsCacheInitializer.postInitialize(configurations);
-        analyticsSinkConnectorInitializer.initialize();
+        if (ConfHolder.getInstance().getProperties("services").containsValue("kafka-connect")) {
+            analyticsSinkConnectorInitializer.initialize();
+        }
 
         contactPullController.start(null);
         contactPushEventListener.start(null);

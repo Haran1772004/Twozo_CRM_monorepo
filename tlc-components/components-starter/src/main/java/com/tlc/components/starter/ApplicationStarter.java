@@ -71,6 +71,7 @@ public abstract class ApplicationStarter implements ApplicationRunner, Disposabl
 
             postInitComponentServices();
             postInit();
+            componentsInitializer.startClusterRecoveryMonitoring();
 
             LOGGER.info("Application Initializer: Application has started successfully");
         } catch (Exception exception) {
